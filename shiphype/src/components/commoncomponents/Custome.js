@@ -283,7 +283,9 @@ export default function Slide17(props) {
    const [completed, setCompleted] = React.useState(new Set());
    const [skipped, setSkipped] = React.useState(new Set());
    const [sellerid,setSellerid]=React.useState(0);
-   const[dataproduct,setDataProduct]=React.useState([]);
+   const [stateproduct, setStateproduct] = React.useState({
+    data: [],
+  });
    const [stepDone,setStepDone]=React.useState([]);
    let [singleFile, setSingleFile] = useState(null);
    const [loading,setLoading]=React.useState(true);
@@ -314,482 +316,8 @@ export default function Slide17(props) {
   
   };
 
- var flag =false;
-  const handleChangeCheckbox = (data) => {
-   // var ids=[];
-  //  var ids2=[];
-  setOpenChekced(true);
-  if(ids.length === 0){
-    ids.push(data);
-  }else{
-    for(let i=0;i<ids.length ;i++){
-    if(data !== ids[i]){
-      //ids.push(data);
-      flag=true;
-    }else{
-      flag=false;
-      break; 
-    }
-    
-    }
-    if(flag === true){
-      ids.push(data); 
-    }else{
-      const index =  ids.indexOf(data);
-      if (index > -1) {
-        ids.splice(index, 1);
-        if(ids.length === 0){
-          setOpenChekced(false);
-        }
-      }
-    }
-    
-  }
-  console.log("arraylenghtafter",ids.length);
-
-
-    const updatedaray=[...ids];
-
-    setchangedWarehouseid(updatedaray);
-
-    setState({
-      columns: [
-        { title: '',
-        render: rowData => <FormGroup>
-          {(() => {
-           
-           if(rowData!==undefined){
-             return( 
-        <FormControlLabel style={popUpStyle.checkboxPosition}
-          control={<Checkbox 
-            id={rowData.packaggingId}
-    
-            checked={
-                (() => {
-                  for(let i=0; i<ids.length;i++)
-                 
-                  {
-                    
-                
-                  if (rowData.packaggingId  === parseInt(ids[i])){
-                    return (
-                        true
-                      )
-                  }
-              
-                  }
-                 
-                  })()}
-            
-            onChange={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-            
-            color="primary"
-           />}
-            className={classes.radioButtonCss}
-            InputProps={{ inputProps: { style: {  borderRadius: 0 }, }, style: { borderRadius: 0 }, }}
-           
-            
-        />
-           )
-    }
-    
-    })()}  
-       </FormGroup>
-        },
-     { title: 'Name', field: 'packaggingName',type: 'text',
-     render: rowData =><FormControlLabel
-          
-     onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-     className={classes.quantitycss}
-     control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-     
-     <Text style={{ fontSize: '11px', 
-     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-     transition : 'all 0.25s',}}>{rowData.packaggingName}</Text>
-       
-     </Typography>}
-     />
-     
-       
-      },
-        { title: 'SKU',
-         field: 'assignSku',type: 'text',
-         render: rowData =><FormControlLabel
-          
-         onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-         className={classes.quantitycss}
-         control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-         
-         <Text style={{ fontSize: '11px', 
-         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-         transition : 'all 0.25s',}}>{rowData.assignSku}</Text>
-           
-         </Typography>}
-         />
-         
-      },
-        
-      { title: 'Total Stock', field: 'losangelesstock1',type: 'text',editable: 'never',
-      render: rowData => <Text>
-        {(() => { 
-          if(rowData!==undefined){
-           if(rowData.torontostock!==null && rowData.losangelesstock!==null)
-           {
-             
-    return(
-      <FormControlLabel
-          
-      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-      className={classes.quantitycss}
-      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-      
-      <Text style={{ fontSize: '11px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)+parseInt(rowData.torontostock)}</Text>
-        
-      </Typography>}
-      />
-    )
-           
-           }
-           else if(rowData.torontostock ===null && rowData.losangelesstock!==null)
-           {
-             
-    return(
-      <FormControlLabel
-          
-      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-      className={classes.quantitycss}
-      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-      
-      <Text style={{ fontSize: '11px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)}</Text>
-        
-      </Typography>}
-      />
-    )
-           
-           }
-           else if(rowData.torontostock ===null && rowData.losangelesstock===null)
-           {
-             
-    return(
-      <FormControlLabel
-          
-      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-      className={classes.quantitycss}
-      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-      
-      <Text style={{ fontSize: '11px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      transition : 'all 0.25s',}}>0</Text>
-        
-      </Typography>}
-      />
-    )
-           
-           }
-           else if(rowData.torontostock !==null && rowData.losangelesstock===null)
-           {
-             
-    return(
-      <FormControlLabel
-          
-      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-      className={classes.quantitycss}
-      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-      
-      <Text style={{ fontSize: '11px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      transition : 'all 0.25s',}}>{parseInt(rowData.torontostock)}</Text>
-        
-      </Typography>}
-      />
-    )
-           
-           }
-          }
-          
-             })()} 
-       </Text>
-      
-   },
-   { title: 'Toronto Stock', field: 'torontostock',type: 'text',
-   render: rowData =><FormControlLabel
-          
-   onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-   className={classes.quantitycss}
-   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-   
-   <Text style={{ fontSize: '11px', 
-   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-   transition : 'all 0.25s',}}>{rowData.torontostock}</Text>
-     
-   </Typography>}
-   />
-      
-  },
-  { title: 'Los Angeles Stock', field: 'losangelesstock',type: 'text',
-  render: rowData =><FormControlLabel
-          
-  onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-  className={classes.quantitycss}
-  control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-  
-  <Text style={{ fontSize: '11px', 
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-  transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
-    
-  </Typography>}
-  />
-      
-  },
-      ],data: [
-      
-      ],
-      
-    });
-    //setCardid(0);
-    // const updatedshipped=[...ids2];
-    // setshippedQuantity(updatedshipped);
-
-  };
-
-  const handleChangeCheckbox5 = () => {
-    setOpenChekced(false);
-    var ids9=[];
-  
-
-  
-    const updatedaray=[...ids9];
-
-    setchangedWarehouseid(updatedaray);
-
-    setState({
-      columns: [
-        { title: '',
-        render: rowData => <FormGroup>
-          {(() => {
-           
-           if(rowData!==undefined){
-             return( 
-        <FormControlLabel style={popUpStyle.checkboxPosition}
-          control={<Checkbox 
-            id={rowData.packaggingId}
-    
-            checked={
-                (() => {
-                  for(let i=0; i<ids9.length;i++)
-                 
-                  {
-                    
-                
-                  if (rowData.packaggingId  === parseInt(ids9[i])){
-                    return (
-                        true
-                      )
-                  }
-              
-                  }
-                 
-                  })()}
-            
-            onChange={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-            
-            color="primary"
-           />}
-            className={classes.radioButtonCss}
-            InputProps={{ inputProps: { style: {  borderRadius: 0 }, }, style: { borderRadius: 0 }, }}
-           
-            
-        />
-           )
-    }
-    
-    })()}  
-       </FormGroup>
-        },
-     { title: 'Name', field: 'packaggingName',type: 'text',
-     render: rowData =><FormControlLabel
-          
-     onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-     className={classes.quantitycss}
-     control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-     
-     <Text style={{ fontSize: '11px', 
-     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-     transition : 'all 0.25s',}}>{rowData.packaggingName}</Text>
-       
-     </Typography>}
-     />
-     
-       
-      },
-        { title: 'SKU',
-         field: 'assignSku',type: 'text',
-         render: rowData =><FormControlLabel
-          
-         onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-         className={classes.quantitycss}
-         control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-         
-         <Text style={{ fontSize: '11px', 
-         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-         transition : 'all 0.25s',}}>{rowData.assignSku}</Text>
-           
-         </Typography>}
-         />
-         
-      },
-        
-      { title: 'Total Stock', field: 'losangelesstock1',type: 'text',editable: 'never',
-      render: rowData => <Text>
-        {(() => { 
-          if(rowData!==undefined){
-           if(rowData.torontostock!==null && rowData.losangelesstock!==null)
-           {
-             
-    return(
-      <FormControlLabel
-          
-      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-      className={classes.quantitycss}
-      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-      
-      <Text style={{ fontSize: '11px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)+parseInt(rowData.torontostock)}</Text>
-        
-      </Typography>}
-      />
-    )
-           
-           }
-           else if(rowData.torontostock ===null && rowData.losangelesstock!==null)
-           {
-             
-    return(
-      <FormControlLabel
-          
-      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-      className={classes.quantitycss}
-      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-      
-      <Text style={{ fontSize: '11px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)}</Text>
-        
-      </Typography>}
-      />
-    )
-           
-           }
-           else if(rowData.torontostock ===null && rowData.losangelesstock===null)
-           {
-             
-    return(
-      <FormControlLabel
-          
-      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-      className={classes.quantitycss}
-      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-      
-      <Text style={{ fontSize: '11px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      transition : 'all 0.25s',}}>0</Text>
-        
-      </Typography>}
-      />
-    )
-           
-           }
-           else if(rowData.torontostock !==null && rowData.losangelesstock===null)
-           {
-             
-    return(
-      <FormControlLabel
-          
-      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-      className={classes.quantitycss}
-      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-      
-      <Text style={{ fontSize: '11px', 
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      transition : 'all 0.25s',}}>{parseInt(rowData.torontostock)}</Text>
-        
-      </Typography>}
-      />
-    )
-           
-           }
-          }
-          
-             })()} 
-       </Text>
-      
-   },
-   { title: 'Toronto Stock', field: 'torontostock',type: 'text',
-   render: rowData =><FormControlLabel
-          
-   onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-   className={classes.quantitycss}
-   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-   
-   <Text style={{ fontSize: '11px', 
-   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-   transition : 'all 0.25s',}}>{rowData.torontostock}</Text>
-     
-   </Typography>}
-   />
-      
-  },
-  { title: 'Los Angeles Stock', field: 'losangelesstock',type: 'text',
-  render: rowData =><FormControlLabel
-          
-  onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
-  className={classes.quantitycss}
-  control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-  
-  <Text style={{ fontSize: '11px', 
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-  transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
-    
-  </Typography>}
-  />
-      
-  },
-      ],data: [
-      
-      ],
-      
-    });
-    //setCardid(0);
-    // const updatedshipped=[...ids2];
-    // setshippedQuantity(updatedshipped);
-
-  };
-
-
-
-   const theme = useTheme()
-   const [state, setState] = React.useState({
+  const theme = useTheme()
+  const [state, setState] = React.useState({
     columns: [
       { title: '',
       render: rowData => <FormGroup>
@@ -833,6 +361,31 @@ export default function Slide17(props) {
   })()}  
      </FormGroup>
       },
+      
+      { title: 'ShipHype Internal ID',
+      field: 'packaggingId',type: 'text',editable: 'never',
+      render: rowData =><FormControlLabel
+               
+          onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+          className={classes.quantitycss}
+          control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+          {(() => {
+                
+                if(rowData!==undefined){
+                  return( 
+          <Text style={{ fontSize: '11px', 
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+          transition : 'all 0.25s',}}>{rowData.packaggingId}</Text>
+          )
+         }
+         
+         })()}  
+          </Typography>}
+          />
+          
+     },
+
    { title: 'Name', field: 'packaggingName',type: 'text',
    render: rowData =><FormControlLabel
         
@@ -843,7 +396,7 @@ export default function Slide17(props) {
    
    <Text style={{ fontSize: '11px', 
    fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-   transition : 'all 0.25s',}}>{rowData.packaggingName}</Text>
+   transition : 'all 0.25s',}}>{rowData.packaggingName === null || rowData.packaggingName === "" ? '  ' : rowData.packaggingName}</Text>
      
    </Typography>}
    />
@@ -861,7 +414,7 @@ export default function Slide17(props) {
        
        <Text style={{ fontSize: '11px', 
        fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-       transition : 'all 0.25s',}}>{rowData.assignSku}</Text>
+       transition : 'all 0.25s',}}>{rowData.assignSku === null || rowData.assignSku === "" ? '  ' : rowData.assignSku}</Text>
          
        </Typography>}
        />
@@ -968,7 +521,7 @@ export default function Slide17(props) {
  
  <Text style={{ fontSize: '11px', 
  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
- transition : 'all 0.25s',}}>{rowData.torontostock}</Text>
+ transition : 'all 0.25s',}}>{rowData.torontostock === null || rowData.torontostock === "" ? '  ' : rowData.torontostock}</Text>
    
  </Typography>}
  />
@@ -984,32 +537,58 @@ fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
 
 <Text style={{ fontSize: '11px', 
 fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
+transition : 'all 0.25s',}}>{rowData.losangelesstock === null || rowData.losangelesstock === "" ? ' ' : rowData.losangelesstock}</Text>
   
 </Typography>}
 />
     
 },
-      // {
-      //   title: 'Type',
-      //   field: 'packaggingtypeId',
-      //   lookup: { 1: 'Custom Packaging', 2: 'Promotional Inserts' },
-      // },
-      
-    ],data: [
-      
-    ],
   
-  });
-  const column1FilterList = state.column1FilterList;
+    ]
+ 
+ });
 
-  React.useEffect(() => {
-    fetchCustomePackageingList();
-    fetchForCheckAdminList();
-    //fetchShiphypeCompleteStep();    
- } ,[]);
- const fetchForCheckAdminList = ()=>{
-  if(userRoleId===1)
+
+ var flag =false;
+  const handleChangeCheckbox = (data) => {
+   // var ids=[];
+  //  var ids2=[];
+  setOpenChekced(true);
+  if(ids.length === 0){
+    ids.push(data);
+  }else{
+    for(let i=0;i<ids.length ;i++){
+    if(data !== ids[i]){
+      //ids.push(data);
+      flag=true;
+    }else{
+      flag=false;
+      break; 
+    }
+    
+    }
+    if(flag === true){
+      ids.push(data); 
+    }else{
+      const index =  ids.indexOf(data);
+      if (index > -1) {
+        ids.splice(index, 1);
+        if(ids.length === 0){
+          setOpenChekced(false);
+        }
+      }
+    }
+    
+  }
+  console.log("arraylenghtafter",ids.length);
+ // fetchCustomePackageingList();
+
+    const updatedaray=[...ids];
+
+    setchangedWarehouseid(updatedaray);
+
+
+     if(userRoleId === 1)
   {
     setState({
       column1FilterList,
@@ -1091,7 +670,7 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
      
      <Text style={{ fontSize: '11px', 
      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-     transition : 'all 0.25s',}}>{rowData.packaggingName}</Text>
+     transition : 'all 0.25s',}}>{rowData.packaggingName === null || rowData.packaggingName === "" ? '  ' : rowData.packaggingName}</Text>
        
      </Typography>}
      />
@@ -1109,7 +688,7 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
          
          <Text style={{ fontSize: '11px', 
          fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-         transition : 'all 0.25s',}}>{rowData.assignSku}</Text>
+         transition : 'all 0.25s',}}>{rowData.assignSku === null || rowData.assignSku === "" ? '  ' : rowData.assignSku}</Text>
            
          </Typography>}
          />
@@ -1216,7 +795,7 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
    
    <Text style={{ fontSize: '11px', 
    fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-   transition : 'all 0.25s',}}>{rowData.torontostock}</Text>
+   transition : 'all 0.25s',}}>{rowData.torontostock === null || rowData.torontostock === "" ? '  ' : rowData.torontostock}</Text>
      
    </Typography>}
    />
@@ -1232,15 +811,13 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
   
   <Text style={{ fontSize: '11px', 
   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-  transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
+  transition : 'all 0.25s',}}>{rowData.losangelesstock === null || rowData.losangelesstock === "" ? ' ' : rowData.losangelesstock}</Text>
     
   </Typography>}
   />
       
   },
     
-      ],data: [
-      
       ],
       });
   }
@@ -1300,7 +877,7 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
      
      <Text style={{ fontSize: '11px', 
      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-     transition : 'all 0.25s',}}>{rowData.packaggingName}</Text>
+     transition : 'all 0.25s',}}>{rowData.packaggingName === null || rowData.packaggingName === "" ? '  ' : rowData.packaggingName}</Text>
        
      </Typography>}
      />
@@ -1318,7 +895,7 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
          
          <Text style={{ fontSize: '11px', 
          fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-         transition : 'all 0.25s',}}>{rowData.assignSku}</Text>
+         transition : 'all 0.25s',}}>{rowData.assignSku === null || rowData.assignSku === "" ? '  ' : rowData.assignSku}</Text>
            
          </Typography>}
          />
@@ -1428,7 +1005,7 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
              return( 
               <Text style={{ fontSize: '11px', 
               fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition : 'all 0.25s',}}>{rowData.torontostock}</Text>
+              transition : 'all 0.25s',}}>{rowData.torontostock === null || rowData.torontostock === "" ? ' ' : rowData.torontostock}</Text>
      )
     }
     
@@ -1453,7 +1030,7 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
              return( 
               <Text style={{ fontSize: '11px', 
   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-  transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
+  transition : 'all 0.25s',}}>{rowData.losangelesstock === null || rowData.losangelesstock === "" ? ' ' : rowData.losangelesstock}</Text>
      )
     }
     
@@ -1465,8 +1042,944 @@ transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
       
   },
     
-      ],data: [
+      ],
+      });
+  }
+  };
+
+  const handleChangeCheckbox5 = () => {
+    setOpenChekced(false);
+    var ids9=[];
+
+    const updatedaray=[...ids9];
+
+    setchangedWarehouseid(updatedaray);
+
+    if(userRoleId === 1)
+  {
+    setState({
+      column1FilterList,
+      columns: [
+        { title: '',
+        render: rowData => <FormGroup>
+          {(() => {
+           
+           if(rowData!==undefined){
+             return( 
+        <FormControlLabel style={popUpStyle.checkboxPosition}
+          control={<Checkbox 
+            id={rowData.packaggingId}
+    
+            checked={
+                (() => {
+                  for(let i=0; i<ids.length;i++)
+                 
+                  {
+                    
+                
+                  if (rowData.packaggingId  === parseInt(ids[i])){
+                    return (
+                        true
+                      )
+                  }
+              
+                  }
+                 
+                  })()}
+            
+            onChange={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+            
+            color="primary"
+           />}
+            className={classes.radioButtonCss}
+            InputProps={{ inputProps: { style: {  borderRadius: 0 }, }, style: { borderRadius: 0 }, }}
+           
+            
+        />
+           )
+    }
+    
+    })()}  
+       </FormGroup>
+        },
+        
+        { title: 'ShipHype Internal ID',
+        field: 'packaggingId',type: 'text',editable: 'never',
+        render: rowData =><FormControlLabel
+                 
+            onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+            className={classes.quantitycss}
+            control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+            {(() => {
+                  
+                  if(rowData!==undefined){
+                    return( 
+            <Text style={{ fontSize: '11px', 
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+            transition : 'all 0.25s',}}>{rowData.packaggingId}</Text>
+            )
+           }
+           
+           })()}  
+            </Typography>}
+            />
+            
+       },
+
+     { title: 'Name', field: 'packaggingName',type: 'text',
+     render: rowData =><FormControlLabel
+          
+     onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+     className={classes.quantitycss}
+     control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+     
+     <Text style={{ fontSize: '11px', 
+     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+     transition : 'all 0.25s',}}>{rowData.packaggingName === null || rowData.packaggingName === "" ? '  ' : rowData.packaggingName}</Text>
+       
+     </Typography>}
+     />
+     
+       
+      },
+        { title: 'SKU',
+         field: 'assignSku',type: 'text',
+         render: rowData =><FormControlLabel
+          
+         onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+         className={classes.quantitycss}
+         control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+         
+         <Text style={{ fontSize: '11px', 
+         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+         transition : 'all 0.25s',}}>{rowData.assignSku === null || rowData.assignSku === "" ? '  ' : rowData.assignSku}</Text>
+           
+         </Typography>}
+         />
+         
+      },
+        
+      { title: 'Total Stock', field: 'losangelesstock1',type: 'text',editable: 'never',
+      render: rowData => <Text>
+        {(() => { 
+          if(rowData!==undefined){
+           if(rowData.torontostock!==null && rowData.losangelesstock!==null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
       
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)+parseInt(rowData.torontostock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock ===null && rowData.losangelesstock!==null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock ===null && rowData.losangelesstock===null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>0</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock !==null && rowData.losangelesstock===null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.torontostock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+          }
+          
+             })()} 
+       </Text>
+      
+   },
+   { title: 'Toronto Stock', field: 'torontostock',type: 'text',
+   render: rowData =><FormControlLabel
+          
+   onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+   className={classes.quantitycss}
+   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+   
+   <Text style={{ fontSize: '11px', 
+   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+   transition : 'all 0.25s',}}>{rowData.torontostock === null || rowData.torontostock === "" ? '  ' : rowData.torontostock}</Text>
+     
+   </Typography>}
+   />
+      
+  },
+  { title: 'Los Angeles Stock', field: 'losangelesstock',type: 'text',
+  render: rowData =><FormControlLabel
+          
+  onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+  className={classes.quantitycss}
+  control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+  
+  <Text style={{ fontSize: '11px', 
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+  transition : 'all 0.25s',}}>{rowData.losangelesstock === null || rowData.losangelesstock === "" ? ' ' : rowData.losangelesstock}</Text>
+    
+  </Typography>}
+  />
+      
+  },
+    
+      ],
+      });
+  }
+  else{
+    setState({
+      column1FilterList,
+      columns: [
+        { title: '',
+        render: rowData => <FormGroup>
+          {(() => {
+           
+           if(rowData!==undefined){
+             return( 
+        <FormControlLabel style={popUpStyle.checkboxPosition}
+          control={<Checkbox 
+            id={rowData.packaggingId}
+    
+            checked={
+                (() => {
+                  for(let i=0; i<ids.length;i++)
+                 
+                  {
+                    
+                
+                  if (rowData.packaggingId  === parseInt(ids[i])){
+                    return (
+                        true
+                      )
+                  }
+              
+                  }
+                 
+                  })()}
+            
+            onChange={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+            
+            color="primary"
+           />}
+            className={classes.radioButtonCss}
+            InputProps={{ inputProps: { style: {  borderRadius: 0 }, }, style: { borderRadius: 0 }, }}
+           
+            
+        />
+           )
+    }
+    
+    })()}  
+       </FormGroup>
+        },
+     { title: 'Name', field: 'packaggingName',type: 'text',
+     render: rowData =><FormControlLabel
+          
+     onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+     className={classes.quantitycss}
+     control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+     
+     <Text style={{ fontSize: '11px', 
+     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+     transition : 'all 0.25s',}}>{rowData.packaggingName === null || rowData.packaggingName === "" ? '  ' : rowData.packaggingName}</Text>
+       
+     </Typography>}
+     />
+     
+       
+      },
+        { title: 'SKU',
+         field: 'assignSku',type: 'text',
+         render: rowData =><FormControlLabel
+          
+         onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+         className={classes.quantitycss}
+         control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+         
+         <Text style={{ fontSize: '11px', 
+         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+         transition : 'all 0.25s',}}>{rowData.assignSku === null || rowData.assignSku === "" ? '  ' : rowData.assignSku}</Text>
+           
+         </Typography>}
+         />
+         
+      },
+        
+      { title: 'Total Stock', field: 'losangelesstock1',type: 'text',editable: 'never',
+      render: rowData => <Text>
+        {(() => { 
+          if(rowData!==undefined){
+           if(rowData.torontostock!==null && rowData.losangelesstock!==null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)+parseInt(rowData.torontostock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock ===null && rowData.losangelesstock!==null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock ===null && rowData.losangelesstock===null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>0</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock !==null && rowData.losangelesstock===null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.torontostock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+          }
+          
+             })()} 
+       </Text>
+      
+   },
+   { title: 'Toronto Stock', field: 'torontostock',type: 'text',editable: 'never',
+   render: rowData =><FormControlLabel
+          
+   onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+   className={classes.quantitycss}
+   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+    {(() => {
+           
+           if(rowData!==undefined){
+             return( 
+              <Text style={{ fontSize: '11px', 
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+              transition : 'all 0.25s',}}>{rowData.torontostock === null || rowData.torontostock === "" ? ' ' : rowData.torontostock}</Text>
+     )
+    }
+    
+    })()} 
+  
+     
+   </Typography>}
+   />
+      
+  },
+  { title: 'Los Angeles Stock', field: 'losangelesstock',type: 'text',editable: 'never',
+  render: rowData =><FormControlLabel
+          
+  onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+  className={classes.quantitycss}
+  control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+  
+  {(() => {
+           
+           if(rowData!==undefined){
+             return( 
+              <Text style={{ fontSize: '11px', 
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+  transition : 'all 0.25s',}}>{rowData.losangelesstock === null || rowData.losangelesstock === "" ? ' ' : rowData.losangelesstock}</Text>
+     )
+    }
+    
+    })()} 
+ 
+    
+  </Typography>}
+  />
+      
+  },
+    
+      ],
+      });
+  }
+
+  };
+
+
+
+  
+  const column1FilterList = state.column1FilterList;
+
+  React.useEffect(() => {
+    fetchCustomePackageingList();
+    fetchForCheckAdminList();
+    //fetchShiphypeCompleteStep();    
+ } ,[]);
+ const fetchForCheckAdminList = ()=>{
+  if(userRoleId === 1)
+  {
+    setState({
+      column1FilterList,
+      columns: [
+        { title: '',
+        render: rowData => <FormGroup>
+          {(() => {
+           
+           if(rowData!==undefined){
+             return( 
+        <FormControlLabel style={popUpStyle.checkboxPosition}
+          control={<Checkbox 
+            id={rowData.packaggingId}
+    
+            checked={
+                (() => {
+                  for(let i=0; i<ids.length;i++)
+                 
+                  {
+                    
+                
+                  if (rowData.packaggingId  === parseInt(ids[i])){
+                    return (
+                        true
+                      )
+                  }
+              
+                  }
+                 
+                  })()}
+            
+            onChange={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+            
+            color="primary"
+           />}
+            className={classes.radioButtonCss}
+            InputProps={{ inputProps: { style: {  borderRadius: 0 }, }, style: { borderRadius: 0 }, }}
+           
+            
+        />
+           )
+    }
+    
+    })()}  
+       </FormGroup>
+        },
+        
+        { title: 'ShipHype Internal ID',
+        field: 'packaggingId',type: 'text',editable: 'never',
+        render: rowData =><FormControlLabel
+                 
+            onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+            className={classes.quantitycss}
+            control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+            {(() => {
+                  
+                  if(rowData!==undefined){
+                    return( 
+            <Text style={{ fontSize: '11px', 
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+            transition : 'all 0.25s',}}>{rowData.packaggingId}</Text>
+            )
+           }
+           
+           })()}  
+            </Typography>}
+            />
+            
+       },
+
+     { title: 'Name', field: 'packaggingName',type: 'text',
+     render: rowData =><FormControlLabel
+          
+     onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+     className={classes.quantitycss}
+     control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+     
+     <Text style={{ fontSize: '11px', 
+     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+     transition : 'all 0.25s',}}>{rowData.packaggingName === null || rowData.packaggingName === "" ? '  ' : rowData.packaggingName}</Text>
+       
+     </Typography>}
+     />
+     
+       
+      },
+        { title: 'SKU',
+         field: 'assignSku',type: 'text',
+         render: rowData =><FormControlLabel
+          
+         onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+         className={classes.quantitycss}
+         control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+         
+         <Text style={{ fontSize: '11px', 
+         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+         transition : 'all 0.25s',}}>{rowData.assignSku === null || rowData.assignSku === "" ? '  ' : rowData.assignSku}</Text>
+           
+         </Typography>}
+         />
+         
+      },
+        
+      { title: 'Total Stock', field: 'losangelesstock1',type: 'text',editable: 'never',
+      render: rowData => <Text>
+        {(() => { 
+          if(rowData!==undefined){
+           if(rowData.torontostock!==null && rowData.losangelesstock!==null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)+parseInt(rowData.torontostock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock ===null && rowData.losangelesstock!==null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock ===null && rowData.losangelesstock===null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>0</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock !==null && rowData.losangelesstock===null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.torontostock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+          }
+          
+             })()} 
+       </Text>
+      
+   },
+   { title: 'Toronto Stock', field: 'torontostock',type: 'text',
+   render: rowData =><FormControlLabel
+          
+   onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+   className={classes.quantitycss}
+   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+   
+   <Text style={{ fontSize: '11px', 
+   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+   transition : 'all 0.25s',}}>{rowData.torontostock === null || rowData.torontostock === "" ? '  ' : rowData.torontostock}</Text>
+     
+   </Typography>}
+   />
+      
+  },
+  { title: 'Los Angeles Stock', field: 'losangelesstock',type: 'text',
+  render: rowData =><FormControlLabel
+          
+  onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+  className={classes.quantitycss}
+  control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+  
+  <Text style={{ fontSize: '11px', 
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+  transition : 'all 0.25s',}}>{rowData.losangelesstock === null || rowData.losangelesstock === "" ? ' ' : rowData.losangelesstock}</Text>
+    
+  </Typography>}
+  />
+      
+  },
+    
+      ],
+      });
+  }
+  else{
+    setState({
+      column1FilterList,
+      columns: [
+        { title: '',
+        render: rowData => <FormGroup>
+          {(() => {
+           
+           if(rowData!==undefined){
+             return( 
+        <FormControlLabel style={popUpStyle.checkboxPosition}
+          control={<Checkbox 
+            id={rowData.packaggingId}
+    
+            checked={
+                (() => {
+                  for(let i=0; i<ids.length;i++)
+                 
+                  {
+                    
+                
+                  if (rowData.packaggingId  === parseInt(ids[i])){
+                    return (
+                        true
+                      )
+                  }
+              
+                  }
+                 
+                  })()}
+            
+            onChange={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+            
+            color="primary"
+           />}
+            className={classes.radioButtonCss}
+            InputProps={{ inputProps: { style: {  borderRadius: 0 }, }, style: { borderRadius: 0 }, }}
+           
+            
+        />
+           )
+    }
+    
+    })()}  
+       </FormGroup>
+        },
+     { title: 'Name', field: 'packaggingName',type: 'text',
+     render: rowData =><FormControlLabel
+          
+     onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+     className={classes.quantitycss}
+     control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+     
+     <Text style={{ fontSize: '11px', 
+     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+     transition : 'all 0.25s',}}>{rowData.packaggingName === null || rowData.packaggingName === "" ? '  ' : rowData.packaggingName}</Text>
+       
+     </Typography>}
+     />
+     
+       
+      },
+        { title: 'SKU',
+         field: 'assignSku',type: 'text',
+         render: rowData =><FormControlLabel
+          
+         onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+         className={classes.quantitycss}
+         control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+         
+         <Text style={{ fontSize: '11px', 
+         fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+         transition : 'all 0.25s',}}>{rowData.assignSku === null || rowData.assignSku === "" ? '  ' : rowData.assignSku}</Text>
+           
+         </Typography>}
+         />
+         
+      },
+        
+      { title: 'Total Stock', field: 'losangelesstock1',type: 'text',editable: 'never',
+      render: rowData => <Text>
+        {(() => { 
+          if(rowData!==undefined){
+           if(rowData.torontostock!==null && rowData.losangelesstock!==null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)+parseInt(rowData.torontostock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock ===null && rowData.losangelesstock!==null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.losangelesstock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock ===null && rowData.losangelesstock===null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>0</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+           else if(rowData.torontostock !==null && rowData.losangelesstock===null)
+           {
+             
+    return(
+      <FormControlLabel
+          
+      onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+      className={classes.quantitycss}
+      control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+      
+      <Text style={{ fontSize: '11px', 
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+      transition : 'all 0.25s',}}>{parseInt(rowData.torontostock)}</Text>
+        
+      </Typography>}
+      />
+    )
+           
+           }
+          }
+          
+             })()} 
+       </Text>
+      
+   },
+   { title: 'Toronto Stock', field: 'torontostock',type: 'text',editable: 'never',
+   render: rowData =><FormControlLabel
+          
+   onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+   className={classes.quantitycss}
+   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+    {(() => {
+           
+           if(rowData!==undefined){
+             return( 
+              <Text style={{ fontSize: '11px', 
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+              transition : 'all 0.25s',}}>{rowData.torontostock === null || rowData.torontostock === "" ? ' ' : rowData.torontostock}</Text>
+     )
+    }
+    
+    })()} 
+  
+     
+   </Typography>}
+   />
+      
+  },
+  { title: 'Los Angeles Stock', field: 'losangelesstock',type: 'text',editable: 'never',
+  render: rowData =><FormControlLabel
+          
+  onClick={()=>{handleChangeCheckbox(rowData.packaggingId)}}
+  className={classes.quantitycss}
+  control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
+  
+  {(() => {
+           
+           if(rowData!==undefined){
+             return( 
+              <Text style={{ fontSize: '11px', 
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+  transition : 'all 0.25s',}}>{rowData.losangelesstock === null || rowData.losangelesstock === "" ? ' ' : rowData.losangelesstock}</Text>
+     )
+    }
+    
+    })()} 
+ 
+    
+  </Typography>}
+  />
+      
+  },
+    
       ],
       });
   }
@@ -1483,6 +1996,10 @@ var uuid=0;
     uuid=sellerid;
   }
   var packagin=[];
+  setStateproduct((prevState) => {
+    const data = [];
+    return { ...prevState, data };
+  });
     setLoading(true);
     shiphypeservice.fetchCustomePaching(uuid,1)
     .then(response => {
@@ -1498,15 +2015,9 @@ var uuid=0;
   }
               }
             }
-            setState((prevState) => {
-              const data = [];
-          
-              
-          
-              return { ...prevState, data };
-            });
+           
             
-               setState((prevState) => {
+            setStateproduct((prevState) => {
                 const data = [...prevState.data];
     
                 for (let i = 0; i < response.data.length; i++) {
@@ -1515,12 +2026,11 @@ var uuid=0;
                     ids1.push(response.data[i]);
                     data.push(response.data[i]);
                   }
-                  
                 }
-    
                 return { ...prevState, data };
               });
-              setDataProduct(packagin);
+              
+              
                      }else{
                       setLoading(false);
                       console.log("message",response.message);
@@ -1743,15 +2253,12 @@ if(response.data[i].packagingtype !== "default"){
             }
           }
 
-          setState((prevState) => {
+          setStateproduct((prevState) => {
             const data = [];
-        
-            
-        
             return { ...prevState, data };
           });
           
-             setState((prevState) => {
+          setStateproduct((prevState) => {
               const data = [...prevState.data];
   
               for (let i = 0; i < response.data.length; i++) {
@@ -1764,9 +2271,6 @@ if(response.data[i].packagingtype !== "default"){
   
               return { ...prevState, data };
             });
-
-
-             setDataProduct(packagin);
              
                    }else{
                     setLoading(false);
@@ -1829,16 +2333,16 @@ const handleClose3 = () => {
             //   setValue(0);
             //  }
            }else{
-            setState((prevState) => {
+            setStateproduct((prevState) => {
               const data = [];
               return { ...prevState, data };
             });
             
-            setState((prevState) => {
+            setStateproduct((prevState) => {
               const data = [];
               return { ...prevState, data };
             });
-              setDataProduct([]);
+              
            }
          console.log("newvalue",newValue);
        }}
@@ -1880,7 +2384,7 @@ const handleClose3 = () => {
           
             transition : 'all 0.25s',}}>Custom Packaging List</Text> }
         columns={state.columns}
-        data={state.data}
+        data={stateproduct.data}
         icons={tableIcons}
         components={{
           Container: props => <Paper {...props} elevation={0}/>,
@@ -1916,7 +2420,7 @@ const handleClose3 = () => {
       actions={[
         
         {
-                tooltip: 'Remove All Selected Users',
+                tooltip: 'Delete Packagings',
                 icon: () => <DeleteOutline
                />,
                isFreeAction: openChecked,
@@ -2027,7 +2531,102 @@ const handleClose3 = () => {
           search: true,
           exportButton: false,
       }}
-       
+      editable={{
+        onRowAdd: newData =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              {
+               
+                      // if (!newData.productsku || !newData.productname || !newData.hscode || !newData.itemvaluecurrency || !newData.packaging) {
+                          
+                      //     setOpen(true);
+                      //     setType('error');
+                      //     setMsg("All field is required.");
+                      //     reject();
+                      //     return;
+                      // }
+                      // resolve();
+                      if (newData.packaggingName===undefined)
+                      {
+                        setOpen(true);
+                                  setType('error');
+                                  setMsg("Package Name must be filled.");
+                                  reject();
+                                  return;
+                      }
+                      else{
+                        console.log("sku",newData.assignSku);
+                        console.log("name",newData.packaggingName);
+                        // var str=newData.itemvaluecurrency;
+                        // var currency = str.slice(0, 1);
+                        // var currencyvalue=str.slice(1, 5);
+                        // console.log("currency",currency);
+                        // console.log("currencyvalue",currencyvalue);
+                        addNewPackaging(newData.assignSku,newData.packaggingName,newData.torontostock,newData.losangelesstock);
+                       
+                      }
+               
+              }
+              resolve()
+            }, 1000)
+          }),
+        onRowUpdate: (newData, oldData) =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              {
+
+                // if (!newData.productsku || !newData.productname || !newData.hscode || !newData.itemvaluecurrency || !newData.packaging) {
+                          
+                //           setOpen(true);
+                //           setType('error');
+                //           setMsg("All field is required.");
+                //           reject();
+                //           return;
+                //       }
+                //       resolve();
+                if (newData.packaggingName==='')
+                {
+                  setOpen(true);
+                            setType('error');
+                            setMsg("Package Name must be filled.");
+                            reject();
+                            return;
+                }
+else{
+  const dataup=stateproduct.data;
+  const index = dataup.indexOf(oldData);
+                // data[index] = newData;
+                // setState({ data }, () => resolve());
+
+                const packaggingId=(dataup[index].packaggingId);
+                updataExistsPackaging(packaggingId,newData.assignSku,newData.packaggingName,newData.torontostock,newData.losangelesstock,newData.userId);
+                setStateproduct((prevState) => {
+                  const data = [...prevState.data];
+                  data[data.indexOf(oldData)] = newData;
+                  return { ...prevState, data };
+                });
+}
+              }
+              resolve()
+            }, 1000)
+          }),
+        onRowDelete: oldData =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              {
+                const dataup=stateproduct.data;
+                const index = dataup.indexOf(oldData);
+                const packaggingId=(dataup[index].packaggingId);
+
+                // const data = dataproduct;
+                // const index = data.indexOf(oldData);
+                // const packaggingId=(dataproduct[index].packaggingId);
+                deleteCustomePacking(packaggingId);
+              }
+              resolve()
+            }, 1000)
+          }),
+      }}
       />:
       <MaterialTable
       title={<Text style={{ fontSize: '13px',
@@ -2037,7 +2636,7 @@ const handleClose3 = () => {
         
           transition : 'all 0.25s',}}>Custom Packaging List</Text> }
       columns={state.columns}
-      data={state.data}
+      data={stateproduct.data}
       icons={tableIcons}
       components={{
         Container: props => <Paper {...props} elevation={0}/>,
@@ -2204,14 +2803,14 @@ const handleClose3 = () => {
                             return;
                 }
 else{
-  const dataup=state.data;
+  const dataup=stateproduct.data;
   const index = dataup.indexOf(oldData);
                 // data[index] = newData;
                 // setState({ data }, () => resolve());
 
                 const packaggingId=(dataup[index].packaggingId);
                 updataExistsPackaging(packaggingId,newData.assignSku,newData.packaggingName,newData.torontostock,newData.losangelesstock,newData.userId);
-                setState((prevState) => {
+                setStateproduct((prevState) => {
                   const data = [...prevState.data];
                   data[data.indexOf(oldData)] = newData;
                   return { ...prevState, data };
@@ -2225,7 +2824,7 @@ else{
           new Promise((resolve, reject) => {
             setTimeout(() => {
               {
-                const dataup=state.data;
+                const dataup=stateproduct.data;
                 const index = dataup.indexOf(oldData);
                 const packaggingId=(dataup[index].packaggingId);
 

@@ -1658,27 +1658,21 @@ React.useEffect(() => {
   {
   fetchPackingList1(userid);
   }
-  // if(Object.keys(policyData).length === 0)
-  // {
+ 
     fetchShipPolicy();
-  // }
+  
 
   fetchSellerUnpaid(userid);
 
-  // AsyncStorage.multiGet(["token"]).then((data) => {
-  //   if (data[0][1] != null) {
-  //     var ProductSelect1 = JSON.parse(data[0][1]);
-  //     setToast(true);
-  //     setType('success');
-  //     setMsg("Integration Successfully");
-  //     setStatus(false);
-  //     AsyncStorage.removeItem("token");
-  //     console.log("useridget", ProductSelect1);
-  //   }else{
-      
-  //   }
-  // });
+  return () => {
+    fetchShipPolicy();
+    console.log("callbackrun")
+   };
+  
 }, []);
+
+
+
 // var policyDataId=0;
 const fetchShipPolicy = () => {
   setLoading(true);
@@ -2426,7 +2420,7 @@ fetchCurrentTotalamount(userid);
                    }
                    else if(textValueId==12)
                    {
-                    setNow(85);
+                    setNow(100);
                    }
 
 
@@ -3648,6 +3642,7 @@ uuserdid={uuserdid}
                     editOrder={editOrder}
                     editCaseOnAddOption={editCaseOnAddOption}
                     setEditCaseOnAdd={setEditCaseOnAdd}
+                    orderwarehouseId={orderwarehouseId}
                     handleDashboard={handleSideNext}
                     shippingQunatity={shippingQunatity}
                     setCustomerIdUpdate={setCustomerIdUpdate}
@@ -4317,7 +4312,8 @@ inventoryLabel={inventoryLabel}
         userRoleId={userRoleId}
        user_id={userid}
        isAdmin={isAdmin}
-      handleDashboard={handleSideNext}
+       fetchShipPolicy={fetchShipPolicy}
+       handleDashboard={handleSideNext}
        handleeditcard={handleeditcard}
        handleNextPage={switchHandling}
        />;
@@ -8241,6 +8237,7 @@ if(isAdmin===false){
           openSprint={openSprint}
           user_id={userid}
              handleDashboard={handleSideNext}
+             fetchShipPolicy={fetchShipPolicy}
           handleNext={handleNext2}
           handleStepPage={handleStepPage}
           handleSprintCancel={handleSprintCancel}

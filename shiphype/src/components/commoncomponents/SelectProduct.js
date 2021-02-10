@@ -636,7 +636,8 @@ export default function SelectProduct(props) {
                           handleChangeCheckbox(
                             rowData.customproductId,
                             rowData.shippedquantity,
-                            rowData
+                            rowData,
+                            false
                           );
                         }}
                         color="primary"
@@ -665,7 +666,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
             className={classes.quantitycss}
@@ -704,7 +706,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
             className={classes.quantitycss}
@@ -726,7 +729,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
             className={classes.quantitycss}
@@ -784,7 +788,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
             className={classes.quantitycss}
@@ -823,7 +828,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
             className={classes.quantitycss}
@@ -862,7 +868,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
             className={classes.quantitycss}
@@ -965,7 +972,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -991,7 +999,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -1017,7 +1026,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -1043,7 +1053,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -1152,7 +1163,7 @@ export default function SelectProduct(props) {
 
   var flag = false;
 
-  const handleChangeCheckbox = (data, shippedquantity, rowData) => {
+  const handleChangeCheckbox = (data, shippedquantity, rowData,isrow) => {
     setCheckedA(false);
 
     console.log(NewSelectedrow);
@@ -1162,7 +1173,15 @@ export default function SelectProduct(props) {
     console.log(ProductSelect);
     if (shipmentId !== 0) {
       console.log("if part=========");
-      if (event.target.checked == true) {
+      if (event.target.checked == true || isrow === true) {
+        NewSelectedrow.map((item, index) => {
+          if (NewSelectedrow[index].customproductId == data) {
+            NewSelectedrow.splice(index, 1);
+            NewSelectedrow = NewSelectedrow;
+            console.log(NewSelectedrow);
+            console.log("DeleItem=====");
+          }
+        });
         NewSelectedrow.push(rowData);
         console.log(NewSelectedrow);
         console.log("pushItem====");
@@ -1186,7 +1205,13 @@ export default function SelectProduct(props) {
       }
     } else {
       console.log("else part");
-      if (event.target.checked == true) {
+      if (event.target.checked == true || isrow === true) {
+        ProductSelect.map((item, index) => {
+          if (ProductSelect[index].customproductId == data) {
+            ProductSelect.splice(index, 1);
+            ProductSelect = ProductSelect;
+          }
+        });
         ProductSelect.push(rowData);
         AsyncStorage.setItem("ProductSelect", JSON.stringify(ProductSelect));
       } else {
@@ -1280,7 +1305,8 @@ export default function SelectProduct(props) {
                             handleChangeCheckbox(
                               rowData.customproductId,
                               rowData.shippedquantity,
-                              rowData
+                              rowData,
+                              false
                             );
                           }}
                           color="primary"
@@ -1309,7 +1335,8 @@ export default function SelectProduct(props) {
                 handleChangeCheckbox(
                   rowData.customproductId,
                   rowData.shippedquantity,
-                  rowData
+                  rowData,
+                  true
                 );
               }}
               className={classes.quantitycss}
@@ -1348,7 +1375,8 @@ export default function SelectProduct(props) {
                 handleChangeCheckbox(
                   rowData.customproductId,
                   rowData.shippedquantity,
-                  rowData
+                  rowData,
+                  true
                 );
               }}
               className={classes.quantitycss}
@@ -1370,7 +1398,8 @@ export default function SelectProduct(props) {
                 handleChangeCheckbox(
                   rowData.customproductId,
                   rowData.shippedquantity,
-                  rowData
+                  rowData,
+                  true
                 );
               }}
               className={classes.quantitycss}
@@ -1428,7 +1457,8 @@ export default function SelectProduct(props) {
                 handleChangeCheckbox(
                   rowData.customproductId,
                   rowData.shippedquantity,
-                  rowData
+                  rowData,
+                  true
                 );
               }}
               className={classes.quantitycss}
@@ -1467,7 +1497,8 @@ export default function SelectProduct(props) {
                 handleChangeCheckbox(
                   rowData.customproductId,
                   rowData.shippedquantity,
-                  rowData
+                  rowData,
+                  true
                 );
               }}
               className={classes.quantitycss}
@@ -1506,7 +1537,8 @@ export default function SelectProduct(props) {
                 handleChangeCheckbox(
                   rowData.customproductId,
                   rowData.shippedquantity,
-                  rowData
+                  rowData,
+                  true
                 );
               }}
               className={classes.quantitycss}
@@ -1666,7 +1698,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -1692,7 +1725,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -1718,7 +1752,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -1744,7 +1779,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -1970,7 +2006,8 @@ export default function SelectProduct(props) {
                                       handleChangeCheckbox(
                                         rowData.customproductId,
                                         rowData.shippedquantity,
-                                        rowData
+                                        rowData,
+                                        false
                                       );
                                     }}
                                     color="primary"
@@ -1999,7 +2036,8 @@ export default function SelectProduct(props) {
                           handleChangeCheckbox(
                             rowData.customproductId,
                             rowData.shippedquantity,
-                            rowData
+                            rowData,
+                            true
                           );
                         }}
                         className={classes.quantitycss}
@@ -2038,7 +2076,8 @@ export default function SelectProduct(props) {
                           handleChangeCheckbox(
                             rowData.customproductId,
                             rowData.shippedquantity,
-                            rowData
+                            rowData,
+                            true
                           );
                         }}
                         className={classes.quantitycss}
@@ -2064,7 +2103,8 @@ export default function SelectProduct(props) {
                           handleChangeCheckbox(
                             rowData.customproductId,
                             rowData.shippedquantity,
-                            rowData
+                            rowData,
+                            true
                           );
                         }}
                         className={classes.quantitycss}
@@ -2122,7 +2162,8 @@ export default function SelectProduct(props) {
                           handleChangeCheckbox(
                             rowData.customproductId,
                             rowData.shippedquantity,
-                            rowData
+                            rowData,
+                            true
                           );
                         }}
                         className={classes.quantitycss}
@@ -2161,7 +2202,8 @@ export default function SelectProduct(props) {
                           handleChangeCheckbox(
                             rowData.customproductId,
                             rowData.shippedquantity,
-                            rowData
+                            rowData,
+                            true
                           );
                         }}
                         className={classes.quantitycss}
@@ -2200,7 +2242,8 @@ export default function SelectProduct(props) {
                           handleChangeCheckbox(
                             rowData.customproductId,
                             rowData.shippedquantity,
-                            rowData
+                            rowData,
+                            true
                           );
                         }}
                         className={classes.quantitycss}
@@ -2379,7 +2422,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -2405,7 +2449,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -2431,7 +2476,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -2457,7 +2503,8 @@ export default function SelectProduct(props) {
               handleChangeCheckbox(
                 rowData.customproductId,
                 rowData.shippedquantity,
-                rowData
+                rowData,
+                true
               );
             }}
       className={classes.quantitycss}
@@ -2717,7 +2764,7 @@ export default function SelectProduct(props) {
           </Grid>
 
           <MaterialTable
-            style={{ padding: "0px" }}
+            style={{ padding: "0px",marginTop: '10px'}}
             columns={state.columns}
             data={stateproduct.data}
             title={

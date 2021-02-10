@@ -56,7 +56,28 @@ const ColorButtonAdd = withStyles((theme) => ({
     //marginTop:'3%',
     height: "100%",
     padding: "3px",
-    width: "160px",
+    width: "250px",
+    fontSize: "11px",
+    fontWeight: "550",
+    color: "#fff",
+    backgroundColor: "#0168fa",
+    //  paddingLeft: '22%',
+    //  paddingRight: '22%',
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: "#0168fa",
+    },
+  },
+}))(Button);
+const ColorButtonEditRestication = withStyles((theme) => ({
+  root: {
+    borderRadius: "3px",
+    //  paddingTop: '9%',
+    //  paddingBottom: '9%',
+    //marginTop:'3%',
+    height: "100%",
+    padding: "3px",
+    width: "200px",
     fontSize: "11px",
     fontWeight: "550",
     color: "#fff",
@@ -81,9 +102,9 @@ const tableIcons = {
       size="large"
       variant="contained"
       color="primary"
-      startIcon={<AddIcon />}
+      startIcon={<Edit />}
     >
-      Shipping Policy
+      EDIT SHIPPING POLICIES
     </ColorButtonAdd>
   ),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -113,14 +134,14 @@ const tableIcons = {
 
 const tableIcons2 = {
   Add: () => (
-    <ColorButtonAdd
+    <ColorButtonEditRestication
       size="large"
       variant="contained"
       color="primary"
-      startIcon={<AddIcon />}
+      startIcon={<Edit/>}
     >
-      Restriction
-    </ColorButtonAdd>
+      EDIT RESTRICTIONS
+    </ColorButtonEditRestication>
   ),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -394,6 +415,9 @@ export default function ShippingProfile(props) {
   const [shipemtntypeid, setShipmetnIdId] = React.useState(1);
   const [shipploicyId, setShipploicyId] = React.useState(0);
   const [userData, setUserData] = React.useState([]);
+  let isCanada=false;
+  let isUsa=false;
+  let isInternationl=false;
   /**
    * Description:To do fetch all warehouse for user
    */
@@ -495,27 +519,138 @@ export default function ShippingProfile(props) {
       },
     ],
   });
-  const [state2, setState2] = React.useState({
-    column1FilterList: {},
-    columns: [
-      {
-        title: "Order Destination",
-        field: "orderdestination",
-        lookup: { 1: "Canada", 2: "USA", 3: "International" },
-      },
-      {
-        title: "Import",
-        field: "importdata",
-        lookup: { 1: "Yes", 2: "No" },
-      },
+  const handleChangequality = (event,props) => {
+   
+    console.log("onchnage",event.target.value);
+   props.onChange(event.target.value);    
+     };
 
-      {
-        title: "Ship From",
-        field: "shippingfrom",
-        lookup: { 1: "USA Warehouse", 2: "Canada Warehouse" },
-      },
-    ],
-  });
+     const handleChangequality2 = (event,props) => {
+  
+       console.log("onchnage2",event.target.value);
+       console.log("canda",isCanada);
+       console.log("usa",isUsa);
+       console.log("int",isInternationl);
+       if(event.target.value == 1){
+         if(isCanada == event.target.value){
+
+         }else{
+           props.onChange(event.target.value);
+         }
+       
+       }else if(event.target.value == 2){
+         if(isUsa == event.target.value){
+
+         }else{
+           props.onChange(event.target.value);
+         }
+       
+       }else if(event.target.value == 3){
+         if(isInternationl == event.target.value){
+
+         }else{
+         props.onChange(event.target.value);
+       }
+     }
+         
+        };
+
+
+        const [state2, setState2] = React.useState({
+          column1FilterList: {},
+          columns: [
+            {
+              title: "Order Destination",
+              field: "orderdestination",
+              lookup: { 1: "Canada", 2: "USA", 3: "International" },
+              editComponent: (props) => (
+                <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={props.value}
+                    onChange={(e) => handleChangequality2(e, props)}
+                  >
+                    <MenuItem disabled={isCanada} value={1}>Canada</MenuItem>
+                    <MenuItem disabled={isUsa} value={2}>USA</MenuItem>
+                    <MenuItem disabled={isInternationl} value={3}>International</MenuItem>
+                  </Select>
+                </FormControl>
+              ),
+            },
+            {
+              title: "Import",
+              field: "importdata",
+              lookup: { 1: "Yes", 2: "No" },
+              editComponent: (props) => (
+                <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={props.value}
+                    onChange={(e) => handleChangequality(e, props)}
+                  >
+                    <MenuItem value={1}>Yes</MenuItem>
+                    <MenuItem value={2}>No</MenuItem>
+                   
+                  </Select>
+                </FormControl>
+              ),
+            },
+      
+            {
+              title: "Ship From",
+              field: "shippingfrom",
+              lookup: { 1: "USA Warehouse", 2: "Canada Warehouse" },
+              editComponent: (props) => (
+      
+                <View>
+              {
+                (() => {
+                  if(props.rowData!==undefined){
+                  if(props.rowData.importdata === 2)
+                  {
+                    return(
+                      <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={0}
+                    disabled={true}
+                    onChange={(e) => handleChangequality(e, props)}
+                  >
+                  
+                   
+                  </Select>
+                </FormControl>
+              )
+      
+            }
+            else{
+              return(
+                <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={props.value}
+                    disabled={false}
+                    onChange={(e) => handleChangequality(e, props)}
+                  >
+                    <MenuItem value={1}>USA Warehouse</MenuItem>
+                    <MenuItem value={2}>Canada Warehouse</MenuItem>
+                   
+                  </Select>
+                </FormControl>
+              )
+            }
+          }
+          })()}
+          </View>
+                
+              ),
+            },
+          ],
+        });
   React.useEffect(() => {
     fetchShipPolicy();
     fetchShipRestrication();
@@ -557,6 +692,111 @@ export default function ShippingProfile(props) {
         console.log("status", response.status);
         if (response.status === true) {
           setShipRestricationData(response.data);
+          for(let i=0;i<response.data.length;i++){
+
+            if(response.data[i].orderdestination == 1){
+              isCanada=true;
+            }else if(response.data[i].orderdestination == 2){
+              isUsa=true;
+            }else if(response.data[i].orderdestination == 3){
+              isInternationl=true;
+            }
+          }
+
+          setState2({
+            columns: [
+              {
+                title: "Order Destination",
+                field: "orderdestination",
+                lookup: { 1: "Canada", 2: "USA", 3: "International" },
+                editComponent: (props) => (
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      onChange={(e) => handleChangequality2(e, props)}
+                    >
+                      <MenuItem disabled={isCanada} value={1}>Canada</MenuItem>
+                      <MenuItem disabled={isUsa} value={2}>USA</MenuItem>
+                      <MenuItem disabled={isInternationl} value={3}>International</MenuItem>
+                    </Select>
+                  </FormControl>
+                ),
+              },
+              {
+                title: "Import",
+                field: "importdata",
+                lookup: { 1: "Yes", 2: "No" },
+                editComponent: (props) => (
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                      <MenuItem value={1}>Yes</MenuItem>
+                      <MenuItem value={2}>No</MenuItem>
+                     
+                    </Select>
+                  </FormControl>
+                ),
+              },
+        
+              {
+                title: "Ship From",
+                field: "shippingfrom",
+                lookup: { 1: "USA Warehouse", 2: "Canada Warehouse" },
+                editComponent: (props) => (
+        
+                  <View>
+                {
+                  (() => {
+                    if(props.rowData!==undefined){
+                    if(props.rowData.importdata === 2)
+                    {
+                      return(
+                        <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={0}
+                      disabled={true}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                    
+                     
+                    </Select>
+                  </FormControl>
+                )
+        
+              }
+              else{
+                return(
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      disabled={false}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                      <MenuItem value={1}>USA Warehouse</MenuItem>
+                      <MenuItem value={2}>Canada Warehouse</MenuItem>
+                     
+                    </Select>
+                  </FormControl>
+                )
+              }
+            }
+            })()}
+            </View>
+                  
+                ),
+              },
+            ],
+          });
           setLoading(false);
         } else {
           setLoading(false);
@@ -577,6 +817,111 @@ export default function ShippingProfile(props) {
         console.log("status", response.status);
         if (response.status === true) {
           setShipRestricationData(response.data);
+          for(let i=0;i<response.data.length;i++){
+
+            if(response.data[i].orderdestination == 1){
+              isCanada=true;
+            }else if(response.data[i].orderdestination == 2){
+              isUsa=true;
+            }else if(response.data[i].orderdestination == 3){
+              isInternationl=true;
+            }
+          }
+
+          setState2({
+            columns: [
+              {
+                title: "Order Destination",
+                field: "orderdestination",
+                lookup: { 1: "Canada", 2: "USA", 3: "International" },
+                editComponent: (props) => (
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      onChange={(e) => handleChangequality2(e, props)}
+                    >
+                      <MenuItem disabled={isCanada} value={1}>Canada</MenuItem>
+                      <MenuItem disabled={isUsa} value={2}>USA</MenuItem>
+                      <MenuItem disabled={isInternationl} value={3}>International</MenuItem>
+                    </Select>
+                  </FormControl>
+                ),
+              },
+              {
+                title: "Import",
+                field: "importdata",
+                lookup: { 1: "Yes", 2: "No" },
+                editComponent: (props) => (
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                      <MenuItem value={1}>Yes</MenuItem>
+                      <MenuItem value={2}>No</MenuItem>
+                     
+                    </Select>
+                  </FormControl>
+                ),
+              },
+        
+              {
+                title: "Ship From",
+                field: "shippingfrom",
+                lookup: { 1: "USA Warehouse", 2: "Canada Warehouse" },
+                editComponent: (props) => (
+        
+                  <View>
+                {
+                  (() => {
+                    if(props.rowData!==undefined){
+                    if(props.rowData.importdata === 2)
+                    {
+                      return(
+                        <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={0}
+                      disabled={true}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                    
+                     
+                    </Select>
+                  </FormControl>
+                )
+        
+              }
+              else{
+                return(
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      disabled={false}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                      <MenuItem value={1}>USA Warehouse</MenuItem>
+                      <MenuItem value={2}>Canada Warehouse</MenuItem>
+                     
+                    </Select>
+                  </FormControl>
+                )
+              }
+            }
+            })()}
+            </View>
+                  
+                ),
+              },
+            ],
+          });
           setLoading(false);
         } else {
           setLoading(false);
@@ -590,9 +935,11 @@ export default function ShippingProfile(props) {
   };
 
   const addShipRestrication = (orderdestination, shippingfrom, importdata) => {
+
+    let warehouse=importdata == 2 ? 0 : shippingfrom;
     setLoading(true);
     shiphypeservice
-      .addpolicyrestrication(orderdestination, shippingfrom, importdata, userid)
+      .addpolicyrestrication(orderdestination, warehouse, importdata, userid)
       .then((response) => {
         console.log("status", response.status);
         if (response.status === true) {
@@ -615,12 +962,13 @@ export default function ShippingProfile(props) {
     shippingfrom,
     importdata
   ) => {
+    let warehouse=importdata == 2 ? 0 : shippingfrom;
     setLoading(true);
     shiphypeservice
       .updatepolicyrestrication(
         usershipingpoliciesid,
         orderdestination,
-        shippingfrom,
+        warehouse,
         importdata,
         userid
       )
@@ -3944,57 +4292,58 @@ export default function ShippingProfile(props) {
                     actionsColumnIndex: -1,
                     exportFileName: "Product Table",
                     headerStyle: {
-                      backgroundColor: "#cccccc",
-                      color: "#000",
-                      textTransform: "uppercase",
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      paddingLeft: 5,
-                      paddingTop: 8,
-                      paddingBottom: 8,
-                      paddingRight: 0,
-                      fontSize: "12px",
-                      //     backgroundColor: theme.palette.primary.table,
-                      fontWeight: "bold",
-                      //color: theme.palette.primary.main,
-                    },
-                    cellStyle: {
-                      backgroundColor: "#fff",
-                      color: "#000",
-                      border: "1px solid #cccccc",
+                  backgroundColor: "#cccccc",
+                  color: "#000",
+                  textTransform: "uppercase",
 
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontSize: "12px",
-                      paddingLeft: 12,
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      paddingRight: 0,
-                    },
-                    rowStyle: {
-                      backgroundColor: "#fff",
-                      color: "#000",
-                      border: "1px solid #cccccc",
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  paddingLeft: 5,
+                  paddingTop: 8,
+                  paddingBottom: 8,
+                  paddingRight: 0,
+                  fontSize: "12px",
+                  //     backgroundColor: theme.palette.primary.table,
+                  fontWeight: "bold",
+                  //color: theme.palette.primary.main,
+                },
+                cellStyle: {
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  border: "1px solid #cccccc",
 
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      paddingLeft: 0,
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      paddingRight: 0,
-                    },
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  fontSize: "12px",
+                  paddingLeft: 12,
+                  paddingTop: 5,
+                  paddingBottom: 5,
+                  paddingRight: 0,
+                },
+                rowStyle: {
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  border: "1px solid #cccccc",
+
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  paddingLeft: 0,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingRight: 0,
+                },
                     search: false,
                     exportButton: false,
                   }}
@@ -4015,28 +4364,28 @@ export default function ShippingProfile(props) {
                           resolve();
                         }, 1000);
                       }),
-                    onRowUpdate: (newData, oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          {
-                            const data = shiipingplociyData;
-                            const index = data.indexOf(oldData);
+                    // onRowUpdate: (newData, oldData) =>
+                    //   new Promise((resolve, reject) => {
+                    //     setTimeout(() => {
+                    //       {
+                    //         const data = shiipingplociyData;
+                    //         const index = data.indexOf(oldData);
 
-                            const customproduct_id =
-                              shiipingplociyData[index].userintegrationpolicyId;
+                    //         const customproduct_id =
+                    //           shiipingplociyData[index].userintegrationpolicyId;
 
-                            updateNew(
-                              customproduct_id,
-                              newData.sourceid,
-                              newData.integrationspoliciesId,
-                              newData.warehouseid,
-                              newData.shipmenttype,
-                              newData.shippingserviceid
-                            );
-                          }
-                          resolve();
-                        }, 1000);
-                      }),
+                    //         updateNew(
+                    //           customproduct_id,
+                    //           newData.sourceid,
+                    //           newData.integrationspoliciesId,
+                    //           newData.warehouseid,
+                    //           newData.shipmenttype,
+                    //           newData.shippingserviceid
+                    //         );
+                    //       }
+                    //       resolve();
+                    //     }, 1000);
+                    //   }),
                   }}
                 />
                 {showToast(open, msg, type)}
@@ -4204,42 +4553,42 @@ export default function ShippingProfile(props) {
                           resolve();
                         }, 1000);
                       }),
-                    onRowUpdate: (newData, oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          {
-                            const data = shipRestricationData;
-                            const index = data.indexOf(oldData);
+                    // onRowUpdate: (newData, oldData) =>
+                    //   new Promise((resolve, reject) => {
+                    //     setTimeout(() => {
+                    //       {
+                    //         const data = shipRestricationData;
+                    //         const index = data.indexOf(oldData);
 
-                            const usershipingpoliciesid =
-                              shipRestricationData[index].userShipingPoliciesId;
+                    //         const usershipingpoliciesid =
+                    //           shipRestricationData[index].userShipingPoliciesId;
 
-                            updateShipRestrication(
-                              usershipingpoliciesid,
-                              newData.orderdestination,
-                              newData.shippingfrom,
-                              newData.importdata
-                            );
-                          }
-                          resolve();
-                        }, 1000);
-                      }),
+                    //         updateShipRestrication(
+                    //           usershipingpoliciesid,
+                    //           newData.orderdestination,
+                    //           newData.shippingfrom,
+                    //           newData.importdata
+                    //         );
+                    //       }
+                    //       resolve();
+                    //     }, 1000);
+                    //   }),
 
-                    onRowDelete: (oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          {
-                            const data = shipRestricationData;
-                            const index = data.indexOf(oldData);
+                    // onRowDelete: (oldData) =>
+                    //   new Promise((resolve, reject) => {
+                    //     setTimeout(() => {
+                    //       {
+                    //         const data = shipRestricationData;
+                    //         const index = data.indexOf(oldData);
 
-                            const usershipingpoliciesid =
-                              shipRestricationData[index].userShipingPoliciesId;
+                    //         const usershipingpoliciesid =
+                    //           shipRestricationData[index].userShipingPoliciesId;
 
-                            deleteShipRestrication(usershipingpoliciesid);
-                          }
-                          resolve();
-                        }, 1000);
-                      }),
+                    //         deleteShipRestrication(usershipingpoliciesid);
+                    //       }
+                    //       resolve();
+                    //     }, 1000);
+                    //   }),
                   }}
                 />
               </Grid>

@@ -468,6 +468,7 @@ export default function SelectProduct(props) {
   const [msg, setMsg] = React.useState("");
   const [type, setType] = React.useState("");
   const [status, setStatus] = React.useState(false);
+const orderwarehouseId=props.orderwarehouseId;
 
   React.useEffect(() => {
     console.log("packagingdataselect", packingdata);
@@ -482,7 +483,7 @@ export default function SelectProduct(props) {
   const [stateproduct, setStateproduct] = React.useState({
     data: [],
   });
-  const orderwarehouseId = props.selectwarehouse;
+ 
   //const [selectproduct,setSelectproduct]=React.useState(false);
 
   var ids = [];
@@ -943,6 +944,167 @@ export default function SelectProduct(props) {
           <Text>
             {(() => {
               if (rowData !== undefined) {
+
+                if(orderwarehouseId == 2){
+                  if (
+                  rowData.torontostock !== null &&
+                  rowData.losangelesstock !== null
+                ) {
+                  return (
+                    <FormControlLabel
+                      onClick={() => {
+                        handleChangeCheckbox(
+                          rowData.customproductId,
+                          rowData.shippedquantity,
+                          rowData,
+                          true
+                        );
+                      }}
+                      className={classes.quantitycss}
+                      control={
+                        <Typography
+                          style={{
+                            marginLeft: "20px",
+                            fontSize: "2px",
+                            cursor: "pointer",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            {
+                              parseInt(rowData.torontostock)}
+                          </Text>
+                        </Typography>
+                      }
+                    />
+                  );
+                } else if (
+                  rowData.torontostock === null &&
+                  rowData.losangelesstock !== null
+                ) {
+                  return (
+                    <FormControlLabel
+                      onClick={() => {
+                        handleChangeCheckbox(
+                          rowData.customproductId,
+                          rowData.shippedquantity,
+                          rowData,
+                          true
+                        );
+                      }}
+                      className={classes.quantitycss}
+                      control={
+                        <Typography
+                          style={{
+                            marginLeft: "20px",
+                            fontSize: "2px",
+                            cursor: "pointer",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                           0
+                          </Text>
+                        </Typography>
+                      }
+                    />
+                  );
+                } else if (
+                  rowData.torontostock === null &&
+                  rowData.losangelesstock === null
+                ) {
+                  return (
+                    <FormControlLabel
+                      onClick={() => {
+                        handleChangeCheckbox(
+                          rowData.customproductId,
+                          rowData.shippedquantity,
+                          rowData,
+                          true
+                        );
+                      }}
+                      className={classes.quantitycss}
+                      control={
+                        <Typography
+                          style={{
+                            marginLeft: "20px",
+                            fontSize: "2px",
+                            cursor: "pointer",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            0
+                          </Text>
+                        </Typography>
+                      }
+                    />
+                  );
+                } else if (
+                  rowData.torontostock !== null &&
+                  rowData.losangelesstock === null
+                ) {
+                  return (
+                    <FormControlLabel
+                      onClick={() => {
+                        handleChangeCheckbox(
+                          rowData.customproductId,
+                          rowData.shippedquantity,
+                          rowData,
+                          true
+                        );
+                      }}
+                      className={classes.quantitycss}
+                      control={
+                        <Typography
+                          style={{
+                            marginLeft: "20px",
+                            fontSize: "2px",
+                            cursor: "pointer",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            {parseInt(rowData.torontostock)}
+                          </Text>
+                        </Typography>
+                      }
+                    />
+                  );
+                }
+                }else{
                 if (
                   rowData.torontostock !== null &&
                   rowData.losangelesstock !== null
@@ -1102,6 +1264,7 @@ export default function SelectProduct(props) {
                   );
                 }
               }
+            }
             })()}
           </Text>
         ),
@@ -1646,6 +1809,167 @@ export default function SelectProduct(props) {
               <Text>
                 {(() => {
                   if (rowData !== undefined) {
+    
+                    if(orderwarehouseId == 2){
+                      if (
+                      rowData.torontostock !== null &&
+                      rowData.losangelesstock !== null
+                    ) {
+                      return (
+                        <FormControlLabel
+                          onClick={() => {
+                            handleChangeCheckbox(
+                              rowData.customproductId,
+                              rowData.shippedquantity,
+                              rowData,
+                              true
+                            );
+                          }}
+                          className={classes.quantitycss}
+                          control={
+                            <Typography
+                              style={{
+                                marginLeft: "20px",
+                                fontSize: "2px",
+                                cursor: "pointer",
+                                fontFamily:
+                                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                {
+                                  parseInt(rowData.torontostock)}
+                              </Text>
+                            </Typography>
+                          }
+                        />
+                      );
+                    } else if (
+                      rowData.torontostock === null &&
+                      rowData.losangelesstock !== null
+                    ) {
+                      return (
+                        <FormControlLabel
+                          onClick={() => {
+                            handleChangeCheckbox(
+                              rowData.customproductId,
+                              rowData.shippedquantity,
+                              rowData,
+                              true
+                            );
+                          }}
+                          className={classes.quantitycss}
+                          control={
+                            <Typography
+                              style={{
+                                marginLeft: "20px",
+                                fontSize: "2px",
+                                cursor: "pointer",
+                                fontFamily:
+                                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                               0
+                              </Text>
+                            </Typography>
+                          }
+                        />
+                      );
+                    } else if (
+                      rowData.torontostock === null &&
+                      rowData.losangelesstock === null
+                    ) {
+                      return (
+                        <FormControlLabel
+                          onClick={() => {
+                            handleChangeCheckbox(
+                              rowData.customproductId,
+                              rowData.shippedquantity,
+                              rowData,
+                              true
+                            );
+                          }}
+                          className={classes.quantitycss}
+                          control={
+                            <Typography
+                              style={{
+                                marginLeft: "20px",
+                                fontSize: "2px",
+                                cursor: "pointer",
+                                fontFamily:
+                                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                0
+                              </Text>
+                            </Typography>
+                          }
+                        />
+                      );
+                    } else if (
+                      rowData.torontostock !== null &&
+                      rowData.losangelesstock === null
+                    ) {
+                      return (
+                        <FormControlLabel
+                          onClick={() => {
+                            handleChangeCheckbox(
+                              rowData.customproductId,
+                              rowData.shippedquantity,
+                              rowData,
+                              true
+                            );
+                          }}
+                          className={classes.quantitycss}
+                          control={
+                            <Typography
+                              style={{
+                                marginLeft: "20px",
+                                fontSize: "2px",
+                                cursor: "pointer",
+                                fontFamily:
+                                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                {parseInt(rowData.torontostock)}
+                              </Text>
+                            </Typography>
+                          }
+                        />
+                      );
+                    }
+                    }else{
                     if (
                       rowData.torontostock !== null &&
                       rowData.losangelesstock !== null
@@ -1805,6 +2129,7 @@ export default function SelectProduct(props) {
                       );
                     }
                   }
+                }
                 })()}
               </Text>
             ),
@@ -2421,13 +2746,174 @@ export default function SelectProduct(props) {
                   // },
                   {
                     title: "Current Qty",
-                    field: "losangelesstock1",
+                    field: "losangelesstock",
                     type: "text",
                     editable: "never",
                     render: (rowData) => (
                       <Text>
                         {(() => {
                           if (rowData !== undefined) {
+            
+                            if(orderwarehouseId == 2){
+                              if (
+                              rowData.torontostock !== null &&
+                              rowData.losangelesstock !== null
+                            ) {
+                              return (
+                                <FormControlLabel
+                                  onClick={() => {
+                                    handleChangeCheckbox(
+                                      rowData.customproductId,
+                                      rowData.shippedquantity,
+                                      rowData,
+                                      true
+                                    );
+                                  }}
+                                  className={classes.quantitycss}
+                                  control={
+                                    <Typography
+                                      style={{
+                                        marginLeft: "20px",
+                                        fontSize: "2px",
+                                        cursor: "pointer",
+                                        fontFamily:
+                                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                      }}
+                                    >
+                                      <Text
+                                        style={{
+                                          fontSize: "11px",
+                                          fontFamily:
+                                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                          transition: "all 0.25s",
+                                        }}
+                                      >
+                                        {
+                                          parseInt(rowData.torontostock)}
+                                      </Text>
+                                    </Typography>
+                                  }
+                                />
+                              );
+                            } else if (
+                              rowData.torontostock === null &&
+                              rowData.losangelesstock !== null
+                            ) {
+                              return (
+                                <FormControlLabel
+                                  onClick={() => {
+                                    handleChangeCheckbox(
+                                      rowData.customproductId,
+                                      rowData.shippedquantity,
+                                      rowData,
+                                      true
+                                    );
+                                  }}
+                                  className={classes.quantitycss}
+                                  control={
+                                    <Typography
+                                      style={{
+                                        marginLeft: "20px",
+                                        fontSize: "2px",
+                                        cursor: "pointer",
+                                        fontFamily:
+                                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                      }}
+                                    >
+                                      <Text
+                                        style={{
+                                          fontSize: "11px",
+                                          fontFamily:
+                                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                          transition: "all 0.25s",
+                                        }}
+                                      >
+                                       0
+                                      </Text>
+                                    </Typography>
+                                  }
+                                />
+                              );
+                            } else if (
+                              rowData.torontostock === null &&
+                              rowData.losangelesstock === null
+                            ) {
+                              return (
+                                <FormControlLabel
+                                  onClick={() => {
+                                    handleChangeCheckbox(
+                                      rowData.customproductId,
+                                      rowData.shippedquantity,
+                                      rowData,
+                                      true
+                                    );
+                                  }}
+                                  className={classes.quantitycss}
+                                  control={
+                                    <Typography
+                                      style={{
+                                        marginLeft: "20px",
+                                        fontSize: "2px",
+                                        cursor: "pointer",
+                                        fontFamily:
+                                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                      }}
+                                    >
+                                      <Text
+                                        style={{
+                                          fontSize: "11px",
+                                          fontFamily:
+                                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                          transition: "all 0.25s",
+                                        }}
+                                      >
+                                        0
+                                      </Text>
+                                    </Typography>
+                                  }
+                                />
+                              );
+                            } else if (
+                              rowData.torontostock !== null &&
+                              rowData.losangelesstock === null
+                            ) {
+                              return (
+                                <FormControlLabel
+                                  onClick={() => {
+                                    handleChangeCheckbox(
+                                      rowData.customproductId,
+                                      rowData.shippedquantity,
+                                      rowData,
+                                      true
+                                    );
+                                  }}
+                                  className={classes.quantitycss}
+                                  control={
+                                    <Typography
+                                      style={{
+                                        marginLeft: "20px",
+                                        fontSize: "2px",
+                                        cursor: "pointer",
+                                        fontFamily:
+                                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                      }}
+                                    >
+                                      <Text
+                                        style={{
+                                          fontSize: "11px",
+                                          fontFamily:
+                                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                          transition: "all 0.25s",
+                                        }}
+                                      >
+                                        {parseInt(rowData.torontostock)}
+                                      </Text>
+                                    </Typography>
+                                  }
+                                />
+                              );
+                            }
+                            }else{
                             if (
                               rowData.torontostock !== null &&
                               rowData.losangelesstock !== null
@@ -2587,6 +3073,7 @@ export default function SelectProduct(props) {
                               );
                             }
                           }
+                        }
                         })()}
                       </Text>
                     ),
@@ -2784,7 +3271,7 @@ export default function SelectProduct(props) {
               xs={12}
               md={4}
               lg={4}
-              //style={{marginRight:'70px'}}
+             
             >
               <Grid container item justify="flex-end">
                 <Grid>
@@ -2819,7 +3306,7 @@ export default function SelectProduct(props) {
           </Grid>
 
           <MaterialTable
-            style={{ padding: "0px" }}
+            style={{ padding: "0px",marginTop: '10px'}}
             columns={state.columns}
             data={stateproduct.data}
             title={

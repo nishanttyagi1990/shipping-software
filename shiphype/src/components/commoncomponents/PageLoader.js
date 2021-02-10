@@ -459,40 +459,16 @@ export default function PageLoader({ navigation }) {
    * Description:To do call module api
    */
   useEffect(() => {
-    //  fetchUserInfo();
+   
     getURLValue();
 
     const decoded = decodeURIComponent("1%7CFP3k53qipJsiSSVdHh%2FTLpjYNE9%2FASPhT%2B1atk7WjHU%3D%7CFq%2BsbcI%2B2Wf5%2BfeyVFwVHDD5CcIOaIb7v4pXqNMfnK0%3D");
     console.log("decodeurl",decoded);
-    // if(window.sessionStorage.getItem("userid") !== null){
-    //   fetchUserDetails(window.sessionStorage.getItem("userid"));
-    //   console.log("call12");
-    // }
+    
     console.log("userid",window.sessionStorage.getItem("userid"));
   }, []);
 
-  // const fetchPackageForPromotional = () => {
-  //   //setLoading(true);
-  //   shiphypeService.fetchCustomePaching(user_id,2)
-  //         .then(response => {
-  //          console.log("status",response.status);
-  //               if(response.status === true) {
-  //               //  setLoading(false);
-  //                 setPromotionalPackage(response.data);
-  //                          }else{
-  //                           setLoading(false);
-  //                           console.log("message",response.message);
-  //                          }
-  //             }).catch((error) =>{
-  //                   console.error(error);
-  //             });
-  // };
-
-  // const promotionalData = {};
-  // promotionalPackage.map(orderCouierOp => {
-  //     const { packaggingId, packaggingName } = orderCouierOp;
-  //     promotionalData[ packaggingId ] = packaggingName
-  // })
+ 
 const updateebayDone=()=>{
   setEbaydone(false);
 }
@@ -505,31 +481,7 @@ const updateebayDone=()=>{
         console.log("status", response.status);
         if (response.status === true) {
           setLoading(false);
-          //   setUserData(response.data);
-
-          //              if(response.data.isaffiliate === "false"){
-          //               createAffiliateCode(user);
-          //              }
-
-          // setLoginUserName(response.data.displayName);
-          // localStorage.storeData("userid",response.data.id);
-          // setUserID(response.data.id);
-          // window.sessionStorage.setItem("userid", response.data.id);
-          // if(response.data.userRole===2)
-          // {
-          //  setIsAdmin(false);
-          //  setUserRoleId(response.data.userRole);
-          // }
-          // else{
-          //   setIsAdmin(true);
-          //   setUserRoleId(response.data.userRole);
-          // }
-          // setPosition(0);
-          // setSettingLoad(false);
-
-          // if(response.data[0].isaffiliate === "false"){
-          //   createAffiliateCode(user);
-          //  }
+          
           var fruits =[];
 
           window.sessionStorage.setItem('dataItem', JSON.stringify(fruits));
@@ -553,29 +505,11 @@ const updateebayDone=()=>{
 
           fetchAffiliateProgram(user);
 
-          //navigation.navigate('Overview',{id: response.data.id,posit:'01'});
-
-          // setUserStatus(true);
+         
         } else {
           setLoading(false);
 
-          // setLoginUserName('Neha');
-          // localStorage.storeData("userid",65);
-          // setUserID(65);
-          // window.sessionStorage.setItem("userid", 65);
-          // if(2===2)
-          // {
-          //  setIsAdmin(false);
-          //  setUserRoleId(2);
-          // }
-          // else{
-          //   setIsAdmin(true);
-          //   setUserRoleId(1);
-          // }
-          // setPosition(0);
-          // setSettingLoad(false);
-
-          // console.log("message",response.message);
+          
         }
       })
       .catch((error) => {
@@ -795,6 +729,7 @@ parent.HandleClose2();
           vars[key] = value;
           setUserID(vars.id);
           setCode(vars.code);
+          console.log(vars.success);
           ebaygetTokenapi(vars.code,1,window.sessionStorage.getItem("userid"));
           if(window.sessionStorage.getItem("intid") === 1){
        
@@ -805,6 +740,13 @@ parent.HandleClose2();
               window.sessionStorage.getItem("userid"),
               4
             );
+          }
+
+          if(vars.success === 1){
+            WoocommerceToken(window.sessionStorage.getItem("userid"),window.sessionStorage.getItem("storename"));
+          }else{
+            WoocommerceToken(window.sessionStorage.getItem("userid"),window.sessionStorage.getItem("storename"));
+ 
           }
           const decoded = decodeURIComponent(vars.code);
 
@@ -915,6 +857,13 @@ parent.HandleClose2();
               4
             );
           }
+          if(vars.success === 1){
+            WoocommerceToken(window.sessionStorage.getItem("userid"),window.sessionStorage.getItem("storename"));
+          }else{
+            WoocommerceToken(window.sessionStorage.getItem("userid"),window.sessionStorage.getItem("storename"));
+ 
+          }
+
           const decoded = decodeURIComponent(vars.code);
           squareSpaceIntegration(decoded,window.sessionStorage.getItem("userid"),6,window.sessionStorage.getItem("storename"));
           WixIntegrationToken1(
@@ -1058,7 +1007,23 @@ window.opener.HandleClose2();
       });
   };
   
- 
+  const WoocommerceToken = (
+    user_id,
+    storename
+  ) => {
+    shiphypeService
+      .wocommerceToken(user_id,storename)
+      .then((response) => {
+        if(response.status === true){         
+          window.close();  
+      }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+
   React.useEffect(() => {
     fetchShiphypeCompleteStep1();
   }, []);

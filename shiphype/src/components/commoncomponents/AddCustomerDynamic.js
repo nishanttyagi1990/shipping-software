@@ -3172,6 +3172,7 @@ Select State</MenuItem>
               return (
                 <form className={classes.form}>
                 <MaterialTable
+                  style={{ padding: "0px",marginTop: '10px'}}
                     title={
                       <Text
                         style={{

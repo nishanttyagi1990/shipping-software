@@ -273,9 +273,10 @@ export default function AdditionalOptions(props) {
  const [ShippedProductId, setShippedProductId] = React.useState([]);
  const [ShippedPromotionalId, setShippedPromotionalId] = React.useState([]);
  const [ShippedCustomId, setShippedCustomId] = React.useState([]);
-
+const [selectCustomerCountry,setSelectCustomerCountry]=React.useState([]);
 
  var ids = [];
+ var customercountry=[];
   var ids2 = [];
   var ids3 = [];
   var Editids = [];
@@ -302,17 +303,7 @@ var idsOrder = [];
   var customerIdOrder = [];
 
   React.useEffect(() => {
-    // AsyncStorage.multiGet(["ProductSelect1"]).then((data) => {
-    //   if (data[0][1] != null) {
-    //     var ProductSelect1 = JSON.parse(data[0][1]);
-
-    //     ProductSelect1.map((item, index) => {
-    //       var data = parseInt(ProductSelect1[index].productquantity);
-    //       idsOrder.push(data);
-    //     });
-    //     setShippedQtyOrder(idsOrder);
-    //   }
-    // });
+   
 
     AsyncStorage.multiGet([
       "ProductSelect1",
@@ -331,36 +322,28 @@ var idsOrder = [];
         setShippedQtyOrder(ids);
         setShippedProductId(changedWarehouseid1);
       }
-      // if (data[1][1] != null) {
-      //   var CustomPackges = JSON.parse(data[1][1]);
-      //   console.log(CustomPackges);
-      //   console.log("CustomPackges");
-
-      //   CustomPackges.map((item, index) => {
-      //     var data2 = parseInt(CustomPackges[index].packagingquantity);
-      //     ids2.push(data2);
-      //     packaggingId1.push(CustomPackges[index].packaggingId);
-      //   });
-      //   setCustomQtyOrder(ids2);
-      //   setShippedCustomId(packaggingId1);
-      // }
-      // if (data[2][1] != null) {
-      //   var SelectPromotional = JSON.parse(data[2][1]);
-      //   console.log(SelectPromotional);
-      //   console.log("SelectPromotional");
-
-      //   SelectPromotional.map((item, index) => {
-      //     var data3 = parseInt(SelectPromotional[index].packagingquantity);
-      //     ids3.push(data3);
-      //     changedPromotionalID.push(SelectPromotional[index].packaggingId);
-      //   });
-      //   setPromotionalQtyOrder(ids3);
-      //   setShippedPromotionalId(changedPromotionalID);
-      // }
     });
+    AsyncStorage.multiGet([
+      "CustomerCountry",
+     
+    ]).then((data) => {
+      if (data[0][1] != null) {
+        var CustomerSelect1 = JSON.parse(data[0][1]);
+        console.log(CustomerSelect1);
+        console.log("CustomerCountry");
+
+        CustomerSelect1.map((item, index) => {
+          
+          customercountry.push(CustomerSelect1[index]);
+          
+        });
+        var updatearray=[...customercountry];
+        setSelectCustomerCountry(updatearray);
+        
+      }
+    });
+   
   }, []);
-
-
 const handlePackagingSlipI = (event) => {
   setPackagingSlipI(event.target.value);
   if(event.target.value!=='1')
@@ -402,7 +385,7 @@ const handlePackagingSlipI = (event) => {
     const file=target.files[0];
     var formData =  new FormData();
   formData.append('file',file);
-  formData.append('userid',72);
+  formData.append('userid',userid);
 
      const name = target.accept.includes('image') ? 'images' : 'videos';
    axios.post(BASE_URL+'Upload/Invoice', formData)
@@ -428,7 +411,7 @@ const handlePackagingSlipI = (event) => {
     const file=target.files[0];
     var formData =  new FormData();
   formData.append('file',file);
-  formData.append('userid',72);
+  formData.append('userid',userid);
 
      const name = target.accept.includes('image') ? 'images' : 'videos';
    axios.post(BASE_URL+'Upload/Invoice', formData)
@@ -610,6 +593,7 @@ if(shipDate1===null)
 AsyncStorage.removeItem("ProductSelect1");
 AsyncStorage.removeItem("NewSelectedrowData");
 AsyncStorage.removeItem('invoicename');
+AsyncStorage.removeItem('CustomerCountry');
 props.setCustomerIdAfterAdd(0);
 props.setEditCaseOnAdd(false);
               props.handleNextPage('02');
@@ -626,6 +610,7 @@ props.setEditCaseOnAdd(false);
           AsyncStorage.removeItem("ProductSelect1");
           AsyncStorage.removeItem("NewSelectedrowData");
           AsyncStorage.removeItem('invoicename');
+          AsyncStorage.removeItem('CustomerCountry');
           props.setCustomerIdAfterAdd(0);
           props.setEditCaseOnAdd(false);
                        // props.handleNextPage('02');
@@ -646,7 +631,7 @@ props.setEditCaseOnAdd(false);
   
       const addNewOrder = (source,orderType,recipientname,shippingcourier
           ,orderStatus,orderDate,shipDate,customertype,orderkind,customer_id,shippingpolicy_id,user_id,option_id,
-          dangeroue,labelId,labelName,shiptype,ware)=>{
+          dangeroue,labelId,labelName,shiptype,ware,labelid)=>{
             setLoading(true);
               const orderDate1=  format(orderDate, "yyyy-MM-dd hh:mm:ss");
               const shipDate1= (startsprint === 0 ? format(shipDate, "yyyy-MM-dd hh:mm:ss")
@@ -666,11 +651,11 @@ props.setEditCaseOnAdd(false);
     // console.log("promtoionalQUty : ", PrmotionalQtyOrder);
 
 
-
-          shiphypeservice.addOrder(source,orderType,recipientname,props.customerCountry,shippingcourier
+console.log("Ordercountry",props.customerCountry);
+          shiphypeservice.addOrder(source,orderType,recipientname,selectCustomerCountry,shippingcourier
             ,orderStatus,orderDate1,customertype,orderkind,customer_id,shippingpolicy_id,
             user_id,option_id,dangeroue,bubbleBoxIds,insuranceIds,ShippedProductId,orderInoivceIs,packagingSlipIs,labelId,
-            labelName,packageLabelId,packageFile,inoiveLabelId,invoiceFile,shiptype,ware,ShippedQtyOrder)
+            labelName,packageLabelId,packageFile,inoiveLabelId,invoiceFile,shiptype,ware,ShippedQtyOrder,labelid)
           .then(response => {
            console.log("status",response.status);
                 if(response.status === true) {
@@ -687,6 +672,7 @@ props.setEditCaseOnAdd(false);
          AsyncStorage.removeItem("CustomPackges");
          AsyncStorage.removeItem("SelectPromotional");
          AsyncStorage.removeItem('invoicename');
+         AsyncStorage.removeItem('CustomerCountry');
          props.setCustomerIdAfterAdd(0);
          props.setEditCaseOnAdd(false);
                   props.handleNextPage('02');
@@ -700,6 +686,7 @@ props.setEditCaseOnAdd(false);
                             AsyncStorage.removeItem("ProductSelect1");
 AsyncStorage.removeItem("NewSelectedrowData");
 AsyncStorage.removeItem('invoicename');
+AsyncStorage.removeItem('CustomerCountry');
 props.setCustomerIdAfterAdd(0);
 props.setEditCaseOnAdd(false);
                             console.log("message",response.message);
@@ -738,7 +725,7 @@ customerIdOrder.push(props.customerId);
             }else{
               addNewOrder('ShipHype',2,props.customerName,1,2,selectedorderDate,selectedpickDate,props.orderType,1,
               props.customerId,props.shipingtype,userid,props.selectoption,props.dangerousGood,props.shiplabelId,
-              props.shiplabelName,props.shipmentType,props.orderwarehouseId);
+              props.shiplabelName,props.shipmentType,props.orderwarehouseId,props.shiplabelId);
             }   
         }
     

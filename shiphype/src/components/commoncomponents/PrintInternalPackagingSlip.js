@@ -484,11 +484,13 @@ export default function PrintInternalPackagingSlip(props) {
 
   return (
     <>
+     <ScrollView>
       {arr.map((item) => {
         return (
+         
           <View
             style={{
-              height: "100%",
+              height: "auto",
               backgroundColor: "#FFFFFF",
               width: "100%",
             }}
@@ -1534,8 +1536,10 @@ export default function PrintInternalPackagingSlip(props) {
               </View>
             </View>
           </View>
+         
         );
       })}
+      </ScrollView>
     </>
   );
 }

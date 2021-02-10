@@ -703,7 +703,7 @@ export default function Slide17(props) {
   type: 'text',
   render: rowData =><FormControlLabel
       
-  onClick={()=>{handleChangeCheckbox(rowData.internalorderId)}}
+ // onClick={()=>{handleChangeCheckbox(rowData.internalorderId)}}
   className={classes.quantitycss}
   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
@@ -721,7 +721,7 @@ export default function Slide17(props) {
   type: 'text',
   render: rowData =><FormControlLabel
       
-  onClick={()=>{handleChangeCheckbox(rowData.internalorderId)}}
+ // onClick={()=>{handleChangeCheckbox(rowData.internalorderId)}}
   className={classes.quantitycss}
   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
@@ -741,7 +741,7 @@ export default function Slide17(props) {
     type: 'text',
     render: rowData =><FormControlLabel
         
-    onClick={()=>{handleChangeCheckbox(rowData.internalorderId)}}
+    //onClick={()=>{handleChangeCheckbox(rowData.internalorderId)}}
     className={classes.quantitycss}
     control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
@@ -3212,7 +3212,7 @@ const updateCarrier=(carrier,courierid,serviceName,comapnyname,trackingURL)=>{
       }}
       actions={[
         {
-          tooltip: 'Remove All Selected Users',
+          //tooltip: 'Remove All Selected Users',
           icon: () => <ColorButtonAdd
           size='large'
           variant="contained"

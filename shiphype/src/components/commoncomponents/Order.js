@@ -193,7 +193,7 @@ export default function ScrollableTabsButtonAuto(props) {
   const [type,setType]=React.useState('');
   const [status,setStatus]=React.useState(false);
   const [state1, setState1]=useState({
-    vertical: 'bottom',
+    vertical: 'center',
     horizontal: 'center',
   });
   const {vertical,horizontal} = state1;

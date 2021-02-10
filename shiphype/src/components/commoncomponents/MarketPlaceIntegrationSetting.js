@@ -411,6 +411,7 @@ export default function CreateSprint(props) {
     setWocommid(false);
     setShipfyid(false);
     setEbay(false);
+    props.fetchShipPolicy();
     fetchSelectedIntegration(userid);
   };
   const ConframetionCheck = () => {
@@ -418,6 +419,7 @@ export default function CreateSprint(props) {
     setWocommid(false);
     setShipfyid(false);
     setEbay(false);
+    props.fetchShipPolicy();
     fetchSelectedIntegration(userid);
   };
   const selectIntegrationForShiphype = (data, URL) => {
@@ -646,6 +648,7 @@ export default function CreateSprint(props) {
     setOpenwoocommerce(true);
   };
   const cancelShopfyIntegration = () => {
+    props.fetchShipPolicy();
     fetchSelectedIntegration(userid);
     setOpenwoocommerce(false);
     setOpenshopfy(false);
@@ -654,6 +657,7 @@ export default function CreateSprint(props) {
     fetchSelectedIntegration(userid);
   };
   const ConframetionCheck1 = () => {
+    props.fetchShipPolicy();
     fetchSelectedIntegration(userid);
 
     //fetchSelectedIntegration(userid);

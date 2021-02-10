@@ -255,21 +255,21 @@ export default function ShippingProfile(props) {
   useEffect(() => {
     if (integrateDataid === 3) {
       setLoading(true);
-      shiphypeservice
-        .getShopfydetails(userid, 3)
-        .then((response) => {
-          console.log("status", response.status);
-          if (response.status === true) {
-            setLoading(false);
-            setData(response.data);
-          } else {
-            setLoading(false);
-            console.log("message", response.message);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      // shiphypeservice
+      //   .getShopfydetails(userid, 3)
+      //   .then((response) => {
+      //     console.log("status", response.status);
+      //     if (response.status === true) {
+      //       setLoading(false);
+      //       setData(response.data);
+      //     } else {
+      //       setLoading(false);
+      //       console.log("message", response.message);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
     } else {
      // fetchShopfyDetils(userid);
     }

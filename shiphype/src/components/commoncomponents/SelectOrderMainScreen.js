@@ -90,7 +90,7 @@ export default function SelectOrderMainScreen(props) {
   const [focusedIndex, setfocusedIndex] = useState(null);
   const [textArray, setTextArray] = useState([]);
   const [prodtcIdsArray, setProdcutIdsArray] = useState([]);
-
+  const orderwarehouseId=props.orderwarehouseId;
   const [ProductSelect1, setProductSelect] = React.useState([]);
   const [open1, setOpen1] = React.useState(false);
   const [state1, setState1] = useState({
@@ -118,33 +118,7 @@ export default function SelectOrderMainScreen(props) {
             console.log(EditNewProductSelect);
             console.log('EditNewProductSelect');
   
-            // EditNewProductSelect.map((item, index) => {
-            //   if(props.editCaseOnAddOption===true)
-            //   {
-            //     EditNewProductSelect[index].productquantity = EditNewProductSelect[index].productquantity;
-            //   }
-
-            //   else {
-            //     if(props.shippingQunatity.length===0)
-            //     {
-            //       EditNewProductSelect[index].productquantity = EditNewProductSelect[index].productquantity;
-            //     }
-            //     else{
-            //       for(let k=0;k<props.shippingQunatity.length;k++)
-            //       {
-            //         if(item.customproductId===props.shippingQunatity[k].productid)
-            //         {
-            //           EditNewProductSelect[index].productquantity = props.shippingQunatity[k].productquantity;
-            //         }
-            //        else
-            //         {
-            //           EditNewProductSelect[index].productquantity =0;
-            //         }
-            //       }
-            //     }
-                
-            //   }
-            // });
+            
 
             for(let k=0;k<props.shippingQunatity.length;k++)
                   {
@@ -162,8 +136,7 @@ export default function SelectOrderMainScreen(props) {
                   }
   
             let EdittextArray = Array(EditNewProductSelect.length).fill('');
-            // EditsetTextArray(EdittextArray);
-            // EditsetProductSelect(EditNewProductSelect);
+          
   
             setTextArray(EdittextArray);
     
@@ -248,44 +221,68 @@ let productiderror=[];
   const onNextfunction = () => {
     for(let i=0;i<ProductSelect1.length;i++)
     {
-      if(ProductSelect1[i].torontostock!==null && ProductSelect1[i].losangelesstock!==null)
-      {
-         if(parseInt(ProductSelect1[i].productquantity)>parseInt(ProductSelect1[i].losangelesstock)+parseInt(ProductSelect1[i].torontostock))
-         {
-          productiderror.push(ProductSelect1[i].productname);
-          productiderror.push(', ');
-          flag=true;
-           //return 
-         }
+      if(orderwarehouseId == 2){
+        if(ProductSelect1[i].torontostock !== null)
+        {
+           if(parseInt(ProductSelect1[i].productquantity)>parseInt(ProductSelect1[i].torontostock))
+           {
+            productiderror.push(ProductSelect1[i].productname);
+            productiderror.push(', ');
+            flag=true;
+             //return 
+           }
+        } 
+        else if(ProductSelect1[i].torontostock ===null)
+        {
+          if(parseInt(ProductSelect1[i].productquantity)>0)
+          {
+            productiderror.push(ProductSelect1[i].productname);
+            productiderror.push(', ');
+            flag=true;
+          }
+        } 
+        
+      }else{
+        if(ProductSelect1[i].torontostock!==null && ProductSelect1[i].losangelesstock!==null)
+        {
+           if(parseInt(ProductSelect1[i].productquantity)>parseInt(ProductSelect1[i].losangelesstock)+parseInt(ProductSelect1[i].torontostock))
+           {
+            productiderror.push(ProductSelect1[i].productname);
+            productiderror.push(', ');
+            flag=true;
+             //return 
+           }
+        }
+        else if(ProductSelect1[i].torontostock ===null && ProductSelect1[i].losangelesstock!==null)
+        {
+          if(parseInt(ProductSelect1[i].productquantity)>parseInt(ProductSelect1[i].losangelesstock))
+          {
+            productiderror.push(ProductSelect1[i].productname);
+            productiderror.push(', ');
+            flag=true;
+          }
+  
+        } 
+        else if(ProductSelect1[i].torontostock ===null && ProductSelect1[i].losangelesstock===null)
+        {
+          if(parseInt(ProductSelect1[i].productquantity)>0)
+          {
+            productiderror.push(ProductSelect1[i].productname);
+            productiderror.push(', ');
+            flag=true;
+          }
+        } 
+        else if(ProductSelect1[i].torontostock !==null && ProductSelect1[i].losangelesstock===null)
+        {
+          if(parseInt(ProductSelect1[i].productquantity)>parseInt(ProductSelect1[i].torontostock))
+          {
+            productiderror.push(ProductSelect1[i].productname);
+            productiderror.push(', ');
+            flag=true;
+          }
+        }
       }
-      else if(ProductSelect1[i].torontostock ===null && ProductSelect1[i].losangelesstock!==null)
-      {
-        if(parseInt(ProductSelect1[i].productquantity)>parseInt(ProductSelect1[i].losangelesstock))
-        {
-          productiderror.push(ProductSelect1[i].productname);
-          productiderror.push(', ');
-          flag=true;
-        }
-
-      } 
-      else if(ProductSelect1[i].torontostock ===null && ProductSelect1[i].losangelesstock===null)
-      {
-        if(parseInt(ProductSelect1[i].productquantity)>0)
-        {
-          productiderror.push(ProductSelect1[i].productname);
-          productiderror.push(', ');
-          flag=true;
-        }
-      } 
-      else if(ProductSelect1[i].torontostock !==null && ProductSelect1[i].losangelesstock===null)
-      {
-        if(parseInt(ProductSelect1[i].productquantity)>parseInt(ProductSelect1[i].torontostock))
-        {
-          productiderror.push(ProductSelect1[i].productname);
-          productiderror.push(', ');
-          flag=true;
-        }
-      } 
+       
     }
     if(flag===true){
       productiderror.pop();

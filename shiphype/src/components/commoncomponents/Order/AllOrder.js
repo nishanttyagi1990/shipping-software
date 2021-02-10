@@ -44,6 +44,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
 import popUpStyle from "../style/popUpStyle";
 import moment from "moment";
+
 const ColorButtonRefresh = withStyles((theme) => ({
   root: {
     borderRadius: "3px",
@@ -53,15 +54,18 @@ const ColorButtonRefresh = withStyles((theme) => ({
     fontSize: "11px",
     fontWeight: "550",
     color: "#fff",
+    boxShadow:'none',
     backgroundColor: "#33cc00",
-    //  paddingLeft: '22%',
-    //  paddingRight: '22%',
     "&:hover": {
       color: "#fff",
       backgroundColor: "#33cc00",
     },
+    "&:MuiIconButton-root:hover":{
+      backgroundColor: "#33cc00",
+    },
   },
 }))(Button);
+
 
 const ColorButtonAdd = withStyles((theme) => ({
   root: {
@@ -3304,20 +3308,7 @@ export default function ScrollableTabsButtonAuto(props) {
        
       }
     }
-    //var ids = [];
-    // var array = [];
    
-    // console.log("productlength", data.length);
-    // for (let i = 0; i < data.length; i++) {
-    //   console.log("productid", data[i].internalorderId);
-    //   ids.push(data[i].internalorderId);
-    //   array.push(data[i]);
-      
-    // }
-    // AsyncStorage.setItem("ProductSelectAllTabAll", JSON.stringify(array));
-    // if (data.length === 0) {
-    //   AsyncStorage.removeItem("ProductSelectAllTabAll");
-    // }
     const updatedaray = [...ids];
 
     setchangedWarehouseid(updatedaray);
@@ -3333,45 +3324,7 @@ export default function ScrollableTabsButtonAuto(props) {
     //get olds values
     Values = JSON.parse(window.sessionStorage.getItem("dataItem"));
 
-    // if(array.length === 0){
-    //   array.push(rowdata);
-    //   AsyncStorage.setItem(
-    //     "ProductSelectAllTabAll",
-    //     JSON.stringify( array)
-    //   );
-    // }else{
-    //   for(let i=0;i<array.length ;i++){
-    //     if(rowdata !== array[i]){
-    //       //ids.push(data);
-    //       flag1=true;
-    //     }else{
-    //       flag1=false;
-    //       break;
-    //     }
-
-    //     }
-    //     if(flag1 === true){
-    //       array.push(rowdata);
-    //       AsyncStorage.setItem(
-    //         "ProductSelectAllTabAll",
-    //         JSON.stringify(array)
-    //       );
-    //     }else{
-    //       const index =  array.indexOf(rowdata);
-    //       if (index > -1) {
-    //         array.splice(index, 1);
-    //         if(array.length === 0){
-    //         //  setOpenChekced(false);
-    //         AsyncStorage.removeItem("ProductSelectAllTabAll");
-    //         }else{
-    //           AsyncStorage.setItem(
-    //             "ProductSelectAllTabAll",
-    //             JSON.stringify(array)
-    //           );
-    //         }
-    //       }
-    //     }
-    // }
+    
 
     if (Values.length === 0) {
       Values.push(data);
@@ -3582,6 +3535,7 @@ export default function ScrollableTabsButtonAuto(props) {
                 size="large"
                 variant="contained"
                 color="primary"
+               
                 startIcon={<RefreshIcon />}
               >
                 Refresh
@@ -3715,6 +3669,7 @@ export default function ScrollableTabsButtonAuto(props) {
                 size="large"
                 variant="contained"
                 color="primary"
+                backgroundColor="red"
                 startIcon={<RefreshIcon />}
               >
                 Refresh

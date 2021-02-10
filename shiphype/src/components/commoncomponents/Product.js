@@ -410,27 +410,13 @@ export default function Slide17(props) {
     // setActiveStep2(true);
   };
 
-  //  React.useEffect(() => {
-  //   const unsubscribe = props.navigation.addListener('focus', () => {
-  //     // Screen was focused
-  //     // Do something
-  //     console.log("focuednavigation","run34nav");
-  //   });
-
-  //   return unsubscribe;
-  // }, [props.navigation]);
-
+  
   React.useEffect(() => {
     fetchPackingList(userid);
     console.log("focuedchnaged", "run34");
   }, []);
 
-  //  useLayoutEffect(() => {
-  //   //fetchPackingList();
-  //   console.log("focuedchnaged12","run12");
-  //   //window.location.reload(false);
-  // },[]);
-
+ 
   const opennewOrder = (rowid, rowData) => {
     props.handleDashboard(
       "AddProductManually",
@@ -458,49 +444,9 @@ export default function Slide17(props) {
 
   const theme = useTheme();
   const [state, setState] = React.useState({
-    // column1FilterList: {},
-    // column1FilterList2: {},
+  
     columns: [
-      //     { title: '',
-      //     render: rowData => <FormGroup>
-      //       {(() => {
-
-      //        if(rowData!==undefined){
-      //          return(
-      //     <FormControlLabel style={popUpStyle.checkboxPosition}
-      //       control={<Checkbox
-      //         id={rowData.customproductId}
-
-      //         checked={
-      //             (() => {
-      //               for(let i=0; i<ids.length;i++)
-
-      //               {
-
-      //               if (rowData.customproductId  === parseInt(ids[i])){
-      //                 return (
-      //                     true
-      //                   )
-      //               }
-
-      //               }
-
-      //               })()}
-
-      //         onChange={()=>{handleChangeCheckbox(rowData.customproductId)}}
-
-      //         color="primary"
-      //        />}
-      //         className={classes.radioButtonCss}
-      //         InputProps={{ inputProps: { style: {  borderRadius: 0 }, }, style: { borderRadius: 0 }, }}
-
-      //     />
-      //        )
-      // }
-
-      // })()}
-      //    </FormGroup>
-      //     },
+     
       {
         title: "Item Name",
         field: "productname",
@@ -527,7 +473,7 @@ export default function Slide17(props) {
                     transition: "all 0.25s",
                   }}
                 >
-                  {rowData.productname}
+                  {rowData.productname === null || rowData.productname === "" ?  '  ' : rowData.productname}
                 </Text>
               </Typography>
             }
@@ -560,29 +506,14 @@ export default function Slide17(props) {
                     transition: "all 0.25s",
                   }}
                 >
-                  {rowData.productsku}
+                  {rowData.productsku === null || rowData.productsku === "" ? ' ' : rowData.productsku}
                 </Text>
               </Typography>
             }
           />
         ),
       },
-      //  { title: "Serial Number", field: "serialno", type: "text", render: rowData =><FormControlLabel
-
-      //  // onClick={()=>{handleChangeCheckbox(rowData.customproductId)}}
-      //   className={classes.quantitycss}
-      //   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-      //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-
-      //   <Text style={{ fontSize: '11px',
-      //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-      //   transition : 'all 0.25s',}}>{rowData.serialno}</Text>
-
-      //   </Typography>}
-      //   />
-
-      //    },
-
+      
       {
         title: "Ships International",
         field: "internationalshipping",
@@ -1095,37 +1026,13 @@ export default function Slide17(props) {
         title: "Toronto Stock",
         field: "torontostock",
         type: "text",
-        // render: rowData =><FormControlLabel
-
-        // //onClick={()=>{handleChangeCheckbox(rowData.customproductId)}}
-        // className={classes.quantitycss}
-        // control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-        // fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-
-        // <Text style={{ fontSize: '11px',
-        // fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-        // transition : 'all 0.25s',}}>{rowData.torontostock}</Text>
-
-        // </Typography>}
-        // />
+       
       },
       {
         title: "Los Angeles Stock",
         field: "losangelesstock",
         type: "text",
-        //   render: rowData =><FormControlLabel
-
-        //  // onClick={()=>{handleChangeCheckbox(rowData.customproductId)}}
-        //   className={classes.quantitycss}
-        //   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-        //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-
-        //   <Text style={{ fontSize: '11px',
-        //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-        //   transition : 'all 0.25s',}}>{rowData.losangelesstock}</Text>
-
-        //   </Typography>}
-        //   />
+      
       },
       {
         title: "Total Sold",
@@ -1179,21 +1086,7 @@ export default function Slide17(props) {
     // const name = target.accept.includes('image') ? 'images' : 'videos';
 
     fileReader.readAsDataURL(target.files[0]);
-    setInvoiceFile(target.files[0]);
-    // setLoading(true);
-    // shiphypeservice.uploadInvoiceData(target.files[0],userid)
-    // .then(response => {
-    //  console.log("status",response.status);
-    //       if(response.status === true) {
-    //         setLoading(false);
-
-    //                  }else{
-    //                   setLoading(false);
-    //                   console.log("message",response.message);
-    //                  }
-    //     }).catch((error) =>{
-    //           console.error(error);
-    //     });
+   
   };
 
   const fetchSellerProductPackingList = (userid) => {
@@ -1316,23 +1209,7 @@ export default function Slide17(props) {
             setState({
               packageDataPro111,
               columns: [
-                //  { title: 'ShipHype Internal ID',
-                //  field: 'customproductId',type: 'text',editable: 'never',
-                //  render: rowData =><FormControlLabel
-
-                //  // onClick={()=>{handleChangeCheckbox(rowData.customproductId)}}
-                //   className={classes.quantitycss}
-                //   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-                //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-
-                //   <Text style={{ fontSize: '11px',
-                //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                //   transition : 'all 0.25s',}}>{rowData.customproductId}</Text>
-
-                //   </Typography>}
-                //   />
-
-                // },
+                
                 {
                   title: "Item Name",
                   field: "productname",
@@ -1399,21 +1276,7 @@ export default function Slide17(props) {
                     />
                   ),
                 },
-                //  { title: "Serial Number", field: "serialno", type: "text", render: rowData =><FormControlLabel
-
-                //  // onClick={()=>{handleChangeCheckbox(rowData.customproductId)}}
-                //   className={classes.quantitycss}
-                //   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-                //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-
-                //   <Text style={{ fontSize: '11px',
-                //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                //   transition : 'all 0.25s',}}>{rowData.serialno}</Text>
-
-                //   </Typography>}
-                //   />
-
-                //    },
+               
                 {
                   title: "ShipHype Internal SKU",
                   field: "shiphypeSku",
@@ -1879,27 +1742,7 @@ export default function Slide17(props) {
                   field: "packaging",
                   //lookup: { 1: 'Corrugated Box', 2: 'Letter' }, packageDataPro111[ packaggingId ] = packaggingName
                   lookup: packageDataPro11,
-                  //  editComponent: props => (
-                  //   <FormControl className={classes.formControl}>
-
-                  //   <Select
-                  //     labelId="demo-simple-select-label"
-                  //     id="demo-simple-select"
-                  //     value={4}
-                  //     onChange={e =>handleChangeSource(e,props)}
-                  //   >
-                  //     <MenuItem value={0}>
-                  //     Select Source</MenuItem>
-                  //   {data1.map(option => (
-                  //     <MenuItem value={option.packaggingId}>
-                  //     {option.packaggingName}</MenuItem>
-
-                  //    ))}
-
-                  //   </Select>
-                  // </FormControl>
-                  // )
-                  //lookup: { 1: 'Envelope', 2: 'Courier Bags' ,3:'Poly Bubble Mailer',4:'Corrugated Box',5:'Corrugated Box (Heavy Duty)',6:'Corrugated Box (Cube)'},
+  
                 },
 
                 {
@@ -2174,21 +2017,7 @@ export default function Slide17(props) {
                     />
                   ),
                 },
-                //  { title: "Serial Number", field: "serialno", type: "text", render: rowData =><FormControlLabel
-
-                //  // onClick={()=>{handleChangeCheckbox(rowData.customproductId)}}
-                //   className={classes.quantitycss}
-                //   control={<Typography style={{marginLeft:'20px',fontSize:'2px',cursor:'pointer',
-                //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',}}>
-
-                //   <Text style={{ fontSize: '11px',
-                //   fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                //   transition : 'all 0.25s',}}>{rowData.serialno}</Text>
-
-                //   </Typography>}
-                //   />
-
-                //    },
+               
 
                 {
                   title: "Ships International",
@@ -2622,26 +2451,7 @@ export default function Slide17(props) {
 
                   //lookup: { 1: 'Envelope', 2: 'Courier Bags' ,3:'Poly Bubble Mailer',4:'Corrugated Box',5:'Corrugated Box (Heavy Duty)',6:'Corrugated Box (Cube)'},
                   lookup: packageDataPro11,
-                  //  editComponent: props => (
-                  //   <FormControl className={classes.formControl}>
-
-                  //   <Select
-                  //     labelId="demo-simple-select-label"
-                  //     id="demo-simple-select"
-                  //     value={4}
-                  //     onChange={e =>handleChangeSource(e,props)}
-                  //   >
-                  //     <MenuItem value={0}>
-                  //     Select Source</MenuItem>
-                  //   {data1.map(option => (
-                  //     <MenuItem value={option.packaggingId}>
-                  //     {option.packaggingName}</MenuItem>
-
-                  //    ))}
-
-                  //   </Select>
-                  // </FormControl>
-                  // )
+                 
                 },
                 {
                   title: "Promotional Inserts",
@@ -3296,6 +3106,45 @@ export default function Slide17(props) {
         console.error(error);
       });
   };
+
+  var flag1 = false;
+ 
+  const handleChangeCheckbox2 = (data) => {
+   
+    if (ids.length === 0) {
+      ids.push(data);
+      
+    } else {
+      for (let i = 0; i < ids.length; i++) {
+        if (data !== ids[i]) {
+          //ids.push(data);
+          flag1 = true;
+        } else {
+          flag1 = false;
+          break;
+        }
+      }
+      if (flag1 === true) {
+        ids.push(data);
+       
+      } else {
+        const index = ids.indexOf(data);
+        if (index > -1) {
+          ids.splice(index, 1);
+         
+        }
+       
+      }
+    }
+   
+    const updatedaray=[...ids];
+
+    setchangedWarehouseid(updatedaray);
+   
+   
+  };
+
+
   const handleChangeCheckbox = (data) => {
     var ids=[];
   
@@ -3307,10 +3156,9 @@ export default function Slide17(props) {
     const updatedaray=[...ids];
 
     setchangedWarehouseid(updatedaray);
-   
-  
-
   };
+
+
   let screenWidth = Dimensions.get("window").width;
 
   return (
@@ -3554,7 +3402,7 @@ export default function Slide17(props) {
                 flexDirection: "row",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                paddingLeft: 5,
+                paddingLeft: 2,
                 paddingTop: 8,
                 paddingBottom: 8,
                 paddingRight: 0,
@@ -3602,34 +3450,33 @@ export default function Slide17(props) {
               
                selection: true,
           showTextRowsSelected: false,
-          showSelectAllCheckbox:false,
+          showSelectAllCheckbox:true,
           selectionProps: rowData => ({
            
-            // checked: rowData.customproductId === changedWarehouseid,
+           
              color: 'primary'
           
          
         })
 
         
-              // exportCsv: (columns, data) => {
-              //   alert('You should develop a code to export ' + data.length + ' rows');
-              // }
+              
             }}
             onSelectionChange={(rows) => {
         handleChangeCheckbox(rows);
     }}
             onRowClick={(event, rowData) => {
               console.log("rowclick", rowData);
-              //setOpenChekced(false);
+              setOpenChekced(false);
               //handleChangeRowClickCustome(rowData.internalorderId);
-              // setStateproduct1((prevState) => {
-              //   let data1 = [...prevState.data];
-              //         let index = data1.indexOf(rowData);
-              //         data1[index].tableData.checked = !data1[index].tableData.checked;
+              handleChangeCheckbox2(rowData.customproductId);
+              setStateproduct1((prevState) => {
+                let data1 = [...prevState.data];
+                      let index = data1.indexOf(rowData);
+                      data1[index].tableData.checked = !data1[index].tableData.checked;
 
-              //       return { ...prevState, data1 };
-              //     });
+                    return { ...prevState, data1 };
+                  });
             }}
             editable={{
               onRowUpdate: (newData, oldData) =>

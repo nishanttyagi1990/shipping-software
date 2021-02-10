@@ -39,6 +39,7 @@ import backerkit from "../../assets/icons/BackerKit-logo.png";
 import shopify from "../../assets/icons/shopify.png";
 import woocommerce from "../../assets/icons/woocommerce-logo.png";
 import esty from "../../assets/icons/1200px-Etsy_logo.svg.png";
+import Wix from "../../assets/icons/wix.JPG";
 import comingSoon from "../../assets/icons/comingSoon1.png";
 import HoverImage from "react-hover-image";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -162,61 +163,61 @@ const useStyles = makeStyles((theme) => ({
     width: "115px",
     height: "62px",
     marginTop: "25%",
-    "&:hover": {
-      width: "115px",
-      height: "100px",
-      marginTop: "8%",
-    },
+    // "&:hover": {
+    //   width: "115px",
+    //   height: "100px",
+    //   marginTop: "8%",
+    // },
   },
   ImagesDesign5: {
     width: "115px",
     height: "92px",
     marginTop: "15%",
-    "&:hover": {
-      width: "115px",
-      height: "100px",
-      marginTop: "8%",
-    },
+    // "&:hover": {
+    //   width: "115px",
+    //   height: "100px",
+    //   marginTop: "8%",
+    // },
   },
   ImagesDesign6: {
     width: "115px",
     height: "72px",
     marginTop: "25%",
-    "&:hover": {
-      width: "115px",
-      height: "100px",
-      marginTop: "8%",
-    },
+    // "&:hover": {
+    //   width: "115px",
+    //   height: "100px",
+    //   marginTop: "8%",
+    // },
   },
   ImagesDesign4: {
     width: "130px",
     height: "122px",
     marginTop: "4%",
-    "&:hover": {
-      width: "115px",
-      height: "100px",
-      marginTop: "8%",
-    },
+    // "&:hover": {
+    //   width: "115px",
+    //   height: "100px",
+    //   marginTop: "8%",
+    // },
   },
   ImagesDesign2: {
     width: "115px",
     height: "60px",
     marginTop: "30%",
-    "&:hover": {
-      width: "115px",
-      height: "100px",
-      marginTop: "8%",
-    },
+    // "&:hover": {
+    //   width: "115px",
+    //   height: "100px",
+    //   marginTop: "8%",
+    // },
   },
   ImagesDesign1: {
     width: "115px",
     height: "90px",
     marginTop: "10%",
-    "&:hover": {
-      width: "115px",
-      height: "100px",
-      marginTop: "8%",
-    },
+    // "&:hover": {
+    //   width: "115px",
+    //   height: "100px",
+    //   marginTop: "8%",
+    // },
   },
   ImagesDesignAmozon: {
     width: "115px",
@@ -235,11 +236,11 @@ const useStyles = makeStyles((theme) => ({
     width: "115px",
     height: "100px",
     marginTop: "8%",
-    "&:hover": {
-      width: "115px",
-      height: "100px",
-      marginTop: "8%",
-    },
+    // "&:hover": {
+    //   width: "115px",
+    //   height: "100px",
+    //   marginTop: "8%",
+    // },
   },
 }));
 
@@ -421,12 +422,12 @@ export default function CreateSprint(props) {
   const [shopifytoken,setShopifytoken]=React.useState(null);
   const [appname,setAppname]=React.useState(null);
   const [state, setState] = useState({
-    vertical: "top",
+    vertical: "center",
     horizontal: "center",
   });
   const { vertical, horizontal } = state;
   const [open, setOpen] = React.useState(false);
-
+  const [open3, setOpen3] = React.useState(false);
   const openShopfyIntegration = (data) => {
     setDataForIntegrateID(data);
     setOpenshopfy(true);
@@ -556,6 +557,7 @@ if(isimport){
       return;
     }
     setOpen(false);
+    setOpen3(false);
   };
 
   const selectAlredayImage = (data) => {
@@ -635,6 +637,8 @@ if(isimport){
     arr.push(1);
     arr.push(3);
     arr.push(4);
+    arr.push(6);
+    arr.push(13);
    // arr.push(6);
     shiphypeservice
       .fetchimagelogobyid(arr)
@@ -760,9 +764,9 @@ if(isimport){
                   }
                 }
                 setWolmartid(true);
-              } else if (response.data[i].integrationId === 12) {
+              } else if (response.data[i].integrationId === 13) {
                 for (let i = 0; i < module[0].length; i++) {
-                  if (module[0][i].integrationId === 12) {
+                  if (module[0][i].integrationId === 13) {
                     m23.push(module[0][i]);
                   }
                 }
@@ -882,7 +886,8 @@ const updateData=(data)=>{
                       )}
                       variant="outlined"
                       onClick={() => {
-                        openShopfyIntegration(data.integrationId);
+                        setOpen3(true);
+                       // openShopfyIntegration(data.integrationId);
                       }}
                     >
                       <Image className={classes.ImagesDesign} source={woocommerce } />
@@ -946,29 +951,51 @@ const updateData=(data)=>{
               } else if (data.logo === "squarespace.png") {
                 return (
                   <Grid items xs={6} lg={2} md={4}>
-                    <Tooltip title="coming soon">
+                    
                       <Card
                         className={clsx(
                           integrationId !== 6 && classes.paper1,
-                          integrationId === 6 && classes.imageselected,
+                          integrationId === 6 && classes.paper1,
                           sqaureid && classes.alredayimageselected
                         )}
                         variant="outlined"
                         onClick={() => {
-                          selectAlredayImage1(data.integrationId);
+                          setOpen3(true);
+                         // selectAlredayImage1(data.integrationId);
                         }}
                       >
-                        {/* <Image style={{ width: '115px', height: '80px',marginTop:'10%'}} source={square} /> */}
-                        <HoverImage
+                        <Image style={{ width: '115px', height: '80px',marginTop:'10%'}} source={square} />
+                        {/* <HoverImage
                           className={classes.ImagesDesign1}
                           src={square}
                           hoverSrc={comingSoon}
-                        />
+                        /> */}
                       </Card>
-                    </Tooltip>
+                   
                   </Grid>
                 );
-              } else if (data.logo === "backerkit.png") {
+              }
+              else if (data.logo === "wix.png") {
+                return (
+                  <Grid items xs={6} lg={2} md={4}>
+                    <Card
+                      className={clsx(
+                        integrationId !== 13 && classes.paper1,
+                        integrationId === 13 && classes.paper1,
+                        bigcommid && classes.alredayimageselected
+                      )}
+                      variant="outlined"
+                      onClick={() => {
+                        setOpen3(true);
+                      }}
+                    >
+                      <Image className={classes.ImagesDesign} source={Wix} />
+                     
+                    </Card>
+                  </Grid>
+                );
+              }              
+               else if (data.logo === "backerkit.png") {
                 return (
                   <Grid items xs={6} lg={2} md={4}>
                     <Card
@@ -1229,6 +1256,17 @@ const updateData=(data)=>{
                 handleCancle={cancelShopfyIntegration}
               />
             )}
+            <Snackbar
+            anchorOrigin={{ vertical, horizontal }}
+            key={`${vertical},${horizontal}`}
+            open={open3}
+            autoHideDuration={3000}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity="error">
+           You will get Order auto sync in 10 minutes.
+            </Alert>
+          </Snackbar>
           </Grid>
           <form className={classes.form}>
             <Grid container spacing={3} justify="center">
@@ -1244,6 +1282,7 @@ const updateData=(data)=>{
                   Coming Soon Integration.
                 </Alert>
               </Snackbar>
+              
             </Grid>
           </form>
 

@@ -46,6 +46,7 @@ import AddIcon from '@material-ui/icons/Add';
 import popUpStyle from './style/popUpStyle';
 import AsyncStorage from '@react-native-community/async-storage';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import { TrafficRounded } from '@material-ui/icons';
 const ColorButtonRefresh = withStyles((theme) => ({
   root: {
     borderRadius: "3px",
@@ -349,7 +350,7 @@ export default function Slide17(props) {
                     }
                   })()}
                   onChange={() => {
-                    handleChangeCheckbox(rowData, rowData.packaggingId);
+                    handleChangeCheckbox(rowData, rowData.packaggingId,false);
                   }}
                   color="primary"
                 />
@@ -371,7 +372,7 @@ export default function Slide17(props) {
         render: rowData => (
           <FormControlLabel
             onClick={() => {
-              handleChangeCheckbox(rowData, rowData.packaggingId);
+              handleChangeCheckbox(rowData, rowData.packaggingId,true);
             }}
             className={classes.quantitycss}
             control={
@@ -404,7 +405,7 @@ export default function Slide17(props) {
         render: rowData => (
           <FormControlLabel
             onClick={() => {
-              handleChangeCheckbox(rowData, rowData.packaggingId);
+              handleChangeCheckbox(rowData, rowData.packaggingId,TrafficRounded,true);
             }}
             className={classes.quantitycss}
             control={
@@ -527,7 +528,7 @@ export default function Slide17(props) {
         render: rowData => (
           <FormControlLabel
             onClick={() => {
-              handleChangeCheckbox(rowData, rowData.packaggingId);
+              handleChangeCheckbox(rowData, rowData.packaggingId,true);
             }}
             className={classes.quantitycss}
             control={
@@ -750,6 +751,7 @@ export default function Slide17(props) {
                                 handleChangeCheckbox(
                                   rowData,
                                   rowData.packaggingId,
+                                  true
                                 );
                               }}
                               color="primary"
@@ -772,7 +774,7 @@ export default function Slide17(props) {
                     render: rowData => (
                       <FormControlLabel
                         onClick={() => {
-                          handleChangeCheckbox(rowData, rowData.packaggingId);
+                          handleChangeCheckbox(rowData, rowData.packaggingId,true);
                         }}
                         className={classes.quantitycss}
                         control={
@@ -807,7 +809,7 @@ export default function Slide17(props) {
                     render: rowData => (
                       <FormControlLabel
                         onClick={() => {
-                          handleChangeCheckbox(rowData, rowData.packaggingId);
+                          handleChangeCheckbox(rowData, rowData.packaggingId,true);
                         }}
                         className={classes.quantitycss}
                         control={
@@ -840,7 +842,7 @@ export default function Slide17(props) {
                     render: rowData => (
                       <FormControlLabel
                         onClick={() => {
-                          handleChangeCheckbox(rowData, rowData.packaggingId);
+                          handleChangeCheckbox(rowData, rowData.packaggingId,true);
                         }}
                         className={classes.quantitycss}
                         control={
@@ -1046,9 +1048,20 @@ export default function Slide17(props) {
 
   var flag = false;
 
-  const handleChangeCheckbox = (data, ID) => {
+  const handleChangeCheckbox = (data, ID ,isrow) => {
     if (shipmentId !== 0) {
-      if (event.target.checked == true) {
+      if (event.target.checked == true || isrow === true) {
+        NewSelectedCustomerow.map((item, index) => {
+          console.log(NewSelectedCustomerow[index].packagingId == ID);
+
+          if (NewSelectedCustomerow[index].packaggingId == ID) {
+            console.log('true');
+            NewSelectedCustomerow.splice(index, 1);
+            NewSelectedCustomerow = NewSelectedCustomerow;
+            console.log(NewSelectedCustomerow);
+            console.log('DeleItem=====');
+          }
+        });
         NewSelectedCustomerow.push(data);
         console.log(NewSelectedCustomerow);
         console.log('pushItem====');
@@ -1075,7 +1088,13 @@ export default function Slide17(props) {
         );
       }
     } else {
-      if (event.target.checked == true) {
+      if (event.target.checked == true || isrow === true) {
+        CustomPackges.map((item, index) => {
+          if (CustomPackges[index].packaggingId == ID) {
+            CustomPackges.splice(index, 1);
+            CustomPackges = CustomPackges;
+          }
+        });
         CustomPackges.push(data);
 
         AsyncStorage.setItem('CustomPackges', JSON.stringify(CustomPackges));
@@ -1170,7 +1189,7 @@ export default function Slide17(props) {
                       }
                     })()}
                     onChange={() => {
-                      handleChangeCheckbox(rowData, rowData.packaggingId);
+                      handleChangeCheckbox(rowData, rowData.packaggingId,false);
                     }}
                     color="primary"
                   />
@@ -1192,7 +1211,7 @@ export default function Slide17(props) {
           render: rowData => (
             <FormControlLabel
               onClick={() => {
-                handleChangeCheckbox(rowData, rowData.packaggingId);
+                handleChangeCheckbox(rowData, rowData.packaggingId,true);
               }}
               className={classes.quantitycss}
               control={
@@ -1225,7 +1244,7 @@ export default function Slide17(props) {
           render: rowData => (
             <FormControlLabel
               onClick={() => {
-                handleChangeCheckbox(rowData, rowData.packaggingId);
+                handleChangeCheckbox(rowData, rowData.packaggingId,true);
               }}
               className={classes.quantitycss}
               control={
@@ -1258,7 +1277,7 @@ export default function Slide17(props) {
           render: rowData => (
             <FormControlLabel
               onClick={() => {
-                handleChangeCheckbox(rowData, rowData.packaggingId);
+                handleChangeCheckbox(rowData, rowData.packaggingId,true);
               }}
               className={classes.quantitycss}
               control={
@@ -1492,6 +1511,7 @@ export default function Slide17(props) {
         </Grid>
 
         <MaterialTable
+        style={{ padding: "0px",marginTop: '10px'}}
           title={
             <Text
               style={{
@@ -1620,7 +1640,7 @@ export default function Slide17(props) {
             }),
           }}
           onSelectionChange={rows => {
-            handleChangeCheckbox(rows);
+           // handleChangeCheckbox(rows);
           }}
           // editable={{
           //

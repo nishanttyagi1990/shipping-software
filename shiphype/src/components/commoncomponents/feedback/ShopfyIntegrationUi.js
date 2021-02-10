@@ -278,24 +278,7 @@ export default function ShippingProfile(props) {
     
   };
 
-  // function HandleClose2(){
-  //   setIntegrationopen(true);
-  // };
-
-  // React.useEffect(() => {
-  //   if(inegrationStatus===true)
-  //   {
-  //     function tick() {
-  //       fetchUserIntegrationShopify(userid);
-  //     }
-  //     const timer = setInterval(tick, 500);
-  
-  //     return () => {
-  //       clearInterval(timer);
-  //     };
-  //   }
-   
-  // }, []);
+ 
   let flag=false;
 
   const fetchUserIntegrationShopify = (useridshopify)=>{

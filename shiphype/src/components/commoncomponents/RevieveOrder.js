@@ -60,7 +60,7 @@ import CalculateRate from "./Order/CalculateRate";
 import { format } from "date-fns";
 import TrackingURLNotExits from "./Order/TrackingURLNotExits";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import PrintInternalPacakingSlipDialog from './Order/PrintInternalPacakingSlipDialog';
+import PrintInternalPacakingSlipDialog from "./Order/PrintInternalPacakingSlipDialog";
 import AsyncStorage from "@react-native-community/async-storage";
 import moment from "moment";
 const ColorButtonAdd = withStyles((theme) => ({
@@ -516,27 +516,34 @@ export default function Slide17(props) {
   const [companyname, setCompanyname] = React.useState("");
 
   const [codeShopify, setCodeShopify] = React.useState("");
-  const [refershCodeShopify, setRefershCodeShopify] = React.useState(
-    ""
-  );
+  const [refershCodeShopify, setRefershCodeShopify] = React.useState("");
   const [storeNameShopify, setStoreNameshopify] = React.useState("");
+
+  const [keyWocom, setKeyWocomm] = React.useState("");
+  const [secretCodeWocomm, setSecretCodeWocomm] = React.useState("");
+  const [storeNameWocomm, setStoreNameWocomm] = React.useState("");
+
   const [codeSquareSpace, setCodeSquareSpace] = React.useState("");
   const [refershCodeSquareSpace, setRefershCodeSquareSpace] = React.useState(
     ""
   );
   const [storeNameSquareSpace, setStoreNameSquareSpace] = React.useState("");
   const [codeNameWix, setCodeNameWix] = React.useState("");
-  const [refershCodeNameWix, setRefershCodeNameWix] = React.useState(
-    ""
-  );
+  const [refershCodeNameWix, setRefershCodeNameWix] = React.useState("");
   const [storeNameWix, setStoreNameWix] = React.useState("");
 
   const [lengthwidthHeight, setLengthWidthH] = useState([
-    {userid:0,orderid:0, customproduct_id: 0, productname: 0, serialnovalue: 0,quantity:0 },
+    {
+      userid: 0,
+      orderid: 0,
+      customproduct_id: 0,
+      productname: 0,
+      serialnovalue: 0,
+      quantity: 0,
+    },
   ]);
 
-  
-  const [openinternalslip,setOpeninternalslip]=React.useState(false);
+  const [openinternalslip, setOpeninternalslip] = React.useState(false);
 
   function closePrint() {
     document.body.removeChild(this.__container__);
@@ -544,13 +551,13 @@ export default function Slide17(props) {
 
   function setPrint() {
     this.contentWindow.__container__ = this;
-    this.contentWindow.height = this.contentWindow.document.documentElement.scrollHeight+'px';
+    //this.contentWindow.height = this.contentWindow.document.documentElement.scrollHeight+'px';
     this.contentWindow.onbeforeunload = closePrint;
     this.contentWindow.onafterprint = closePrint;
-    
+
     setTimeout(() => {
       setOpenDelete(false);
-      setOpenDeleter(false); 
+      setOpenDeleter(false);
       this.contentWindow.focus(); // Required for IE
       this.contentWindow.print();
     }, 6000);
@@ -563,14 +570,13 @@ export default function Slide17(props) {
     oHiddFrame.style.right = "0";
     oHiddFrame.style.bottom = "0";
     oHiddFrame.style.width = "0";
-    oHiddFrame.style.height ="0";
-   // oHiddFrame.style.height = this.contentWindow.document.documentElement.scrollHeight+'px';
-   //oHiddFrame.style.visibility = 'visible';
+    oHiddFrame.style.height = "0";
+    // oHiddFrame.style.height = this.contentWindow.document.documentElement.scrollHeight+'px';
+    //oHiddFrame.style.visibility = 'visible';
     oHiddFrame.style.border = "0";
     //oHiddFrame.style.scrollBehavior="yes";
     oHiddFrame.src = sURL;
     document.body.appendChild(oHiddFrame);
-   
   }
 
   function Printpdf() {
@@ -579,14 +585,16 @@ export default function Slide17(props) {
     console.log("card id =====");
 
     console.log("Id=======");
- var sURL = `https://app.shiphype.com/PrintInternalPackagingSlip?shiphype_id=${cardid}&user_id=${user_id}&shippingmethod=${shippingmethod}&useremail=${useremail}&companyname=${companyname}`;
+    // var sURL = `https://app.shiphype.com/PrintInternalPackagingSlip?shiphype_id=${cardid}&user_id=${user_id}&shippingmethod=${shippingmethod}&useremail=${useremail}&companyname=${companyname}`;
 
- //var sURL = `http://localhost:19006/PrintInternalPackagingSlip?shiphype_id=${cardid}&user_id=${user_id}&shippingmethod=${shippingmethod}&useremail=${useremail}&companyname=${companyname}&multipleidselect=${changedWarehouseid}`;
+    var sURL = `http://localhost:19007/PrintInternalPackagingSlip?shiphype_id=${cardid}&user_id=${user_id}&shippingmethod=${shippingmethod}&useremail=${useremail}&companyname=${companyname}&multipleidselect=${changedWarehouseid}`;
 
- console.log(sURL);
- console.log("sURL");
- printPage(sURL);
-    
+    console.log(sURL);
+    console.log("surl", sURL);
+    for (let i = 0; i < 3; i++) {
+      printPage(sURL);
+    }
+
     setLoading(false);
   }
   const handleRelease = (isSprintCreate) => {
@@ -604,7 +612,7 @@ export default function Slide17(props) {
       setOpenDeleter(false);
       // setOpenCancelOrder(true);
       //setOpeninternalslip(true);
-      handleConfirmCancel(); 
+      handleConfirmCancel();
     } else if (isSprintCreate === 4) {
       //Shipped value
       setOpenDelete(false);
@@ -636,17 +644,16 @@ export default function Slide17(props) {
       setOpenDeleter(false);
       setCalculaterate(false);
       setOpenMoveOnHoldOrder(true);
-    } else if(isSprintCreate === 100){
+    } else if (isSprintCreate === 100) {
       Printpdf();
-      
-    } else if(isSprintCreate === 101){
+    } else if (isSprintCreate === 101) {
       Printpdf();
       setOpenDelete(false);
       setOpenDeleter(false);
       // setOpenCancelOrder(true);
       setOpeninternalslip(false);
-      //handleConfirmCancel(); 
-    }else {
+      //handleConfirmCancel();
+    } else {
       setOpenConfirmationRelease(true);
       setOpenDelete(false);
       setOpenDeleter(false);
@@ -685,13 +692,14 @@ export default function Slide17(props) {
                     control={
                       <Checkbox
                         id={rowData.internalorderId}
-                        checked={(() => {
-                          for (let i = 0; i < ids.length; i++) {
-                            if (rowData.internalorderId === parseInt(ids[i])) {
-                              return true;
-                            }
-                          }
-                        })()}
+                        checked={ids.includes(rowData.internalorderId)}
+                        // checked={(() => {
+                        //   for (let i = 0; i < ids.length; i++) {
+                        //     if (rowData.internalorderId === parseInt(ids[i])) {
+                        //       return true;
+                        //     }
+                        //   }
+                        // })()}
                         onChange={() => {
                           handleChangeCheckbox(rowData.internalorderId);
                         }}
@@ -714,7 +722,7 @@ export default function Slide17(props) {
         title: "ShipHype Id",
         field: "internalorderId",
         type: "text",
-       
+
         render: (rowData) => (
           <FormControlLabel
             onClick={() => {
@@ -732,19 +740,18 @@ export default function Slide17(props) {
                 }}
               >
                 <Link
-            href="#"
-            onClick={() => handleGetShipmentId(rowData.internalorderId)}
-            variant="body2"
-          >
-            {rowData.internalorderId}{" "}
-          </Link>
+                  href="#"
+                  onClick={() => handleGetShipmentId(rowData.internalorderId)}
+                  variant="body2"
+                >
+                  {rowData.internalorderId}{" "}
+                </Link>
               </Typography>
             }
           />
         ),
-      
       },
-      
+
       {
         title: "Platform Id",
         field: "externalorderId",
@@ -773,19 +780,23 @@ export default function Slide17(props) {
                     transition: "all 0.25s",
                   }}
                 >
-                  {rowData.externalorderId === null ? ' ' : rowData.externalorderId}
+                  {rowData.externalorderId === null
+                    ? " "
+                    : rowData.externalorderId}
                 </Text>
               </Typography>
             }
           />
         ),
       },
-      { title: "Create Date", field: "orderdate", type: "text",
+      {
+        title: "Create Date",
+        field: "orderdate",
+        type: "text",
         render: (rowData) => (
           <FormControlLabel
             onClick={() => {
               handleChangeCheckbox(rowData.internalorderId);
-                            
             }}
             className={classes.quantitycss}
             control={
@@ -817,12 +828,11 @@ export default function Slide17(props) {
         title: "Courier ID",
         field: "courierid",
         type: "text",
-       
+
         render: (rowData) => (
           <FormControlLabel
             onClick={() => {
               handleChangeCheckbox(rowData.internalorderId);
-                            
             }}
             className={classes.quantitycss}
             control={
@@ -836,15 +846,15 @@ export default function Slide17(props) {
                 }}
               >
                 <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.courierid === null ? ' ' : rowData.courierid}
-                  </Text>
+                  style={{
+                    fontSize: "11px",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                    transition: "all 0.25s",
+                  }}
+                >
+                  {rowData.courierid === null ? " " : rowData.courierid}
+                </Text>
               </Typography>
             }
           />
@@ -878,13 +888,12 @@ export default function Slide17(props) {
                     transition: "all 0.25s",
                   }}
                 >
-                  {rowData.sellerorderid === null ? ' ' : rowData.sellerorderid}
+                  {rowData.sellerorderid === null ? " " : rowData.sellerorderid}
                 </Text>
               </Typography>
             }
           />
         ),
-       
       },
 
       {
@@ -1248,7 +1257,6 @@ export default function Slide17(props) {
         field: "orderstatus",
 
         render: (rowData) => (
-         
           <Text>
             {(() => {
               if (rowData.orderstatus === 5) {
@@ -1323,7 +1331,6 @@ export default function Slide17(props) {
                 );
               } else if (rowData.orderstatus === 8) {
                 return (
-                 
                   <ColorButtonOnHold
                     size="large"
                     variant="contained"
@@ -1334,7 +1341,7 @@ export default function Slide17(props) {
                   >
                     {" "}
                     On Hold
-                  </ColorButtonOnHold> 
+                  </ColorButtonOnHold>
                 );
               } else if (rowData.orderstatus === 9) {
                 return (
@@ -1381,7 +1388,7 @@ export default function Slide17(props) {
               color="primary"
               onClick={() => {
                 if (rowData.orderstatus === 4) {
-                handleClickTrack(rowData.internalorderId, rowData);
+                  handleClickTrack(rowData.internalorderId, rowData);
                 }
               }}
             >
@@ -1391,39 +1398,44 @@ export default function Slide17(props) {
           </Text>
         ),
       },
-      { title: "Shipping Courier", field: "shippingpolicy", type: "text",
-    
-      render: (rowData) => (
-        <FormControlLabel
-          onClick={() => {
-            handleChangeCheckbox(rowData.internalorderId);
-          }}
-          className={classes.quantitycss}
-          control={
-            <Typography
-              style={{
-                marginLeft: "20px",
-                fontSize: "2px",
-                cursor: "pointer",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              }}
-            >
-              <Text
+      {
+        title: "Shipping Courier",
+        field: "shippingpolicy",
+        type: "text",
+
+        render: (rowData) => (
+          <FormControlLabel
+            onClick={() => {
+              handleChangeCheckbox(rowData.internalorderId);
+            }}
+            className={classes.quantitycss}
+            control={
+              <Typography
                 style={{
-                  fontSize: "11px",
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
                   fontFamily:
                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  transition: "all 0.25s",
                 }}
               >
-                {rowData.shippingpolicy === null ? '  ' : rowData.shippingpolicy}
-              </Text>
-            </Typography>
-          }
-        />
-      ),
-    },
+                <Text
+                  style={{
+                    fontSize: "11px",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                    transition: "all 0.25s",
+                  }}
+                >
+                  {rowData.shippingpolicy === null
+                    ? "  "
+                    : rowData.shippingpolicy}
+                </Text>
+              </Typography>
+            }
+          />
+        ),
+      },
       {
         title: "Tracking",
         field: "tracking",
@@ -1453,7 +1465,7 @@ export default function Slide17(props) {
                     transition: "all 0.25s",
                   }}
                 >
-                  {rowData.tracking === "" ? '  ' : rowData.tracking}
+                  {rowData.tracking === "" ? "  " : rowData.tracking}
                 </Text>
               </Typography>
             }
@@ -1468,135 +1480,135 @@ export default function Slide17(props) {
 
         render: (rowData) => (
           <FormControlLabel
-          onClick={() => {
-            handleChangeCheckbox(rowData.internalorderId);
-          }}
-          className={classes.quantitycss}
-          control={
-            <Typography
-              style={{
-                marginLeft: "20px",
-                fontSize: "2px",
-                cursor: "pointer",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              }}
-            >
-          <Text>
-            {(() => {
-              if (rowData.shipmenttype === "10") {
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    Custom Shipping Label
-                  </Text>
-                );
-              } else if (rowData.shipmenttype === "2") {
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    2-Day Shipping
-                  </Text>
-                );
-              } else if (rowData.shipmenttype === "3") {
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    Overnight Shipping
-                  </Text>
-                );
-              } else if (rowData.shipmenttype === "4") {
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    Stamped Postage
-                  </Text>
-                );
-              } else if (rowData.shipmenttype === "5") {
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    Oversize LetterMail
-                  </Text>
-                );
-              } else if (rowData.shipmenttype === "6") {
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    Pallet Freight
-                  </Text>
-                );
-              }else if (rowData.shipmenttype === "1") {
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    Standard Shipping
-                  </Text>
-                );
-              }else{
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                   {' '}
-                  </Text>
-                );
-              }
-            })()}
-          </Text>
-          </Typography>
-          }
-        />
+            onClick={() => {
+              handleChangeCheckbox(rowData.internalorderId);
+            }}
+            className={classes.quantitycss}
+            control={
+              <Typography
+                style={{
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                }}
+              >
+                <Text>
+                  {(() => {
+                    if (rowData.shipmenttype === "10") {
+                      return (
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          Custom Shipping Label
+                        </Text>
+                      );
+                    } else if (rowData.shipmenttype === "2") {
+                      return (
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          2-Day Shipping
+                        </Text>
+                      );
+                    } else if (rowData.shipmenttype === "3") {
+                      return (
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          Overnight Shipping
+                        </Text>
+                      );
+                    } else if (rowData.shipmenttype === "4") {
+                      return (
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          Stamped Postage
+                        </Text>
+                      );
+                    } else if (rowData.shipmenttype === "5") {
+                      return (
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          Oversize LetterMail
+                        </Text>
+                      );
+                    } else if (rowData.shipmenttype === "6") {
+                      return (
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          Pallet Freight
+                        </Text>
+                      );
+                    } else if (rowData.shipmenttype === "1") {
+                      return (
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          Standard Shipping
+                        </Text>
+                      );
+                    } else {
+                      return (
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          {" "}
+                        </Text>
+                      );
+                    }
+                  })()}
+                </Text>
+              </Typography>
+            }
+          />
         ),
       },
-      
+
       {
         title: "Shipment Date",
         field: "shipdate",
@@ -1635,16 +1647,17 @@ export default function Slide17(props) {
                             control={
                               <Checkbox
                                 id={rowData.internalorderId}
-                                checked={(() => {
-                                  for (let i = 0; i < ids.length; i++) {
-                                    if (
-                                      rowData.internalorderId ===
-                                      parseInt(ids[i])
-                                    ) {
-                                      return true;
-                                    }
-                                  }
-                                })()}
+                                checked={ids.includes(rowData.internalorderId)}
+                                // checked={(() => {
+                                //   for (let i = 0; i < ids.length; i++) {
+                                //     if (
+                                //       rowData.internalorderId ===
+                                //       parseInt(ids[i])
+                                //     ) {
+                                //       return true;
+                                //     }
+                                //   }
+                                // })()}
                                 onChange={() => {
                                   handleChangeCheckbox(rowData.internalorderId);
                                 }}
@@ -1664,18 +1677,15 @@ export default function Slide17(props) {
                 ),
               },
 
-              
-
               {
                 title: "ShipHype Id",
                 field: "internalorderId",
                 type: "text",
-               
+
                 render: (rowData) => (
                   <FormControlLabel
                     onClick={() => {
                       handleChangeCheckbox(rowData.internalorderId);
-                                   
                     }}
                     className={classes.quantitycss}
                     control={
@@ -1688,18 +1698,19 @@ export default function Slide17(props) {
                             '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
                         }}
                       >
-                       <Link
-                    href="#"
-                    onClick={() => handleGetShipmentId(rowData.internalorderId)}
-                    variant="body2"
-                  >
-                    {rowData.internalorderId}{" "}
-                  </Link>
+                        <Link
+                          href="#"
+                          onClick={() =>
+                            handleGetShipmentId(rowData.internalorderId)
+                          }
+                          variant="body2"
+                        >
+                          {rowData.internalorderId}{" "}
+                        </Link>
                       </Typography>
                     }
                   />
                 ),
-              
               },
               {
                 title: "Platform Id",
@@ -1729,55 +1740,24 @@ export default function Slide17(props) {
                             transition: "all 0.25s",
                           }}
                         >
-                          {rowData.externalorderId === null ? ' ' : rowData.externalorderId}
+                          {rowData.externalorderId === null
+                            ? " "
+                            : rowData.externalorderId}
                         </Text>
                       </Typography>
                     }
                   />
                 ),
               },
-             
-              { title: "Create Date", field: "orderdate", type: "text",
-              render: (rowData) => (
-                <FormControlLabel
-                  onClick={() => {
-                    handleChangeCheckbox(rowData.internalorderId);
-                                  
-                  }}
-                  className={classes.quantitycss}
-                  control={
-                    <Typography
-                      style={{
-                        marginLeft: "20px",
-                        fontSize: "2px",
-                        cursor: "pointer",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: "11px",
-                          fontFamily:
-                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                          transition: "all 0.25s",
-                        }}
-                      >
-                        {moment(rowData.orderdate).format("MM/DD/YYYY")}
-                      </Text>
-                    </Typography>
-                  }
-                />
-              ),
-            },
+
               {
-                title: "Courier ID",
-                field: "courierid",
+                title: "Create Date",
+                field: "orderdate",
                 type: "text",
                 render: (rowData) => (
                   <FormControlLabel
                     onClick={() => {
-                      handleChangeCheckbox(rowData.internalorderId);             
+                      handleChangeCheckbox(rowData.internalorderId);
                     }}
                     className={classes.quantitycss}
                     control={
@@ -1791,15 +1771,50 @@ export default function Slide17(props) {
                         }}
                       >
                         <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          {moment(rowData.orderdate).format("MM/DD/YYYY")}
+                        </Text>
+                      </Typography>
+                    }
+                  />
+                ),
+              },
+              {
+                title: "Courier ID",
+                field: "courierid",
+                type: "text",
+                render: (rowData) => (
+                  <FormControlLabel
+                    onClick={() => {
+                      handleChangeCheckbox(rowData.internalorderId);
                     }}
-                  >
-                    {rowData.courierid === null ? ' ' : rowData.courierid}
-                  </Text>
+                    className={classes.quantitycss}
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          {rowData.courierid === null ? " " : rowData.courierid}
+                        </Text>
                       </Typography>
                     }
                   />
@@ -1833,7 +1848,9 @@ export default function Slide17(props) {
                             transition: "all 0.25s",
                           }}
                         >
-                          {rowData.sellerorderid === null ? ' ' : rowData.sellerorderid}
+                          {rowData.sellerorderid === null
+                            ? " "
+                            : rowData.sellerorderid}
                         </Text>
                       </Typography>
                     }
@@ -2292,16 +2309,19 @@ export default function Slide17(props) {
                       } else if (rowData.orderstatus === 8) {
                         return (
                           <ColorButtonOnHold
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      handleClickOpendelete(rowData.internalorderId, rowData);
-                    }}
-                  >
-                    {" "}
-                    On Hold
-                  </ColorButtonOnHold> 
+                            size="large"
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                              handleClickOpendelete(
+                                rowData.internalorderId,
+                                rowData
+                              );
+                            }}
+                          >
+                            {" "}
+                            On Hold
+                          </ColorButtonOnHold>
                         );
                       } else if (rowData.orderstatus === 9) {
                         return (
@@ -2354,8 +2374,8 @@ export default function Slide17(props) {
                       color="primary"
                       onClick={() => {
                         if (rowData.orderstatus === 4) {
-                handleClickTrack(rowData.internalorderId, rowData);
-                }
+                          handleClickTrack(rowData.internalorderId, rowData);
+                        }
                       }}
                     >
                       {" "}
@@ -2392,7 +2412,9 @@ export default function Slide17(props) {
                             transition: "all 0.25s",
                           }}
                         >
-                          {rowData.shippingpolicy === null ? '  ' : rowData.shippingpolicy}
+                          {rowData.shippingpolicy === null
+                            ? "  "
+                            : rowData.shippingpolicy}
                         </Text>
                       </Typography>
                     }
@@ -2428,7 +2450,7 @@ export default function Slide17(props) {
                             transition: "all 0.25s",
                           }}
                         >
-                          {rowData.tracking === "" ? '  ' : rowData.tracking}
+                          {rowData.tracking === "" ? "  " : rowData.tracking}
                         </Text>
                       </Typography>
                     }
@@ -2456,127 +2478,125 @@ export default function Slide17(props) {
                             '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
                         }}
                       >
-                  <Text>
-                    {(() => {
-                      if (rowData.shipmenttype === "10") {
-                        return (
-                          <Text
-                            style={{
-                              fontSize: "11px",
-                              fontFamily:
-                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                              transition: "all 0.25s",
-                            }}
-                          >
-                            Custom Shipping Label
-                          </Text>
-                        );
-                      } else if (rowData.shipmenttype === "2") {
-                        return (
-                          <Text
-                            style={{
-                              fontSize: "11px",
-                              fontFamily:
-                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                              transition: "all 0.25s",
-                            }}
-                          >
-                            2-Day Shipping
-                          </Text>
-                        );
-                      } else if (rowData.shipmenttype === "3") {
-                        return (
-                          <Text
-                            style={{
-                              fontSize: "11px",
-                              fontFamily:
-                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                              transition: "all 0.25s",
-                            }}
-                          >
-                            Overnight Shipping
-                          </Text>
-                        );
-                      } else if (rowData.shipmenttype === "4") {
-                        return (
-                          <Text
-                            style={{
-                              fontSize: "11px",
-                              fontFamily:
-                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                              transition: "all 0.25s",
-                            }}
-                          >
-                            Stamped Postage
-                          </Text>
-                        );
-                      } else if (rowData.shipmenttype === "5") {
-                        return (
-                          <Text
-                            style={{
-                              fontSize: "11px",
-                              fontFamily:
-                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                              transition: "all 0.25s",
-                            }}
-                          >
-                            Oversize LetterMail
-                          </Text>
-                        );
-                      } else if (rowData.shipmenttype === "6") {
-                        return (
-                          <Text
-                            style={{
-                              fontSize: "11px",
-                              fontFamily:
-                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                              transition: "all 0.25s",
-                            }}
-                          >
-                            Pallet Freight
-                          </Text>
-                        );
-                      }else if (rowData.shipmenttype === "1") {
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    Standard Shipping
-                  </Text>
-                );
-              }else{
-                return (
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {' '}
-                  </Text>
-                );
-              }
-                    })()}
-                  </Text>
-                  </Typography>
+                        <Text>
+                          {(() => {
+                            if (rowData.shipmenttype === "10") {
+                              return (
+                                <Text
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily:
+                                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                    transition: "all 0.25s",
+                                  }}
+                                >
+                                  Custom Shipping Label
+                                </Text>
+                              );
+                            } else if (rowData.shipmenttype === "2") {
+                              return (
+                                <Text
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily:
+                                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                    transition: "all 0.25s",
+                                  }}
+                                >
+                                  2-Day Shipping
+                                </Text>
+                              );
+                            } else if (rowData.shipmenttype === "3") {
+                              return (
+                                <Text
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily:
+                                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                    transition: "all 0.25s",
+                                  }}
+                                >
+                                  Overnight Shipping
+                                </Text>
+                              );
+                            } else if (rowData.shipmenttype === "4") {
+                              return (
+                                <Text
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily:
+                                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                    transition: "all 0.25s",
+                                  }}
+                                >
+                                  Stamped Postage
+                                </Text>
+                              );
+                            } else if (rowData.shipmenttype === "5") {
+                              return (
+                                <Text
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily:
+                                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                    transition: "all 0.25s",
+                                  }}
+                                >
+                                  Oversize LetterMail
+                                </Text>
+                              );
+                            } else if (rowData.shipmenttype === "6") {
+                              return (
+                                <Text
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily:
+                                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                    transition: "all 0.25s",
+                                  }}
+                                >
+                                  Pallet Freight
+                                </Text>
+                              );
+                            } else if (rowData.shipmenttype === "1") {
+                              return (
+                                <Text
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily:
+                                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                    transition: "all 0.25s",
+                                  }}
+                                >
+                                  Standard Shipping
+                                </Text>
+                              );
+                            } else {
+                              return (
+                                <Text
+                                  style={{
+                                    fontSize: "11px",
+                                    fontFamily:
+                                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                    transition: "all 0.25s",
+                                  }}
+                                >
+                                  {" "}
+                                </Text>
+                              );
+                            }
+                          })()}
+                        </Text>
+                      </Typography>
                     }
                   />
                 ),
               },
 
-             
               {
                 title: "Shipment Date",
                 field: "shipdate",
                 type: "date",
-               
               },
             ],
           });
@@ -2612,7 +2632,7 @@ export default function Slide17(props) {
     setOpenDelete(true);
     setCardid(rowid);
     setRowData(rowData);
-    console.log("rowdata",rowData);
+    console.log("rowdata", rowData);
     setshippingmethod(rowData.tracking);
     setUserEmail(rowData.userEmail);
     setCompanyname(rowData.company_name);
@@ -2620,23 +2640,23 @@ export default function Slide17(props) {
     const valueLengthWidthHeight = [...lengthwidthHeight];
     for (var i = 0; valueLengthWidthHeight.length !== 0; i++) {
       valueLengthWidthHeight.pop({
-        userid:0,
-        orderid:0,
+        userid: 0,
+        orderid: 0,
         customproduct_id: 0,
         productname: 0,
         serialnovalue: 0,
-        quantity:0,
+        quantity: 0,
       });
     }
     for (var i = 0; i < rowData.productid.length; i++) {
       if (rowData.productid[i].product.serialno === true) {
         valueLengthWidthHeight.push({
-          userid:rowData.userId,
-          orderid:rowid,
+          userid: rowData.userId,
+          orderid: rowid,
           customproduct_id: rowData.productid[i].product.customproductId,
           productname: rowData.productid[i].product.productname,
           serialnovalue: 0,
-          quantity:rowData.productid[i].productquantity
+          quantity: rowData.productid[i].productquantity,
         });
       }
     }
@@ -2662,8 +2682,7 @@ export default function Slide17(props) {
       setShippingPolicyName("Oversize LetterMail");
     } else if (rowData.shipmenttype === "6") {
       setShippingPolicyName("Pallet Freight");
-    }else if(rowData.shipmenttype === "10"){
-      
+    } else if (rowData.shipmenttype === "10") {
       setShippingPolicyName("Custom Shipping Label");
     }
     fetchUserIntegrationShopify(rowData.userId);
@@ -2854,26 +2873,29 @@ export default function Slide17(props) {
     console.log(shipdate1);
     custoemridarray.push(rowDataOr.customerId);
 
-    let codevalue="";
-    let storename="";
-    let refertokenvalue="";
-    
-      
-     
-    if(rowDataOr.source === "Wix"){
-      codevalue=codeNameWix;
-      storename=storeNameWix;
-      refertokenvalue= refershCodeNameWix;
-    }else if(rowDataOr.source === "Square Space"){
-      codevalue= codeSquareSpace;
-      storename=storeNameSquareSpace;
-      refertokenvalue= refershCodeSquareSpace;
-    }else if(rowDataOr.source === "Shopify"){
-      codevalue=codeShopify;
-      storename=storeNameShopify;
-      refertokenvalue= refershCodeShopify;
-    }
+    let codevalue = "";
+    let storename = "";
+    let refertokenvalue = "";
+    let consumersecret = "";
+    let consumerkey = "";
 
+    if (rowDataOr.source === "Wix") {
+      codevalue = codeNameWix;
+      storename = storeNameWix;
+      refertokenvalue = refershCodeNameWix;
+    } else if (rowDataOr.source === "Square Space") {
+      codevalue = codeSquareSpace;
+      storename = storeNameSquareSpace;
+      refertokenvalue = refershCodeSquareSpace;
+    } else if (rowDataOr.source === "Shopify") {
+      codevalue = codeShopify;
+      storename = storeNameShopify;
+      refertokenvalue = refershCodeShopify;
+    } else if (rowDataOr.source === "Woocommerce") {
+      storename = storeNameWocomm;
+      consumersecret = keyWocom;
+      consumerkey = secretCodeWocomm;
+    }
 
     setLoading(true);
     // const isDelete=4;
@@ -2910,7 +2932,9 @@ export default function Slide17(props) {
         rowDataOr.warehouseid === null ? 2 : rowDataOr.warehouseid,
         refertokenvalue,
         comapnyname,
-        shipdate1
+        shipdate1,
+        consumerkey,
+        consumersecret
       )
       .then((response) => {
         console.log("status", response.status);
@@ -2921,7 +2945,6 @@ export default function Slide17(props) {
           setStatus(response.status);
           handleConfirmShippedStatus();
           setLoading(false);
-         
         } else {
           setOpen(true);
           setType("success");
@@ -2951,24 +2974,30 @@ export default function Slide17(props) {
     setLoading(true);
     custoemridarray.push(rowDataOr.customerId);
 
-    let codevalue="";
-    let storename="";
-    let refertokenvalue="";
-    
-      
-     setOpenManualTrackingOrder(false);
-    if(rowDataOr.source === "Wix"){
-      codevalue=codeNameWix;
-      storename=storeNameWix;
-      refertokenvalue= refershCodeNameWix;
-    }else if(rowDataOr.source === "Square Space"){
-      codevalue= codeSquareSpace;
-      storename=storeNameSquareSpace;
-      refertokenvalue= refershCodeSquareSpace;
-    }else if(rowDataOr.source === "Shopify"){
-      codevalue=codeShopify;
-      storename=storeNameShopify;
-      refertokenvalue= refershCodeShopify;
+    let codevalue = "";
+    let storename = "";
+    let refertokenvalue = "";
+    let consumersecret = "";
+    let consumerkey = "";
+
+    setOpenManualTrackingOrder(false);
+
+    if (rowDataOr.source === "Wix") {
+      codevalue = codeNameWix;
+      storename = storeNameWix;
+      refertokenvalue = refershCodeNameWix;
+    } else if (rowDataOr.source === "Square Space") {
+      codevalue = codeSquareSpace;
+      storename = storeNameSquareSpace;
+      refertokenvalue = refershCodeSquareSpace;
+    } else if (rowDataOr.source === "Shopify") {
+      codevalue = codeShopify;
+      storename = storeNameShopify;
+      refertokenvalue = refershCodeShopify;
+    } else if (rowDataOr.source === "Woocommerce") {
+      storename = storeNameWocomm;
+      consumersecret = keyWocom;
+      consumerkey = secretCodeWocomm;
     }
 
     // const isDelete=4;
@@ -3001,7 +3030,9 @@ export default function Slide17(props) {
         rowDataOr.externaluniqueId,
         rowDataOr.warehouseid,
         serviceName,
-        refertokenvalue
+        refertokenvalue,
+        consumerkey,
+        consumersecret
       )
       .then((response) => {
         console.log("status", response.status);
@@ -3303,7 +3334,7 @@ export default function Slide17(props) {
     AsyncStorage.multiGet(["ProductSelectAllTabUS"]).then((data) => {
       if (data[0][1] != null) {
         ProductSelect = JSON.parse(data[0][1]);
-        console.log("Orderselect",ProductSelect);
+        console.log("Orderselect", ProductSelect);
         if (ProductSelect.length > 0) {
           setOpenChekced(!openChecked);
           ProductSelect.forEach((item) => {
@@ -3312,7 +3343,6 @@ export default function Slide17(props) {
         }
       }
     });
-
 
     fetchCourierTypeList(user_id);
     if (sellerid === 0) {
@@ -3340,6 +3370,11 @@ export default function Slide17(props) {
           setLoading(false);
           if (response.data.length !== 0) {
             for (let i = 0; i < response.data.length; i++) {
+              if (response.data[i].integrationId === 3) {
+                setKeyWocomm(response.data[i].apikey);
+                setSecretCodeWocomm(response.data[i].apipass);
+                setStoreNameWocomm(response.data[i].appname);
+              }
               if (response.data[i].integrationId === 4) {
                 setCodeShopify(response.data[i].token);
                 setStoreNameshopify(response.data[i].appname);
@@ -3397,15 +3432,15 @@ export default function Slide17(props) {
         console.log("status", response.status);
         if (response.status === true) {
           setLoading(false);
-          var array=[];
-              for(let m=0;m<response.data.length;m++){
-                if(response.data[m].warehouseid !== null){
-                  if(parseInt(response.data[m].warehouseid) === 1){
-                    array.push(response.data[m]); 
-                   }
-                }
+          var array = [];
+          for (let m = 0; m < response.data.length; m++) {
+            if (response.data[m].warehouseid !== null) {
+              if (parseInt(response.data[m].warehouseid) === 1) {
+                array.push(response.data[m]);
               }
-              const updatedaray=[...array];
+            }
+          }
+          const updatedaray = [...array];
           setDataProduct(updatedaray);
         } else {
           setLoading(false);
@@ -3417,7 +3452,6 @@ export default function Slide17(props) {
       });
   };
   const fetchProductList = (seller) => {
-    
     if (props.isfirst === true) {
       if (sellerid === 0) {
         setDataProduct([]);
@@ -3439,16 +3473,16 @@ export default function Slide17(props) {
                 }
               }
 
-              var array=[];
-              for(let m=0;m<response.data.length;m++){
-                if(response.data[m].warehouseid !== null){
-                  if(parseInt(response.data[m].warehouseid) === 1){
-                    array.push(response.data[m]); 
-                   }
+              var array = [];
+              for (let m = 0; m < response.data.length; m++) {
+                if (response.data[m].warehouseid !== null) {
+                  if (parseInt(response.data[m].warehouseid) === 1) {
+                    array.push(response.data[m]);
+                  }
                 }
               }
-              const updatedaray=[...array];
-          setDataProduct(updatedaray);
+              const updatedaray = [...array];
+              setDataProduct(updatedaray);
             } else {
               //setLoading(false);
               console.log("message", response.message);
@@ -3481,16 +3515,16 @@ export default function Slide17(props) {
                   response.data[i].externalorderId = "";
                 }
               }
-              var array=[];
-              for(let m=0;m<response.data.length;m++){
-                if(response.data[m].warehouseid !== null){
-                  if(parseInt(response.data[m].warehouseid) === 1){
-                    array.push(response.data[m]); 
-                   }
+              var array = [];
+              for (let m = 0; m < response.data.length; m++) {
+                if (response.data[m].warehouseid !== null) {
+                  if (parseInt(response.data[m].warehouseid) === 1) {
+                    array.push(response.data[m]);
+                  }
                 }
               }
-              const updatedaray=[...array];
-          setDataProduct(updatedaray);
+              const updatedaray = [...array];
+              setDataProduct(updatedaray);
             } else {
               //setLoading(false);
               console.log("message", response.message);
@@ -3561,16 +3595,17 @@ export default function Slide17(props) {
                       control={
                         <Checkbox
                           id={rowData.internalorderId}
-                          checked={(() => {
-                            for (let i = 0; i < ids.length; i++) {
-                              if (
-                                rowData.internalorderId ===
-                                parseInt(ids[i])
-                              ) {
-                                return true;
-                              }
-                            }
-                          })()}
+                          checked={ids.includes(rowData.internalorderId)}
+                          // checked={(() => {
+                          //   for (let i = 0; i < ids.length; i++) {
+                          //     if (
+                          //       rowData.internalorderId ===
+                          //       parseInt(ids[i])
+                          //     ) {
+                          //       return true;
+                          //     }
+                          //   }
+                          // })()}
                           onChange={() => {
                             handleChangeCheckbox(rowData.internalorderId);
                           }}
@@ -3590,18 +3625,15 @@ export default function Slide17(props) {
           ),
         },
 
-        
-
         {
           title: "ShipHype Id",
           field: "internalorderId",
           type: "text",
-         
+
           render: (rowData) => (
             <FormControlLabel
               onClick={() => {
                 handleChangeCheckbox(rowData.internalorderId);
-                             
               }}
               className={classes.quantitycss}
               control={
@@ -3614,18 +3646,17 @@ export default function Slide17(props) {
                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
                   }}
                 >
-                 <Link
-              href="#"
-              onClick={() => handleGetShipmentId(rowData.internalorderId)}
-              variant="body2"
-            >
-              {rowData.internalorderId}{" "}
-            </Link>
+                  <Link
+                    href="#"
+                    onClick={() => handleGetShipmentId(rowData.internalorderId)}
+                    variant="body2"
+                  >
+                    {rowData.internalorderId}{" "}
+                  </Link>
                 </Typography>
               }
             />
           ),
-        
         },
         {
           title: "Platform Id",
@@ -3655,55 +3686,24 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.externalorderId === null ? ' ' : rowData.externalorderId}
+                    {rowData.externalorderId === null
+                      ? " "
+                      : rowData.externalorderId}
                   </Text>
                 </Typography>
               }
             />
           ),
         },
-       
-        { title: "Create Date", field: "orderdate", type: "text",
-        render: (rowData) => (
-          <FormControlLabel
-            onClick={() => {
-              handleChangeCheckbox(rowData.internalorderId);
-                            
-            }}
-            className={classes.quantitycss}
-            control={
-              <Typography
-                style={{
-                  marginLeft: "20px",
-                  fontSize: "2px",
-                  cursor: "pointer",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "11px",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                    transition: "all 0.25s",
-                  }}
-                >
-                  {moment(rowData.orderdate).format("MM/DD/YYYY")}
-                </Text>
-              </Typography>
-            }
-          />
-        ),
-      },
+
         {
-          title: "Courier ID",
-          field: "courierid",
+          title: "Create Date",
+          field: "orderdate",
           type: "text",
           render: (rowData) => (
             <FormControlLabel
               onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);             
+                handleChangeCheckbox(rowData.internalorderId);
               }}
               className={classes.quantitycss}
               control={
@@ -3717,15 +3717,50 @@ export default function Slide17(props) {
                   }}
                 >
                   <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {moment(rowData.orderdate).format("MM/DD/YYYY")}
+                  </Text>
+                </Typography>
+              }
+            />
+          ),
+        },
+        {
+          title: "Courier ID",
+          field: "courierid",
+          type: "text",
+          render: (rowData) => (
+            <FormControlLabel
+              onClick={() => {
+                handleChangeCheckbox(rowData.internalorderId);
               }}
-            >
-              {rowData.courierid === null ? ' ' : rowData.courierid}
-            </Text>
+              className={classes.quantitycss}
+              control={
+                <Typography
+                  style={{
+                    marginLeft: "20px",
+                    fontSize: "2px",
+                    cursor: "pointer",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {rowData.courierid === null ? " " : rowData.courierid}
+                  </Text>
                 </Typography>
               }
             />
@@ -3759,7 +3794,9 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.sellerorderid === null ? ' ' : rowData.sellerorderid}
+                    {rowData.sellerorderid === null
+                      ? " "
+                      : rowData.sellerorderid}
                   </Text>
                 </Typography>
               }
@@ -4137,10 +4174,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -4154,10 +4188,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -4171,10 +4202,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -4188,10 +4216,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -4205,10 +4230,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -4218,16 +4240,16 @@ export default function Slide17(props) {
                 } else if (rowData.orderstatus === 8) {
                   return (
                     <ColorButtonOnHold
-              size="large"
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                handleClickOpendelete(rowData.internalorderId, rowData);
-              }}
-            >
-              {" "}
-              On Hold
-            </ColorButtonOnHold> 
+                      size="large"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        handleClickOpendelete(rowData.internalorderId, rowData);
+                      }}
+                    >
+                      {" "}
+                      On Hold
+                    </ColorButtonOnHold>
                   );
                 } else if (rowData.orderstatus === 9) {
                   return (
@@ -4236,10 +4258,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -4253,10 +4272,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -4280,8 +4296,8 @@ export default function Slide17(props) {
                 color="primary"
                 onClick={() => {
                   if (rowData.orderstatus === 4) {
-          handleClickTrack(rowData.internalorderId, rowData);
-          }
+                    handleClickTrack(rowData.internalorderId, rowData);
+                  }
                 }}
               >
                 {" "}
@@ -4318,7 +4334,9 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.shippingpolicy === null ? '  ' : rowData.shippingpolicy}
+                    {rowData.shippingpolicy === null
+                      ? "  "
+                      : rowData.shippingpolicy}
                   </Text>
                 </Typography>
               }
@@ -4354,7 +4372,7 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.tracking === "" ? '  ' : rowData.tracking}
+                    {rowData.tracking === "" ? "  " : rowData.tracking}
                   </Text>
                 </Typography>
               }
@@ -4382,127 +4400,125 @@ export default function Slide17(props) {
                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
                   }}
                 >
-            <Text>
-              {(() => {
-                if (rowData.shipmenttype === "10") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Custom Shipping Label
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "2") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      2-Day Shipping
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "3") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Overnight Shipping
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "4") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Stamped Postage
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "5") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Oversize LetterMail
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "6") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Pallet Freight
-                    </Text>
-                  );
-                }else if (rowData.shipmenttype === "1") {
-          return (
-            <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
-              }}
-            >
-              Standard Shipping
-            </Text>
-          );
-        }else{
-          return (
-            <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
-              }}
-            >
-              {' '}
-            </Text>
-          );
-        }
-              })()}
-            </Text>
-            </Typography>
+                  <Text>
+                    {(() => {
+                      if (rowData.shipmenttype === "10") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Custom Shipping Label
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "2") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            2-Day Shipping
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "3") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Overnight Shipping
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "4") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Stamped Postage
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "5") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Oversize LetterMail
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "6") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Pallet Freight
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "1") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Standard Shipping
+                          </Text>
+                        );
+                      } else {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            {" "}
+                          </Text>
+                        );
+                      }
+                    })()}
+                  </Text>
+                </Typography>
               }
             />
           ),
         },
 
-       
         {
           title: "Shipment Date",
           field: "shipdate",
           type: "date",
-         
         },
       ],
     });
@@ -4516,10 +4532,7 @@ export default function Slide17(props) {
     // setCheckedA(false);
     if (ids.length === 0) {
       ids.push(data);
-      AsyncStorage.setItem(
-        "ProductSelectAllTabUS",
-        JSON.stringify(ids)
-      );
+      AsyncStorage.setItem("ProductSelectAllTabUS", JSON.stringify(ids));
     } else {
       for (let i = 0; i < ids.length; i++) {
         if (data !== ids[i]) {
@@ -4532,10 +4545,7 @@ export default function Slide17(props) {
       }
       if (flag === true) {
         ids.push(data);
-        AsyncStorage.setItem(
-          "ProductSelectAllTabUS",
-          JSON.stringify(ids)
-        );
+        AsyncStorage.setItem("ProductSelectAllTabUS", JSON.stringify(ids));
       } else {
         const index = ids.indexOf(data);
         if (index > -1) {
@@ -4543,14 +4553,10 @@ export default function Slide17(props) {
           if (ids.length === 0) {
             setOpenChekced(false);
             AsyncStorage.removeItem("ProductSelectAllTabUS");
-          }else{
-            AsyncStorage.setItem(
-              "ProductSelectAllTabUS",
-              JSON.stringify(ids)
-            );
+          } else {
+            AsyncStorage.setItem("ProductSelectAllTabUS", JSON.stringify(ids));
           }
         }
-       
       }
     }
     console.log("arraylenghtafter", ids.length);
@@ -4572,16 +4578,17 @@ export default function Slide17(props) {
                       control={
                         <Checkbox
                           id={rowData.internalorderId}
-                          checked={(() => {
-                            for (let i = 0; i < ids.length; i++) {
-                              if (
-                                rowData.internalorderId ===
-                                parseInt(ids[i])
-                              ) {
-                                return true;
-                              }
-                            }
-                          })()}
+                          checked={ids.includes(rowData.internalorderId)}
+                          // checked={(() => {
+                          //   for (let i = 0; i < ids.length; i++) {
+                          //     if (
+                          //       rowData.internalorderId ===
+                          //       parseInt(ids[i])
+                          //     ) {
+                          //       return true;
+                          //     }
+                          //   }
+                          // })()}
                           onChange={() => {
                             handleChangeCheckbox(rowData.internalorderId);
                           }}
@@ -4601,18 +4608,15 @@ export default function Slide17(props) {
           ),
         },
 
-        
-
         {
           title: "ShipHype Id",
           field: "internalorderId",
           type: "text",
-         
+
           render: (rowData) => (
             <FormControlLabel
               onClick={() => {
                 handleChangeCheckbox(rowData.internalorderId);
-                             
               }}
               className={classes.quantitycss}
               control={
@@ -4625,18 +4629,17 @@ export default function Slide17(props) {
                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
                   }}
                 >
-                 <Link
-              href="#"
-              onClick={() => handleGetShipmentId(rowData.internalorderId)}
-              variant="body2"
-            >
-              {rowData.internalorderId}{" "}
-            </Link>
+                  <Link
+                    href="#"
+                    onClick={() => handleGetShipmentId(rowData.internalorderId)}
+                    variant="body2"
+                  >
+                    {rowData.internalorderId}{" "}
+                  </Link>
                 </Typography>
               }
             />
           ),
-        
         },
         {
           title: "Platform Id",
@@ -4666,55 +4669,24 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.externalorderId === null ? ' ' : rowData.externalorderId}
+                    {rowData.externalorderId === null
+                      ? " "
+                      : rowData.externalorderId}
                   </Text>
                 </Typography>
               }
             />
           ),
         },
-       
-        { title: "Create Date", field: "orderdate", type: "text",
-        render: (rowData) => (
-          <FormControlLabel
-            onClick={() => {
-              handleChangeCheckbox(rowData.internalorderId);
-                            
-            }}
-            className={classes.quantitycss}
-            control={
-              <Typography
-                style={{
-                  marginLeft: "20px",
-                  fontSize: "2px",
-                  cursor: "pointer",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "11px",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                    transition: "all 0.25s",
-                  }}
-                >
-                  {moment(rowData.orderdate).format("MM/DD/YYYY")}
-                </Text>
-              </Typography>
-            }
-          />
-        ),
-      },
+
         {
-          title: "Courier ID",
-          field: "courierid",
+          title: "Create Date",
+          field: "orderdate",
           type: "text",
           render: (rowData) => (
             <FormControlLabel
               onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);             
+                handleChangeCheckbox(rowData.internalorderId);
               }}
               className={classes.quantitycss}
               control={
@@ -4728,15 +4700,50 @@ export default function Slide17(props) {
                   }}
                 >
                   <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {moment(rowData.orderdate).format("MM/DD/YYYY")}
+                  </Text>
+                </Typography>
+              }
+            />
+          ),
+        },
+        {
+          title: "Courier ID",
+          field: "courierid",
+          type: "text",
+          render: (rowData) => (
+            <FormControlLabel
+              onClick={() => {
+                handleChangeCheckbox(rowData.internalorderId);
               }}
-            >
-              {rowData.courierid === null ? ' ' : rowData.courierid}
-            </Text>
+              className={classes.quantitycss}
+              control={
+                <Typography
+                  style={{
+                    marginLeft: "20px",
+                    fontSize: "2px",
+                    cursor: "pointer",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {rowData.courierid === null ? " " : rowData.courierid}
+                  </Text>
                 </Typography>
               }
             />
@@ -4770,7 +4777,9 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.sellerorderid === null ? ' ' : rowData.sellerorderid}
+                    {rowData.sellerorderid === null
+                      ? " "
+                      : rowData.sellerorderid}
                   </Text>
                 </Typography>
               }
@@ -5148,10 +5157,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -5165,10 +5171,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -5182,10 +5185,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -5199,10 +5199,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -5216,10 +5213,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -5229,16 +5223,16 @@ export default function Slide17(props) {
                 } else if (rowData.orderstatus === 8) {
                   return (
                     <ColorButtonOnHold
-              size="large"
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                handleClickOpendelete(rowData.internalorderId, rowData);
-              }}
-            >
-              {" "}
-              On Hold
-            </ColorButtonOnHold> 
+                      size="large"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        handleClickOpendelete(rowData.internalorderId, rowData);
+                      }}
+                    >
+                      {" "}
+                      On Hold
+                    </ColorButtonOnHold>
                   );
                 } else if (rowData.orderstatus === 9) {
                   return (
@@ -5247,10 +5241,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -5264,10 +5255,7 @@ export default function Slide17(props) {
                       variant="contained"
                       color="primary"
                       onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
+                        handleClickOpendelete(rowData.internalorderId, rowData);
                       }}
                     >
                       {" "}
@@ -5291,8 +5279,8 @@ export default function Slide17(props) {
                 color="primary"
                 onClick={() => {
                   if (rowData.orderstatus === 4) {
-          handleClickTrack(rowData.internalorderId, rowData);
-          }
+                    handleClickTrack(rowData.internalorderId, rowData);
+                  }
                 }}
               >
                 {" "}
@@ -5329,7 +5317,9 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.shippingpolicy === null ? '  ' : rowData.shippingpolicy}
+                    {rowData.shippingpolicy === null
+                      ? "  "
+                      : rowData.shippingpolicy}
                   </Text>
                 </Typography>
               }
@@ -5365,7 +5355,7 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.tracking === "" ? '  ' : rowData.tracking}
+                    {rowData.tracking === "" ? "  " : rowData.tracking}
                   </Text>
                 </Typography>
               }
@@ -5393,127 +5383,125 @@ export default function Slide17(props) {
                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
                   }}
                 >
-            <Text>
-              {(() => {
-                if (rowData.shipmenttype === "10") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Custom Shipping Label
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "2") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      2-Day Shipping
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "3") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Overnight Shipping
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "4") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Stamped Postage
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "5") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Oversize LetterMail
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "6") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Pallet Freight
-                    </Text>
-                  );
-                }else if (rowData.shipmenttype === "1") {
-          return (
-            <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
-              }}
-            >
-              Standard Shipping
-            </Text>
-          );
-        }else{
-          return (
-            <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
-              }}
-            >
-              {' '}
-            </Text>
-          );
-        }
-              })()}
-            </Text>
-            </Typography>
+                  <Text>
+                    {(() => {
+                      if (rowData.shipmenttype === "10") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Custom Shipping Label
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "2") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            2-Day Shipping
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "3") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Overnight Shipping
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "4") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Stamped Postage
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "5") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Oversize LetterMail
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "6") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Pallet Freight
+                          </Text>
+                        );
+                      } else if (rowData.shipmenttype === "1") {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            Standard Shipping
+                          </Text>
+                        );
+                      } else {
+                        return (
+                          <Text
+                            style={{
+                              fontSize: "11px",
+                              fontFamily:
+                                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                              transition: "all 0.25s",
+                            }}
+                          >
+                            {" "}
+                          </Text>
+                        );
+                      }
+                    })()}
+                  </Text>
+                </Typography>
               }
             />
           ),
         },
 
-       
         {
           title: "Shipment Date",
           field: "shipdate",
           type: "date",
-         
         },
       ],
     });
@@ -5675,7 +5663,7 @@ export default function Slide17(props) {
         {openinternalslip === false ? (
           " "
         ) : (
-          <PrintInternalPacakingSlipDialog 
+          <PrintInternalPacakingSlipDialog
             userid={user_id}
             openinternalslip={openinternalslip}
             handleRelease={handleRelease}
@@ -5824,7 +5812,7 @@ export default function Slide17(props) {
                       color="primary"
                       //startIcon={<AddIcon />}
                     >
-                       Packaging Slip
+                      Packaging Slip
                     </ColorButtonAddPrint>
                   ),
                   isFreeAction: openChecked,
@@ -5836,7 +5824,7 @@ export default function Slide17(props) {
                 {
                   icon: () => (
                     <ColorButtonRefresh
-                    size="large"
+                      size="large"
                       variant="contained"
                       color="primary"
                       startIcon={<RefreshIcon />}
@@ -5903,7 +5891,7 @@ export default function Slide17(props) {
                 {
                   icon: () => (
                     <ColorButtonRefresh
-                    size="large"
+                      size="large"
                       variant="contained"
                       color="primary"
                       startIcon={<RefreshIcon />}

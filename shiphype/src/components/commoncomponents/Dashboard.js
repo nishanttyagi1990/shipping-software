@@ -598,6 +598,10 @@ const useStyles = makeStyles(theme => ({
 
     
   }, []);
+
+  const refreh=()=>{
+    fetchShipPolicy(2);
+  }
   const fetchShipPolicy = (id) => {
     setLoading(true);
     shiphypeService
@@ -2389,6 +2393,7 @@ const updateData = (data, integrateDataid) => {
                 openSprint={openSprint}
                 user_id={userid}
                 handleNext={handleNext}
+                fetchShipPolicy={refreh}
                 handleStepPage={handleStepPage}
                 handleSprintCancel={handleSprintCancel}
                 handleOpenaddpercentage={handleOpenaddpercentage}

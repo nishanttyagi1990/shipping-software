@@ -506,6 +506,13 @@ export default function Slide17(props) {
   const [refershCodeSquareSpace, setRefershCodeSquareSpace] = React.useState(
     ""
   );
+  const [keyWocom ,setKeyWocomm] = React.useState("");
+  const [secretCodeWocomm, setSecretCodeWocomm] = React.useState(
+    ""
+  );
+  const [storeNameWocomm, setStoreNameWocomm] = React.useState("");
+
+
   const [storeNameSquareSpace, setStoreNameSquareSpace] = React.useState("");
   const [codeNameWix, setCodeNameWix] = React.useState("");
   const [refershCodeNameWix, setRefershCodeNameWix] = React.useState(
@@ -1574,7 +1581,7 @@ export default function Slide17(props) {
         />
         ),
       },
-      
+     
       {
         title: "Shipment Date",
         field: "shipdate",
@@ -2548,8 +2555,7 @@ export default function Slide17(props) {
                   />
                 ),
               },
-
-             
+              
               {
                 title: "Shipment Date",
                 field: "shipdate",
@@ -2831,25 +2837,31 @@ export default function Slide17(props) {
 
     let shipdate1 = format(new Date(shipdate), "yyyy-MM-dd'T'hh:mm:ss'Z'");
     //shipdate1=shipdate1.toISOString();
-let codevalue="";
-let storename="";
-let refertokenvalue="";
+    let codevalue="";
+    let storename="";
+    let refertokenvalue="";
+    let consumersecret="";
+    let consumerkey="";
+      
+     
+    if(rowDataOr.source === "Wix"){
+      codevalue=codeNameWix;
+      storename=storeNameWix;
+      refertokenvalue= refershCodeNameWix;
+    }else if(rowDataOr.source === "Square Space"){
+      codevalue= codeSquareSpace;
+      storename=storeNameSquareSpace;
+      refertokenvalue= refershCodeSquareSpace;
+    }else if(rowDataOr.source === "Shopify"){
+      codevalue=codeShopify;
+      storename=storeNameShopify;
+      refertokenvalue= refershCodeShopify;
+    }else if(rowDataOr.source === "Woocommerce"){
+      storename=storeNameWocomm;
+      consumersecret=keyWocom;
+      consumerkey=secretCodeWocomm;
+    }
 
-  
- 
-if(rowDataOr.source === "Wix"){
-  codevalue=codeNameWix;
-  storename=storeNameWix;
-  refertokenvalue= refershCodeNameWix;
-}else if(rowDataOr.source === "Square Space"){
-  codevalue= codeSquareSpace;
-  storename=storeNameSquareSpace;
-  refertokenvalue= refershCodeSquareSpace;
-}else if(rowDataOr.source === "Shopify"){
-  codevalue=codeShopify;
-  storename=storeNameShopify;
-  refertokenvalue= refershCodeShopify;
-}
     console.log(shipdate1);
     custoemridarray.push(rowDataOr.customerId);
     setLoading(true);
@@ -2887,7 +2899,9 @@ if(rowDataOr.source === "Wix"){
         rowDataOr.warehouseid === null ? 2 : rowDataOr.warehouseid,
         refertokenvalue,
         comapnyname,
-        shipdate1
+        shipdate1,
+        consumerkey,
+        consumersecret
       )
       .then((response) => {
         console.log("status", response.status);
@@ -2927,11 +2941,17 @@ if(rowDataOr.source === "Wix"){
     const selectedorderDate1 = format(selectedorderDate, "yyyy-MM-dd hh:mm:ss");
     setLoading(true);
     custoemridarray.push(rowDataOr.customerId);
+   
+    
+    setOpenManualTrackingOrder(false);
+     
+    
     let codevalue="";
     let storename="";
     let refertokenvalue="";
-    
-    setOpenManualTrackingOrder(false);
+    let consumersecret="";
+    let consumerkey="";
+      
      
     if(rowDataOr.source === "Wix"){
       codevalue=codeNameWix;
@@ -2945,7 +2965,12 @@ if(rowDataOr.source === "Wix"){
       codevalue=codeShopify;
       storename=storeNameShopify;
       refertokenvalue= refershCodeShopify;
+    }else if(rowDataOr.source === "Woocommerce"){
+      storename=storeNameWocomm;
+      consumersecret=keyWocom;
+      consumerkey=secretCodeWocomm;
     }
+
 
     // const isDelete=4;
     shiphypeservice
@@ -2977,7 +3002,9 @@ if(rowDataOr.source === "Wix"){
         rowDataOr.externaluniqueId,
         rowDataOr.warehouseid,
         serviceName,
-        refertokenvalue
+        refertokenvalue,
+        consumerkey,
+        consumersecret
       )
       .then((response) => {
         console.log("status", response.status);
@@ -3315,6 +3342,11 @@ if(rowDataOr.source === "Wix"){
           setLoading(false);
           if (response.data.length !== 0) {
             for (let i = 0; i < response.data.length; i++) {
+              if(response.data[i].integrationId === 3){
+                setKeyWocomm(response.data[i].apikey);
+                setSecretCodeWocomm(response.data[i].apipass);
+                setStoreNameWocomm(response.data[i].appname);
+              }
               if (response.data[i].integrationId === 4) {
                 setCodeShopify(response.data[i].token);
                 setStoreNameshopify(response.data[i].appname);
@@ -4471,7 +4503,7 @@ if(rowDataOr.source === "Wix"){
             />
           ),
         },
-
+        
        
         {
           title: "Shipment Date",
@@ -4529,968 +4561,967 @@ if(rowDataOr.source === "Wix"){
     }
     console.log("arraylenghtafter", ids.length);
     const updatedaray = [...ids];
-
     setchangedWarehouseid(updatedaray);
     setCardid(0);
-    setState({
-      columns: [
-        {
-          title: "",
-          render: (rowData) => (
-            <FormGroup>
-              {(() => {
-                if (rowData !== undefined) {
-                  return (
-                    <FormControlLabel
-                      style={popUpStyle.checkboxPosition}
-                      control={
-                        <Checkbox
-                          id={rowData.internalorderId}
-                          checked={(() => {
-                            for (let i = 0; i < ids.length; i++) {
-                              if (
-                                rowData.internalorderId ===
-                                parseInt(ids[i])
-                              ) {
-                                return true;
-                              }
-                            }
-                          })()}
-                          onChange={() => {
-                            handleChangeCheckbox(rowData.internalorderId);
-                          }}
-                          color="primary"
-                        />
-                      }
-                      className={classes.radioButtonCss}
-                      InputProps={{
-                        inputProps: { style: { borderRadius: 0 } },
-                        style: { borderRadius: 0 },
-                      }}
-                    />
-                  );
-                }
-              })()}
-            </FormGroup>
-          ),
-        },
+    // setState({
+    //   columns: [
+    //     {
+    //       title: "",
+    //       render: (rowData) => (
+    //         <FormGroup>
+    //           {(() => {
+    //             if (rowData !== undefined) {
+    //               return (
+    //                 <FormControlLabel
+    //                   style={popUpStyle.checkboxPosition}
+    //                   control={
+    //                     <Checkbox
+    //                       id={rowData.internalorderId}
+    //                       checked={(() => {
+    //                         for (let i = 0; i < ids.length; i++) {
+    //                           if (
+    //                             rowData.internalorderId ===
+    //                             parseInt(ids[i])
+    //                           ) {
+    //                             return true;
+    //                           }
+    //                         }
+    //                       })()}
+    //                       onChange={() => {
+    //                         handleChangeCheckbox(rowData.internalorderId);
+    //                       }}
+    //                       color="primary"
+    //                     />
+    //                   }
+    //                   className={classes.radioButtonCss}
+    //                   InputProps={{
+    //                     inputProps: { style: { borderRadius: 0 } },
+    //                     style: { borderRadius: 0 },
+    //                   }}
+    //                 />
+    //               );
+    //             }
+    //           })()}
+    //         </FormGroup>
+    //       ),
+    //     },
 
         
 
-        {
-          title: "ShipHype Id",
-          field: "internalorderId",
-          type: "text",
+    //     {
+    //       title: "ShipHype Id",
+    //       field: "internalorderId",
+    //       type: "text",
          
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
                              
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                 <Link
-              href="#"
-              onClick={() => handleGetShipmentId(rowData.internalorderId)}
-              variant="body2"
-            >
-              {rowData.internalorderId}{" "}
-            </Link>
-                </Typography>
-              }
-            />
-          ),
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //              <Link
+    //           href="#"
+    //           onClick={() => handleGetShipmentId(rowData.internalorderId)}
+    //           variant="body2"
+    //         >
+    //           {rowData.internalorderId}{" "}
+    //         </Link>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
         
-        },
-        {
-          title: "Platform Id",
-          field: "externalorderId",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.externalorderId === null ? ' ' : rowData.externalorderId}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
+    //     },
+    //     {
+    //       title: "Platform Id",
+    //       field: "externalorderId",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {rowData.externalorderId === null ? ' ' : rowData.externalorderId}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
        
-        { title: "Create Date", field: "orderdate", type: "text",
-        render: (rowData) => (
-          <FormControlLabel
-            onClick={() => {
-              handleChangeCheckbox(rowData.internalorderId);
+    //     { title: "Create Date", field: "orderdate", type: "text",
+    //     render: (rowData) => (
+    //       <FormControlLabel
+    //         onClick={() => {
+    //           handleChangeCheckbox(rowData.internalorderId);
                             
-            }}
-            className={classes.quantitycss}
-            control={
-              <Typography
-                style={{
-                  marginLeft: "20px",
-                  fontSize: "2px",
-                  cursor: "pointer",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "11px",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                    transition: "all 0.25s",
-                  }}
-                >
-                  {moment(rowData.orderdate).format("MM/DD/YYYY")}
-                </Text>
-              </Typography>
-            }
-          />
-        ),
-      },
-        {
-          title: "Courier ID",
-          field: "courierid",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);             
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
-              }}
-            >
-              {rowData.courierid === null ? ' ' : rowData.courierid}
-            </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Order ID",
-          field: "sellerorderid",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.sellerorderid === null ? ' ' : rowData.sellerorderid}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Source",
-          field: "source",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.source}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Order Type",
-          field: "ordertype",
-          lookup: {
-            1: "Integration",
-            2: "Manual",
-            3: "Subscription Box",
-          },
+    //         }}
+    //         className={classes.quantitycss}
+    //         control={
+    //           <Typography
+    //             style={{
+    //               marginLeft: "20px",
+    //               fontSize: "2px",
+    //               cursor: "pointer",
+    //               fontFamily:
+    //                 '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //             }}
+    //           >
+    //             <Text
+    //               style={{
+    //                 fontSize: "11px",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                 transition: "all 0.25s",
+    //               }}
+    //             >
+    //               {moment(rowData.orderdate).format("MM/DD/YYYY")}
+    //             </Text>
+    //           </Typography>
+    //         }
+    //       />
+    //     ),
+    //   },
+    //     {
+    //       title: "Courier ID",
+    //       field: "courierid",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);             
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //           style={{
+    //             fontSize: "11px",
+    //             fontFamily:
+    //               '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //             transition: "all 0.25s",
+    //           }}
+    //         >
+    //           {rowData.courierid === null ? ' ' : rowData.courierid}
+    //         </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Order ID",
+    //       field: "sellerorderid",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {rowData.sellerorderid === null ? ' ' : rowData.sellerorderid}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Source",
+    //       field: "source",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {rowData.source}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Order Type",
+    //       field: "ordertype",
+    //       lookup: {
+    //         1: "Integration",
+    //         2: "Manual",
+    //         3: "Subscription Box",
+    //       },
 
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  {(() => {
-                    if (rowData.ordertype === 1) {
-                      return (
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          Integration
-                        </Text>
-                      );
-                    } else if (rowData.ordertype === 2) {
-                      return (
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          Manual
-                        </Text>
-                      );
-                    } else {
-                      return (
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          Subscription Box
-                        </Text>
-                      );
-                    }
-                  })()}
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Seller Email",
-          field: "userEmail",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.userEmail}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Seller Company",
-          field: "company_name",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.company_name}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Customer Name",
-          field: "recipientname",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {" "}
-                    {rowData.firstname} {rowData.lastname}{" "}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Order Country",
-          field: "ordercountry",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.ordercountry}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Customer Type",
-          field: "customertype",
-          lookup: { 1: "Business", 2: "Residential" },
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  {(() => {
-                    if (rowData.customertype === 1) {
-                      return (
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          Business
-                        </Text>
-                      );
-                    } else {
-                      return (
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          Residential
-                        </Text>
-                      );
-                    }
-                  })()}
-                </Typography>
-              }
-            />
-          ),
-        },
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               {(() => {
+    //                 if (rowData.ordertype === 1) {
+    //                   return (
+    //                     <Text
+    //                       style={{
+    //                         fontSize: "11px",
+    //                         fontFamily:
+    //                           '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                         transition: "all 0.25s",
+    //                       }}
+    //                     >
+    //                       Integration
+    //                     </Text>
+    //                   );
+    //                 } else if (rowData.ordertype === 2) {
+    //                   return (
+    //                     <Text
+    //                       style={{
+    //                         fontSize: "11px",
+    //                         fontFamily:
+    //                           '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                         transition: "all 0.25s",
+    //                       }}
+    //                     >
+    //                       Manual
+    //                     </Text>
+    //                   );
+    //                 } else {
+    //                   return (
+    //                     <Text
+    //                       style={{
+    //                         fontSize: "11px",
+    //                         fontFamily:
+    //                           '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                         transition: "all 0.25s",
+    //                       }}
+    //                     >
+    //                       Subscription Box
+    //                     </Text>
+    //                   );
+    //                 }
+    //               })()}
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Seller Email",
+    //       field: "userEmail",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {rowData.userEmail}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Seller Company",
+    //       field: "company_name",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {rowData.company_name}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Customer Name",
+    //       field: "recipientname",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {" "}
+    //                 {rowData.firstname} {rowData.lastname}{" "}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Order Country",
+    //       field: "ordercountry",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {rowData.ordercountry}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Customer Type",
+    //       field: "customertype",
+    //       lookup: { 1: "Business", 2: "Residential" },
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               {(() => {
+    //                 if (rowData.customertype === 1) {
+    //                   return (
+    //                     <Text
+    //                       style={{
+    //                         fontSize: "11px",
+    //                         fontFamily:
+    //                           '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                         transition: "all 0.25s",
+    //                       }}
+    //                     >
+    //                       Business
+    //                     </Text>
+    //                   );
+    //                 } else {
+    //                   return (
+    //                     <Text
+    //                       style={{
+    //                         fontSize: "11px",
+    //                         fontFamily:
+    //                           '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                         transition: "all 0.25s",
+    //                       }}
+    //                     >
+    //                       Residential
+    //                     </Text>
+    //                   );
+    //                 }
+    //               })()}
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
 
-        {
-          title: "Warehouse",
-          field: "warehouseid",
-          lookup: { 1: "US Warehouse", 2: "Canada Warehouse" },
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  {(() => {
-                    if (rowData.warehouseid === 1) {
-                      return (
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          US Warehouse
-                        </Text>
-                      );
-                    } else {
-                      return (
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          Canada Warehouse
-                        </Text>
-                      );
-                    }
-                  })()}
-                </Typography>
-              }
-            />
-          ),
-        },
+    //     {
+    //       title: "Warehouse",
+    //       field: "warehouseid",
+    //       lookup: { 1: "US Warehouse", 2: "Canada Warehouse" },
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               {(() => {
+    //                 if (rowData.warehouseid === 1) {
+    //                   return (
+    //                     <Text
+    //                       style={{
+    //                         fontSize: "11px",
+    //                         fontFamily:
+    //                           '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                         transition: "all 0.25s",
+    //                       }}
+    //                     >
+    //                       US Warehouse
+    //                     </Text>
+    //                   );
+    //                 } else {
+    //                   return (
+    //                     <Text
+    //                       style={{
+    //                         fontSize: "11px",
+    //                         fontFamily:
+    //                           '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                         transition: "all 0.25s",
+    //                       }}
+    //                     >
+    //                       Canada Warehouse
+    //                     </Text>
+    //                   );
+    //                 }
+    //               })()}
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
 
-        {
-          title: "Order Status",
-          field: "orderstatus",
+    //     {
+    //       title: "Order Status",
+    //       field: "orderstatus",
 
-          render: (rowData) => (
-            <Text>
-              {(() => {
-                if (rowData.orderstatus === 5) {
-                  return (
-                    <ColorButtonInTransit
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
-                      }}
-                    >
-                      {" "}
-                      In Transit{" "}
-                    </ColorButtonInTransit>
-                  );
-                } else if (rowData.orderstatus === 3) {
-                  return (
-                    <ColorButtonProcessed
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
-                      }}
-                    >
-                      {" "}
-                      Processing{" "}
-                    </ColorButtonProcessed>
-                  );
-                } else if (rowData.orderstatus === 6) {
-                  return (
-                    <ColorButtonInDeliverd
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
-                      }}
-                    >
-                      {" "}
-                      Delivered{" "}
-                    </ColorButtonInDeliverd>
-                  );
-                } else if (rowData.orderstatus === 4) {
-                  return (
-                    <ColorButtonShipped
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
-                      }}
-                    >
-                      {" "}
-                      Shipped{" "}
-                    </ColorButtonShipped>
-                  );
-                } else if (rowData.orderstatus === 7) {
-                  return (
-                    <ColorButtonOnHold
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
-                      }}
-                    >
-                      {" "}
-                      On Hold
-                    </ColorButtonOnHold>
-                  );
-                } else if (rowData.orderstatus === 8) {
-                  return (
-                    <ColorButtonOnHold
-              size="large"
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                handleClickOpendelete(rowData.internalorderId, rowData);
-              }}
-            >
-              {" "}
-              On Hold
-            </ColorButtonOnHold> 
-                  );
-                } else if (rowData.orderstatus === 9) {
-                  return (
-                    <ColorButtonCancel
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
-                      }}
-                    >
-                      {" "}
-                      Cancelled{" "}
-                    </ColorButtonCancel>
-                  );
-                } else {
-                  return (
-                    <ColorButtonNew
-                      size="large"
-                      variant="contained"
-                      color="primary"
-                      onClick={() => {
-                        handleClickOpendelete(
-                          rowData.internalorderId,
-                          rowData
-                        );
-                      }}
-                    >
-                      {" "}
-                      New Order{" "}
-                    </ColorButtonNew>
-                  );
-                }
-              })()}
-            </Text>
-          ),
-        },
-        {
-          title: "Track Order",
-          field: "trackingurl",
+    //       render: (rowData) => (
+    //         <Text>
+    //           {(() => {
+    //             if (rowData.orderstatus === 5) {
+    //               return (
+    //                 <ColorButtonInTransit
+    //                   size="large"
+    //                   variant="contained"
+    //                   color="primary"
+    //                   onClick={() => {
+    //                     handleClickOpendelete(
+    //                       rowData.internalorderId,
+    //                       rowData
+    //                     );
+    //                   }}
+    //                 >
+    //                   {" "}
+    //                   In Transit{" "}
+    //                 </ColorButtonInTransit>
+    //               );
+    //             } else if (rowData.orderstatus === 3) {
+    //               return (
+    //                 <ColorButtonProcessed
+    //                   size="large"
+    //                   variant="contained"
+    //                   color="primary"
+    //                   onClick={() => {
+    //                     handleClickOpendelete(
+    //                       rowData.internalorderId,
+    //                       rowData
+    //                     );
+    //                   }}
+    //                 >
+    //                   {" "}
+    //                   Processing{" "}
+    //                 </ColorButtonProcessed>
+    //               );
+    //             } else if (rowData.orderstatus === 6) {
+    //               return (
+    //                 <ColorButtonInDeliverd
+    //                   size="large"
+    //                   variant="contained"
+    //                   color="primary"
+    //                   onClick={() => {
+    //                     handleClickOpendelete(
+    //                       rowData.internalorderId,
+    //                       rowData
+    //                     );
+    //                   }}
+    //                 >
+    //                   {" "}
+    //                   Delivered{" "}
+    //                 </ColorButtonInDeliverd>
+    //               );
+    //             } else if (rowData.orderstatus === 4) {
+    //               return (
+    //                 <ColorButtonShipped
+    //                   size="large"
+    //                   variant="contained"
+    //                   color="primary"
+    //                   onClick={() => {
+    //                     handleClickOpendelete(
+    //                       rowData.internalorderId,
+    //                       rowData
+    //                     );
+    //                   }}
+    //                 >
+    //                   {" "}
+    //                   Shipped{" "}
+    //                 </ColorButtonShipped>
+    //               );
+    //             } else if (rowData.orderstatus === 7) {
+    //               return (
+    //                 <ColorButtonOnHold
+    //                   size="large"
+    //                   variant="contained"
+    //                   color="primary"
+    //                   onClick={() => {
+    //                     handleClickOpendelete(
+    //                       rowData.internalorderId,
+    //                       rowData
+    //                     );
+    //                   }}
+    //                 >
+    //                   {" "}
+    //                   On Hold
+    //                 </ColorButtonOnHold>
+    //               );
+    //             } else if (rowData.orderstatus === 8) {
+    //               return (
+    //                 <ColorButtonOnHold
+    //           size="large"
+    //           variant="contained"
+    //           color="primary"
+    //           onClick={() => {
+    //             handleClickOpendelete(rowData.internalorderId, rowData);
+    //           }}
+    //         >
+    //           {" "}
+    //           On Hold
+    //         </ColorButtonOnHold> 
+    //               );
+    //             } else if (rowData.orderstatus === 9) {
+    //               return (
+    //                 <ColorButtonCancel
+    //                   size="large"
+    //                   variant="contained"
+    //                   color="primary"
+    //                   onClick={() => {
+    //                     handleClickOpendelete(
+    //                       rowData.internalorderId,
+    //                       rowData
+    //                     );
+    //                   }}
+    //                 >
+    //                   {" "}
+    //                   Cancelled{" "}
+    //                 </ColorButtonCancel>
+    //               );
+    //             } else {
+    //               return (
+    //                 <ColorButtonNew
+    //                   size="large"
+    //                   variant="contained"
+    //                   color="primary"
+    //                   onClick={() => {
+    //                     handleClickOpendelete(
+    //                       rowData.internalorderId,
+    //                       rowData
+    //                     );
+    //                   }}
+    //                 >
+    //                   {" "}
+    //                   New Order{" "}
+    //                 </ColorButtonNew>
+    //               );
+    //             }
+    //           })()}
+    //         </Text>
+    //       ),
+    //     },
+    //     {
+    //       title: "Track Order",
+    //       field: "trackingurl",
 
-          render: (rowData) => (
-            <Text>
-              <ColorButtonProcessed
-                size="large"
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  if (rowData.orderstatus === 4) {
-          handleClickTrack(rowData.internalorderId, rowData);
-          }
-                }}
-              >
-                {" "}
-                Track{" "}
-              </ColorButtonProcessed>
-            </Text>
-          ),
-        },
-        {
-          title: "Shipping Courier",
-          field: "shippingpolicy",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.shippingpolicy === null ? '  ' : rowData.shippingpolicy}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Tracking",
-          field: "tracking",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                copyLinkOnClick(rowData.tracking);
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.tracking === "" ? '  ' : rowData.tracking}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Shipping Service",
-          field: "shipmenttype",
-          type: "text",
+    //       render: (rowData) => (
+    //         <Text>
+    //           <ColorButtonProcessed
+    //             size="large"
+    //             variant="contained"
+    //             color="primary"
+    //             onClick={() => {
+    //               if (rowData.orderstatus === 4) {
+    //       handleClickTrack(rowData.internalorderId, rowData);
+    //       }
+    //             }}
+    //           >
+    //             {" "}
+    //             Track{" "}
+    //           </ColorButtonProcessed>
+    //         </Text>
+    //       ),
+    //     },
+    //     {
+    //       title: "Shipping Courier",
+    //       field: "shippingpolicy",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {rowData.shippingpolicy === null ? '  ' : rowData.shippingpolicy}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Tracking",
+    //       field: "tracking",
+    //       type: "text",
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             copyLinkOnClick(rowData.tracking);
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //               <Text
+    //                 style={{
+    //                   fontSize: "11px",
+    //                   fontFamily:
+    //                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                   transition: "all 0.25s",
+    //                 }}
+    //               >
+    //                 {rowData.tracking === "" ? '  ' : rowData.tracking}
+    //               </Text>
+    //             </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
+    //     {
+    //       title: "Shipping Service",
+    //       field: "shipmenttype",
+    //       type: "text",
 
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-            <Text>
-              {(() => {
-                if (rowData.shipmenttype === "10") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Custom Shipping Label
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "2") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      2-Day Shipping
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "3") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Overnight Shipping
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "4") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Stamped Postage
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "5") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Oversize LetterMail
-                    </Text>
-                  );
-                } else if (rowData.shipmenttype === "6") {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Pallet Freight
-                    </Text>
-                  );
-                }else if (rowData.shipmenttype === "1") {
-          return (
-            <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
-              }}
-            >
-              Standard Shipping
-            </Text>
-          );
-        }else{
-          return (
-            <Text
-              style={{
-                fontSize: "11px",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
-              }}
-            >
-              {' '}
-            </Text>
-          );
-        }
-              })()}
-            </Text>
-            </Typography>
-              }
-            />
-          ),
-        },
+    //       render: (rowData) => (
+    //         <FormControlLabel
+    //           onClick={() => {
+    //             handleChangeCheckbox(rowData.internalorderId);
+    //           }}
+    //           className={classes.quantitycss}
+    //           control={
+    //             <Typography
+    //               style={{
+    //                 marginLeft: "20px",
+    //                 fontSize: "2px",
+    //                 cursor: "pointer",
+    //                 fontFamily:
+    //                   '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //               }}
+    //             >
+    //         <Text>
+    //           {(() => {
+    //             if (rowData.shipmenttype === "10") {
+    //               return (
+    //                 <Text
+    //                   style={{
+    //                     fontSize: "11px",
+    //                     fontFamily:
+    //                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                     transition: "all 0.25s",
+    //                   }}
+    //                 >
+    //                   Custom Shipping Label
+    //                 </Text>
+    //               );
+    //             } else if (rowData.shipmenttype === "2") {
+    //               return (
+    //                 <Text
+    //                   style={{
+    //                     fontSize: "11px",
+    //                     fontFamily:
+    //                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                     transition: "all 0.25s",
+    //                   }}
+    //                 >
+    //                   2-Day Shipping
+    //                 </Text>
+    //               );
+    //             } else if (rowData.shipmenttype === "3") {
+    //               return (
+    //                 <Text
+    //                   style={{
+    //                     fontSize: "11px",
+    //                     fontFamily:
+    //                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                     transition: "all 0.25s",
+    //                   }}
+    //                 >
+    //                   Overnight Shipping
+    //                 </Text>
+    //               );
+    //             } else if (rowData.shipmenttype === "4") {
+    //               return (
+    //                 <Text
+    //                   style={{
+    //                     fontSize: "11px",
+    //                     fontFamily:
+    //                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                     transition: "all 0.25s",
+    //                   }}
+    //                 >
+    //                   Stamped Postage
+    //                 </Text>
+    //               );
+    //             } else if (rowData.shipmenttype === "5") {
+    //               return (
+    //                 <Text
+    //                   style={{
+    //                     fontSize: "11px",
+    //                     fontFamily:
+    //                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                     transition: "all 0.25s",
+    //                   }}
+    //                 >
+    //                   Oversize LetterMail
+    //                 </Text>
+    //               );
+    //             } else if (rowData.shipmenttype === "6") {
+    //               return (
+    //                 <Text
+    //                   style={{
+    //                     fontSize: "11px",
+    //                     fontFamily:
+    //                       '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //                     transition: "all 0.25s",
+    //                   }}
+    //                 >
+    //                   Pallet Freight
+    //                 </Text>
+    //               );
+    //             }else if (rowData.shipmenttype === "1") {
+    //       return (
+    //         <Text
+    //           style={{
+    //             fontSize: "11px",
+    //             fontFamily:
+    //               '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //             transition: "all 0.25s",
+    //           }}
+    //         >
+    //           Standard Shipping
+    //         </Text>
+    //       );
+    //     }else{
+    //       return (
+    //         <Text
+    //           style={{
+    //             fontSize: "11px",
+    //             fontFamily:
+    //               '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+    //             transition: "all 0.25s",
+    //           }}
+    //         >
+    //           {' '}
+    //         </Text>
+    //       );
+    //     }
+    //           })()}
+    //         </Text>
+    //         </Typography>
+    //           }
+    //         />
+    //       ),
+    //     },
 
        
-        {
-          title: "Shipment Date",
-          field: "shipdate",
-          type: "date",
+    //     {
+    //       title: "Shipment Date",
+    //       field: "shipdate",
+    //       type: "date",
          
-        },
-      ],
-    });
+    //     },
+    //   ],
+    // });
   };
 
   return (

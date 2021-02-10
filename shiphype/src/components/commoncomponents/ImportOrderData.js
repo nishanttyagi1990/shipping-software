@@ -331,6 +331,8 @@ export default function CreateSprint(props) {
   const [type, setType] = React.useState("");
   const [status, setStatus] = React.useState(false);
   var ids = [];
+  var insertOrderDetailsProxy = [];
+  const [orderdatapuch, setOrderdatapuch] = React.useState([]);
   const [promotionalPackage, setPromotionalPackage] = React.useState([]);
   const [customePackage, setCustomePackage] = React.useState([]);
   const StyledMTableToolbar = withStyles({
@@ -388,7 +390,6 @@ export default function CreateSprint(props) {
     checked: {},
   }))(Switch);
 
-
   const packageDataPro1 = {};
   customePackage.map((orderCouierOp) => {
     const { packaggingId, packaggingName } = orderCouierOp;
@@ -402,38 +403,33 @@ export default function CreateSprint(props) {
   });
 
   const fetchPackageForPromotional = (userid) => {
-   
     setLoading(true);
+    shiphypeservice.fetchCustomePaching(userid, 2).then((response) => {
+      console.log("status", response.status);
+      if (response.status === true) {
+        setLoading(false);
+        setPromotionalPackage(response.data);
+      }
+    });
+  };
+
+  const fetchPackingList1 = (userid) => {
     shiphypeservice
-      .fetchCustomePaching(userid, 2)
+      .fetchCustomePaching(userid, 1)
       .then((response) => {
         console.log("status", response.status);
         if (response.status === true) {
           setLoading(false);
-          setPromotionalPackage(response.data);
-         
-
+          setCustomePackage(response.data);
+        } else {
+          setLoading(false);
+          console.log("message", response.message);
         }
-      })}
-
-      const fetchPackingList1 = (userid) => {
-        shiphypeservice
-          .fetchCustomePaching(userid, 1)
-          .then((response) => {
-            console.log("status", response.status);
-            if (response.status === true) {
-              setLoading(false);
-              setCustomePackage(response.data);
-             
-            } else {
-              setLoading(false);
-              console.log("message", response.message);
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      };
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   const theme = useTheme();
   const [state, setState] = React.useState({
     columns: [
@@ -1074,22 +1070,11 @@ export default function CreateSprint(props) {
       console.log("selectidrun");
       console.log("selectid", data);
       console.log("arraylenght", ids.length);
+
       setCheckedA(false);
       if (ids.length === 0) {
         ids.push(data.id);
-        // addNewOrder(
-        //   data.id,
-        //   data.source_name,
-        //   1,
-        //   data.created_at,
-        //   data.processed_at,
-        //   userid,
-        //   data.customer.id,
-        //   1,
-        //   1,
-        //   1,
-        //   data.line_items
-        // );
+
         const arrayshop = data.order_status_url;
         const arrayshop1 = arrayshop.split("/");
         console.log("arrayshop", arrayshop1);
@@ -1149,8 +1134,8 @@ export default function CreateSprint(props) {
         const Warehouse = CustomerCountry === "Canada" ? 2 : 2;
 
         var productIds = [];
-        var productquantity=[];
-        var productIdsArray=[];
+        var productquantity = [];
+        var productIdsArray = [];
         if (data.line_items instanceof Array) {
           for (let i = 0; i < data.line_items.length; i++) {
             productIds.push(data.line_items[i].sku);
@@ -1163,31 +1148,57 @@ export default function CreateSprint(props) {
           productIdsArray.push(data.line_items.product_id);
         }
 
-        createIntegrationOrder(
-          data.name,
-          data.id,
-          "Shopify",
-          1,
-          CustomerName,
-          CustomerCountry,
-          "",
-          1,
-          1,
-          data.created_at,
-          2,
-          1,
-          1,
-          props.user_id,
-          1,
-          1,
-          Warehouse,
-          customer,
-          product,
-          productIds,
-          productIdsArray,
-          productquantity,
-          data
-        );
+        insertOrderDetailsProxy.push({
+          externalorder_id: data.name,
+          externaluniqueid: data.id,
+          source: "Shopify",
+          ordertype: 1,
+          recipientname: CustomerName,
+          ordercountry: CustomerCountry,
+          tracking: "",
+          shippingcourier: 1,
+          orderstatus: 1,
+          orderdate: data.created_at,
+          customertype: 2,
+          orderkind: 1,
+          shippingpolicy_id: 1,
+          user_id: props.user_id,
+          option_id: 1,
+          dangerousgoods: 1,
+          warehouseid: Warehouse,
+          customer: customer,
+          product: product,
+          skus: productIds,
+          productIds: productIdsArray,
+          productquantity: productquantity,
+        });
+
+        // createIntegrationOrder(
+        //   data.name,
+        //   data.id,
+        //   "Shopify",
+        //   1,
+        //   CustomerName,
+        //   CustomerCountry,
+        //   "",
+        //   1,
+        //   1,
+        //   data.created_at,
+        //   2,
+        //   1,
+        //   1,
+        //   props.user_id,
+        //   1,
+        //   1,
+        //   Warehouse,
+        //   customer,
+        //   product,
+        //   productIds,
+        //   productIdsArray,
+        //   productquantity,
+        //   data
+        // );
+        console.log("insertOrderDetailsProxy", insertOrderDetailsProxy);
       } else {
         for (let i = 0; i < ids.length; i++) {
           if (data.id !== ids[i]) {
@@ -1200,19 +1211,6 @@ export default function CreateSprint(props) {
         }
         if (flag === true) {
           ids.push(data.id);
-          // addNewOrder(
-          //   data.id,
-          //   data.source_name,
-          //   1,
-          //   data.created_at,
-          //   data.processed_at,
-          //   userid,
-          //   data.customer.id,
-          //   1,
-          //   1,
-          //   1,
-          //   data.line_items
-          // );
 
           const arrayshop = data.order_status_url;
           const arrayshop1 = arrayshop.split("/");
@@ -1267,8 +1265,8 @@ export default function CreateSprint(props) {
             },
           ];
           var productIds = [];
-          var productquantity=[];
-          var productIdsArray=[];
+          var productquantity = [];
+          var productIdsArray = [];
           if (data.line_items instanceof Array) {
             for (let i = 0; i < data.line_items.length; i++) {
               productIds.push(data.line_items[i].sku);
@@ -1286,36 +1284,66 @@ export default function CreateSprint(props) {
             "customer" in data ? data.customer.default_address.country : "";
 
           const Warehouse = CustomerCountry === "Canada" ? 2 : 2;
-          createIntegrationOrder(
-            data.name,
-            data.id,
-            "Shopify",
-            1,
-            CustomerName,
-            CustomerCountry,
-            "",
-            1,
-            1,
-            data.created_at,
-            2,
-            1,
-            1,
-            props.user_id,
-            1,
-            1,
-            Warehouse,
-            customer,
-            product,
-            productIds,
-            productIdsArray,
-            productquantity,
-            data
-          );
+
+          insertOrderDetailsProxy.push({
+            externalorder_id: data.name,
+            externaluniqueid: data.id,
+            source: "Shopify",
+            ordertype: 1,
+            recipientname: CustomerName,
+            ordercountry: CustomerCountry,
+            tracking: "",
+            shippingcourier: 1,
+            orderstatus: 1,
+            orderdate: data.created_at,
+            customertype: 2,
+            orderkind: 1,
+            shippingpolicy_id: 1,
+            user_id: props.user_id,
+            option_id: 1,
+            dangerousgoods: 1,
+            warehouseid: Warehouse,
+            customer: customer,
+            product: product,
+            skus: productIds,
+            productIds: productIdsArray,
+            productquantity: productquantity,
+          });
+
+          console.log("insertOrderDetailsProxy", insertOrderDetailsProxy);
+          // createIntegrationOrder(
+          //   data.name,
+          //   data.id,
+          //   "Shopify",
+          //   1,
+          //   CustomerName,
+          //   CustomerCountry,
+          //   "",
+          //   1,
+          //   1,
+          //   data.created_at,
+          //   2,
+          //   1,
+          //   1,
+          //   props.user_id,
+          //   1,
+          //   1,
+          //   Warehouse,
+          //   customer,
+          //   product,
+          //   productIds,
+          //   productIdsArray,
+          //   productquantity,
+          //   data
+          // );
         } else {
           const index = ids.indexOf(data.id);
           if (index > -1) {
             ids.splice(index, 1);
+            insertOrderDetailsProxy.splice(index, 1);
             //deleteIntegrationOrder(data.id);
+
+            console.log("insertOrderDetailsProxy", insertOrderDetailsProxy);
           }
         }
       }
@@ -1326,7 +1354,8 @@ export default function CreateSprint(props) {
         console.log("arrayvalue", ids[i]);
         ids3.push(1);
       }
-
+      const arr = [...insertOrderDetailsProxy];
+      setOrderdatapuch(arr);
       //const updatedaray=[...ids];
 
       //setchangedWarehouseid(updatedaray);
@@ -2275,6 +2304,41 @@ export default function CreateSprint(props) {
     }
   };
 
+  const bulkOrder = () => {
+    const newarra = [...orderdatapuch];
+    setLoading(true);
+    shiphypeservice
+      .addBulkOrder(newarra)
+      .then((response) => {
+        console.log("status", response.status);
+        if (response.status === true) {
+          setOpen(true);
+          setType("warning");
+          let m = "";
+          for (let i = 0; i < response.data.length; i++) {
+            m = m + "" + response.data[i];
+          }
+          setMsg(m);
+          setStatus(response.status);
+          setLoading(false);
+          //props.handleNextPage("02");
+          // handleChangeCheckbox(data);
+        } else {
+          setOpen(true);
+          setType("error");
+          setMsg(response.message);
+          setStatus(response.status);
+          setLoading(false);
+          // handleChangeCheckbox(data);
+          console.log("message", response.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        props.handleNextPage("02");
+      });
+  };
+
   const createIntegrationOrder = (
     externalorder_id,
     externaluniqueid,
@@ -2324,7 +2388,7 @@ export default function CreateSprint(props) {
         product,
         skus,
         productIds,
-    productquantity
+        productquantity
       )
       .then((response) => {
         console.log("status", response.status);
@@ -2437,6 +2501,7 @@ export default function CreateSprint(props) {
 
   const handleClose = () => {
     setOpen(false);
+    props.handleNextPage("02");
   };
 
   const handleStep = (step) => () => {
@@ -2563,8 +2628,8 @@ export default function CreateSprint(props) {
           <Grid item xs={12} md={8} lg={8}>
             <View>
               <Text style={{ color: "red" }}>
-                Make sure your product sku exists in ShipHype system
-                before you import the orders.
+                Make sure your product sku exists in ShipHype system before you
+                import the orders.
               </Text>
               <View style={{ flexDirection: "row" }}>
                 <Text style={{ color: "red" }}>If not,</Text>
@@ -2572,10 +2637,10 @@ export default function CreateSprint(props) {
                   onClick={() => {
                     //props.handleNextPage("05");
                     props.handleDashboard2(
-      "AddProductManually",
-      packageDataPro1,
-      promotionalDataAdd
-    );
+                      "AddProductManually",
+                      packageDataPro1,
+                      promotionalDataAdd
+                    );
                   }}
                 >
                   <Text
@@ -2622,7 +2687,7 @@ export default function CreateSprint(props) {
                   color="primary"
                   className={classes.profileMargin}
                   onClick={() => {
-                    props.handleNextPage("02");
+                    bulkOrder();
                   }}
                 >
                   Next

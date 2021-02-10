@@ -467,6 +467,7 @@ const [opensquarespace,setOpensquarespace]=React.useState(false);
   };
 
   const cancelShopfyIntegration = () => {
+    props.fetchShipPolicy();
     fetchSelectedIntegration(userid);
     setOpenwoocommerce(false);
     setOpenshopfy(false);

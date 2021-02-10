@@ -58,7 +58,28 @@ const ColorButtonAdd = withStyles((theme) => ({
     //marginTop:'3%',
     height: "100%",
     padding: "3px",
-    width: "160px",
+    width: "250px",
+    fontSize: "11px",
+    fontWeight: "550",
+    color: "#fff",
+    backgroundColor: "#0168fa",
+    //  paddingLeft: '22%',
+    //  paddingRight: '22%',
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: "#0168fa",
+    },
+  },
+}))(Button);
+const ColorButtonEditRestication = withStyles((theme) => ({
+  root: {
+    borderRadius: "3px",
+    //  paddingTop: '9%',
+    //  paddingBottom: '9%',
+    //marginTop:'3%',
+    height: "100%",
+    padding: "3px",
+    width: "200px",
     fontSize: "11px",
     fontWeight: "550",
     color: "#fff",
@@ -83,9 +104,9 @@ const tableIcons = {
       size="large"
       variant="contained"
       color="primary"
-      startIcon={<AddIcon />}
+      startIcon={<Edit />}
     >
-      Shipping Policies
+      EDIT SHIPPING POLICIES
     </ColorButtonAdd>
   ),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -114,14 +135,14 @@ const tableIcons = {
 };
 const tableIcons2 = {
   Add: () => (
-    <ColorButtonAdd
+    <ColorButtonEditRestication
       size="large"
       variant="contained"
       color="primary"
-      startIcon={<AddIcon />}
+      startIcon={<Edit/>}
     >
-      Restriction
-    </ColorButtonAdd>
+      EDIT RESTRICTIONS
+    </ColorButtonEditRestication>
   ),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -342,6 +363,12 @@ export default function Slide17(props) {
   const [sericeId, setsericeId] = React.useState(1);
   const [shipemtntypeid, setShipmetnIdId] = React.useState(1);
   const [shipploicyId, setShipploicyId] = React.useState(0);
+
+  let activeStep1=false;
+  let isCanada=false;
+  let isUsa=false;
+  let isInternationl=false;
+
   /**
    * Description:To do fetch all warehouse for user
    */
@@ -443,24 +470,282 @@ export default function Slide17(props) {
       },
     ],
   });
+
+  const handleChangequality = (event,props) => {
+   
+     console.log("onchnage",event.target.value);
+    props.onChange(event.target.value);    
+      };
+
+      const handleChangequality2 = (event,props) => {
+   
+        console.log("onchnage2",event.target.value);
+        console.log("canda",isCanada);
+        console.log("usa",isUsa);
+        console.log("int",isInternationl);
+        if(event.target.value == 1){
+          if(isCanada == event.target.value){
+
+          }else{
+            props.onChange(event.target.value);
+          }
+        
+        }else if(event.target.value == 2){
+          if(isUsa == event.target.value){
+
+          }else{
+            props.onChange(event.target.value);
+          }
+        
+        }else if(event.target.value == 3){
+          if(isInternationl == event.target.value){
+
+          }else{
+          props.onChange(event.target.value);
+        }
+      }
+          
+         };
   const [state2, setState2] = React.useState({
     column1FilterList: {},
     columns: [
       {
         title: "Order Destination",
         field: "orderdestination",
-        lookup: { 1: "Canada", 2: "USA", 3: "International" },
+        lookup: { 2: "Canada", 1: "USA", 3: "International" },
+        render: (rowData) => (
+          <FormControlLabel
+            control={
+              <Typography
+                style={{
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                }}
+              >
+                {(() => {
+                  if (rowData.orderdestination === "1") {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                        USA
+                      </Text>
+                    );
+                  } else if (rowData.orderdestination === "2") {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                        Canada
+                      </Text>
+                    );
+                  } else if (rowData.orderdestination === "3") {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                        International
+                      </Text>
+                    );
+                  } 
+                })()}
+              </Typography>
+            }
+          />
+        ),
+        editComponent: (props) => (
+          <FormControl className={classes.formControl}>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={props.value}
+              onChange={(e) => handleChangequality2(e, props)}
+            >
+              <MenuItem disabled={isCanada} value={1}>Canada</MenuItem>
+              <MenuItem disabled={isUsa} value={2}>USA</MenuItem>
+              <MenuItem disabled={isInternationl} value={3}>International</MenuItem>
+            </Select>
+          </FormControl>
+        ),
       },
       {
         title: "Import",
         field: "importdata",
         lookup: { 1: "Yes", 2: "No" },
+        render: (rowData) => (
+          <FormControlLabel
+            control={
+              <Typography
+                style={{
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                }}
+              >
+                {(() => {
+                  if (rowData.importdata === "1") {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                        Yes
+                      </Text>
+                    );
+                  } else if (rowData.importdata === "2") {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                        No
+                      </Text>
+                    );
+                  } 
+                })()}
+              </Typography>
+            }
+          />
+        ),
+        editComponent: (props) => (
+          <FormControl className={classes.formControl}>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={props.value}
+              onChange={(e) => handleChangequality(e, props)}
+            >
+              <MenuItem value={1}>Yes</MenuItem>
+              <MenuItem value={2}>No</MenuItem>
+             
+            </Select>
+          </FormControl>
+        ),
       },
 
       {
         title: "Ship From",
         field: "shippingfrom",
         lookup: { 1: "USA Warehouse", 2: "Canada Warehouse" },
+        render: (rowData) => (
+          <FormControlLabel
+            control={
+              <Typography
+                style={{
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                }}
+              >
+                {(() => {
+                  if (rowData.shippingfrom === "1") {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                        USA Warehouse
+                      </Text>
+                    );
+                  } else if (rowData.shippingfrom === "2") {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                       Canada Warehouse
+                      </Text>
+                    );
+                  } 
+                })()}
+              </Typography>
+            }
+          />
+        ),
+        editComponent: (props) => (
+
+          <View>
+        {
+          (() => {
+            if(props.rowData!==undefined){
+            if(props.rowData.importdata === 2)
+            {
+              return(
+                <FormControl className={classes.formControl}>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={0}
+              disabled={true}
+              onChange={(e) => handleChangequality(e, props)}
+            >
+            
+             
+            </Select>
+          </FormControl>
+        )
+
+      }
+      else{
+        return(
+          <FormControl className={classes.formControl}>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={props.value}
+              disabled={false}
+              onChange={(e) => handleChangequality(e, props)}
+            >
+              <MenuItem value={1}>USA Warehouse</MenuItem>
+              <MenuItem value={2}>Canada Warehouse</MenuItem>
+             
+            </Select>
+          </FormControl>
+        )
+      }
+    }
+    })()}
+    </View>
+          
+        ),
       },
     ],
   });
@@ -501,6 +786,260 @@ export default function Slide17(props) {
         console.log("status", response.status);
         if (response.status === true) {
           setShipRestricationData(response.data);
+ 
+          for(let i=0;i<response.data.length;i++){
+
+            if(response.data[i].orderdestination == 1){
+              isCanada=true;
+            }else if(response.data[i].orderdestination == 2){
+              isUsa=true;
+            }else if(response.data[i].orderdestination == 3){
+              isInternationl=true;
+            }
+          }
+
+          setState2({
+            columns: [
+              {
+                title: "Order Destination",
+                field: "orderdestination",
+                lookup: { 1: "Canada", 2: "USA", 3: "International" },
+                render: (rowData) => (
+                  <FormControlLabel
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        {(() => {
+                          if (rowData.orderdestination === "1") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                USA
+                              </Text>
+                            );
+                          } else if (rowData.orderdestination === "2") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                Canada
+                              </Text>
+                            );
+                          } else if (rowData.orderdestination === "3") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                International
+                              </Text>
+                            );
+                          } 
+                        })()}
+                      </Typography>
+                    }
+                  />
+                ),
+                editComponent: (props) => (
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      onChange={(e) => handleChangequality2(e, props)}
+                    >
+                      <MenuItem disabled={isCanada} value={1}>Canada</MenuItem>
+                      <MenuItem disabled={isUsa} value={2}>USA</MenuItem>
+                      <MenuItem disabled={isInternationl} value={3}>International</MenuItem>
+                    </Select>
+                  </FormControl>
+                ),
+              },
+              {
+                title: "Import",
+                field: "importdata",
+                lookup: { 1: "Yes", 2: "No" },
+                render: (rowData) => (
+                  <FormControlLabel
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        {(() => {
+                          if (rowData.importdata === "1") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                Yes
+                              </Text>
+                            );
+                          } else if (rowData.importdata === "2") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                No
+                              </Text>
+                            );
+                          } 
+                        })()}
+                      </Typography>
+                    }
+                  />
+                ),
+                editComponent: (props) => (
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                      <MenuItem value={1}>Yes</MenuItem>
+                      <MenuItem value={2}>No</MenuItem>
+                     
+                    </Select>
+                  </FormControl>
+                ),
+              },
+        
+              {
+                title: "Ship From",
+                field: "shippingfrom",
+                lookup: { 1: "USA Warehouse", 2: "Canada Warehouse" },
+                render: (rowData) => (
+                  <FormControlLabel
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        {(() => {
+                          if (rowData.shippingfrom === "1") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                USA Warehouse
+                              </Text>
+                            );
+                          } else if (rowData.shippingfrom === "2") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                               Canada Warehouse
+                              </Text>
+                            );
+                          } 
+                        })()}
+                      </Typography>
+                    }
+                  />
+                ),
+                editComponent: (props) => (
+        
+                  <View>
+                {
+                  (() => {
+                    if(props.rowData!==undefined){
+                    if(props.rowData.importdata === 2)
+                    {
+                      return(
+                        <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={0}
+                      disabled={true}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                    
+                     
+                    </Select>
+                  </FormControl>
+                )
+        
+              }
+              else{
+                return(
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      disabled={false}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                      <MenuItem value={1}>USA Warehouse</MenuItem>
+                      <MenuItem value={2}>Canada Warehouse</MenuItem>
+                     
+                    </Select>
+                  </FormControl>
+                )
+              }
+            }
+            })()}
+            </View>
+                  
+                ),
+              },
+            ],
+          });
           setLoading(false);
         } else {
           setLoading(false);
@@ -521,6 +1060,259 @@ export default function Slide17(props) {
         console.log("status", response.status);
         if (response.status === true) {
           setShipRestricationData(response.data);
+          for(let i=0;i<response.data.length;i++){
+
+            if(response.data[i].orderdestination == 1){
+              isCanada=true;
+            }else if(response.data[i].orderdestination == 2){
+              isUsa=true;
+            }else if(response.data[i].orderdestination == 3){
+              isInternationl=true;
+            }
+          }
+
+          setState2({
+            columns: [
+              {
+                title: "Order Destination",
+                field: "orderdestination",
+                lookup: { 2: "Canada", 1: "USA", 3: "International" },
+                render: (rowData) => (
+                  <FormControlLabel
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        {(() => {
+                          if (rowData.orderdestination === "1") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                USA
+                              </Text>
+                            );
+                          } else if (rowData.orderdestination === "2") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                Canada
+                              </Text>
+                            );
+                          } else if (rowData.orderdestination === "3") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                International
+                              </Text>
+                            );
+                          } 
+                        })()}
+                      </Typography>
+                    }
+                  />
+                ),
+                editComponent: (props) => (
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      onChange={(e) => handleChangequality2(e, props)}
+                    >
+                      <MenuItem disabled={isCanada} value={1}>Canada</MenuItem>
+                      <MenuItem disabled={isUsa} value={2}>USA</MenuItem>
+                      <MenuItem disabled={isInternationl} value={3}>International</MenuItem>
+                    </Select>
+                  </FormControl>
+                ),
+              },
+              {
+                title: "Import",
+                field: "importdata",
+                lookup: { 1: "Yes", 2: "No" },
+                render: (rowData) => (
+                  <FormControlLabel
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        {(() => {
+                          if (rowData.importdata === "1") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                Yes
+                              </Text>
+                            );
+                          } else if (rowData.importdata === "2") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                No
+                              </Text>
+                            );
+                          } 
+                        })()}
+                      </Typography>
+                    }
+                  />
+                ),
+                editComponent: (props) => (
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                      <MenuItem value={1}>Yes</MenuItem>
+                      <MenuItem value={2}>No</MenuItem>
+                     
+                    </Select>
+                  </FormControl>
+                ),
+              },
+        
+              {
+                title: "Ship From",
+                field: "shippingfrom",
+                lookup: { 1: "USA Warehouse", 2: "Canada Warehouse" },
+                render: (rowData) => (
+                  <FormControlLabel
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        {(() => {
+                          if (rowData.shippingfrom === "1") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                                USA Warehouse
+                              </Text>
+                            );
+                          } else if (rowData.shippingfrom === "2") {
+                            return (
+                              <Text
+                                style={{
+                                  fontSize: "11px",
+                                  fontFamily:
+                                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                                  transition: "all 0.25s",
+                                }}
+                              >
+                               Canada Warehouse
+                              </Text>
+                            );
+                          } 
+                        })()}
+                      </Typography>
+                    }
+                  />
+                ),
+                editComponent: (props) => (
+        
+                  <View>
+                {
+                  (() => {
+                    if(props.rowData!==undefined){
+                    if(props.rowData.importdata === 2)
+                    {
+                      return(
+                        <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={0}
+                      disabled={true}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                    
+                     
+                    </Select>
+                  </FormControl>
+                )
+        
+              }
+              else{
+                return(
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={props.value}
+                      disabled={false}
+                      onChange={(e) => handleChangequality(e, props)}
+                    >
+                      <MenuItem value={1}>USA Warehouse</MenuItem>
+                      <MenuItem value={2}>Canada Warehouse</MenuItem>
+                     
+                    </Select>
+                  </FormControl>
+                )
+              }
+            }
+            })()}
+            </View>
+                  
+                ),
+              },
+            ],
+          });
           setLoading(false);
         } else {
           setLoading(false);
@@ -535,9 +1327,10 @@ export default function Slide17(props) {
 
 
   const addShipRestrication = (orderdestination, shippingfrom, importdata) => {
+    let warehouse=importdata == 2 ? 0 : shippingfrom;
     setLoading(true);
     shiphypeservice
-      .addpolicyrestrication(orderdestination, shippingfrom, importdata, userid)
+      .addpolicyrestrication(orderdestination, warehouse, importdata, userid)
       .then((response) => {
         console.log("status", response.status);
         if (response.status === true) {
@@ -560,12 +1353,13 @@ export default function Slide17(props) {
     shippingfrom,
     importdata
   ) => {
+    let warehouse=importdata == 2 ? 0 : shippingfrom;
     setLoading(true);
     shiphypeservice
       .updatepolicyrestrication(
         usershipingpoliciesid,
         orderdestination,
-        shippingfrom,
+        warehouse,
         importdata,
         userid
       )
@@ -3870,57 +4664,58 @@ export default function Slide17(props) {
                     actionsColumnIndex: -1,
                     exportFileName: "Product Table",
                     headerStyle: {
-                      backgroundColor: "#cccccc",
-                      color: "#000",
-                      textTransform: "uppercase",
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      paddingLeft: 5,
-                      paddingTop: 8,
-                      paddingBottom: 8,
-                      paddingRight: 0,
-                      fontSize: "12px",
-                      //     backgroundColor: theme.palette.primary.table,
-                      fontWeight: "bold",
-                      //color: theme.palette.primary.main,
-                    },
-                    cellStyle: {
-                      backgroundColor: "#fff",
-                      color: "#000",
-                      border: "1px solid #cccccc",
+                  backgroundColor: "#cccccc",
+                  color: "#000",
+                  textTransform: "uppercase",
 
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontSize: "12px",
-                      paddingLeft: 12,
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      paddingRight: 0,
-                    },
-                    rowStyle: {
-                      backgroundColor: "#fff",
-                      color: "#000",
-                      border: "1px solid #cccccc",
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  paddingLeft: 5,
+                  paddingTop: 4,
+                  paddingBottom: 4,
+                  paddingRight: 0,
+                  fontSize: "12px",
+                  //     backgroundColor: theme.palette.primary.table,
+                  fontWeight: "bold",
+                  //color: theme.palette.primary.main,
+                },
+                cellStyle: {
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  border: "1px solid #cccccc",
 
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      paddingLeft: 0,
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      paddingRight: 0,
-                    },
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  fontSize: "12px",
+                  paddingLeft: 12,
+                  paddingTop: 5,
+                  paddingBottom: 5,
+                  paddingRight: 0,
+                },
+                rowStyle: {
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  border: "1px solid #cccccc",
+
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  paddingLeft: 0,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingRight: 0,
+                },
                     search: false,
                     exportButton: false,
                   }}
@@ -3941,49 +4736,44 @@ export default function Slide17(props) {
                           resolve();
                         }, 1000);
                       }),
-                    onRowUpdate: (newData, oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          {
-                            const data = shiipingplociyData;
-                            const index = data.indexOf(oldData);
 
-                            const customproduct_id =
-                              shiipingplociyData[index].userintegrationpolicyId;
+                      onBulkUpdate: changes =>
+          new Promise((resolve, reject) => {
+            setTimeout(() => {
+              
+              console.log("changes",changes);
+              resolve();
+            }, 1000);
+          }),  
+                    // onRowUpdate: (newData, oldData) =>
+                    //   new Promise((resolve, reject) => {
+                    //     setTimeout(() => {
+                    //       {
+                    //         const data = shiipingplociyData;
+                    //         const index = data.indexOf(oldData);
 
-                            updateNew(
-                              customproduct_id,
-                              newData.sourceid,
-                              newData.integrationspoliciesId,
-                              newData.warehouseid,
-                              newData.shipmenttype,
-                              newData.shippingserviceid
-                            );
-                          }
-                          resolve();
-                        }, 1000);
-                      }),
+                    //         const customproduct_id =
+                    //           shiipingplociyData[index].userintegrationpolicyId;
+
+                    //         updateNew(
+                    //           customproduct_id,
+                    //           newData.sourceid,
+                    //           newData.integrationspoliciesId,
+                    //           newData.warehouseid,
+                    //           newData.shipmenttype,
+                    //           newData.shippingserviceid
+                    //         );
+                    //       }
+                    //       resolve();
+                    //     }, 1000);
+                    //   }),
                   }}
                 />
               </Grid>
             </Grid>
           </Grid>
         </form>
-        {/* <Grid style={{ marginLeft: "3px" }}>
-          <Text
-            style={{
-              fontSize: "14px",
-              fontWeight: "700",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              color: "#001737",
-
-              transition: "all 0.25s",
-            }}
-          >
-            {"\n"}Shipping Policies Restrication
-          </Text>
-        </Grid> */}
+       
         <Grid item lg={11} style={{ marginTop: "5px" }}>
           <Grid justify="flex-end" container>
             <Grid item style={{ marginRight: "0px" }}>
@@ -4077,57 +4867,58 @@ export default function Slide17(props) {
                     actionsColumnIndex: -1,
                     exportFileName: "Product Table",
                     headerStyle: {
-                      backgroundColor: "#cccccc",
-                      color: "#000",
-                      textTransform: "uppercase",
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      paddingLeft: 5,
-                      paddingTop: 8,
-                      paddingBottom: 8,
-                      paddingRight: 0,
-                      fontSize: "12px",
-                      //     backgroundColor: theme.palette.primary.table,
-                      fontWeight: "bold",
-                      //color: theme.palette.primary.main,
-                    },
-                    cellStyle: {
-                      backgroundColor: "#fff",
-                      color: "#000",
-                      border: "1px solid #cccccc",
+                  backgroundColor: "#cccccc",
+                  color: "#000",
+                  textTransform: "uppercase",
 
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontSize: "12px",
-                      paddingLeft: 12,
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      paddingRight: 0,
-                    },
-                    rowStyle: {
-                      backgroundColor: "#fff",
-                      color: "#000",
-                      border: "1px solid #cccccc",
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  paddingLeft: 5,
+                  paddingTop: 4,
+                  paddingBottom: 4,
+                  paddingRight: 0,
+                  fontSize: "12px",
+                  //     backgroundColor: theme.palette.primary.table,
+                  fontWeight: "bold",
+                  //color: theme.palette.primary.main,
+                },
+                cellStyle: {
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  border: "1px solid #cccccc",
 
-                      width: 26,
-                      whiteSpace: "nowrap",
-                      textAlign: "left",
-                      flexDirection: "row",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      paddingLeft: 0,
-                      paddingTop: 0,
-                      paddingBottom: 0,
-                      paddingRight: 0,
-                    },
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  fontSize: "12px",
+                  paddingLeft: 12,
+                  paddingTop: 5,
+                  paddingBottom: 5,
+                  paddingRight: 0,
+                },
+                rowStyle: {
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  border: "1px solid #cccccc",
+
+                  width: 26,
+                  whiteSpace: "nowrap",
+                  textAlign: "left",
+                  flexDirection: "row",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  paddingLeft: 0,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingRight: 0,
+                },
                     search: false,
                     exportButton: false,
                   }}
@@ -4146,42 +4937,42 @@ export default function Slide17(props) {
                           resolve();
                         }, 1000);
                       }),
-                    onRowUpdate: (newData, oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          {
-                            const data = shipRestricationData;
-                            const index = data.indexOf(oldData);
+                    // onRowUpdate: (newData, oldData) =>
+                    //   new Promise((resolve, reject) => {
+                    //     setTimeout(() => {
+                    //       {
+                    //         const data = shipRestricationData;
+                    //         const index = data.indexOf(oldData);
 
-                            const usershipingpoliciesid =
-                              shipRestricationData[index].userShipingPoliciesId;
+                    //         const usershipingpoliciesid =
+                    //           shipRestricationData[index].userShipingPoliciesId;
 
-                            updateShipRestrication(
-                              usershipingpoliciesid,
-                              newData.orderdestination,
-                              newData.shippingfrom,
-                              newData.importdata
-                            );
-                          }
-                          resolve();
-                        }, 1000);
-                      }),
+                    //         updateShipRestrication(
+                    //           usershipingpoliciesid,
+                    //           newData.orderdestination,
+                    //           newData.shippingfrom,
+                    //           newData.importdata
+                    //         );
+                    //       }
+                    //       resolve();
+                    //     }, 1000);
+                    //   }),
 
-                    onRowDelete: (oldData) =>
-                      new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                          {
-                            const data = shipRestricationData;
-                            const index = data.indexOf(oldData);
+                    // onRowDelete: (oldData) =>
+                    //   new Promise((resolve, reject) => {
+                    //     setTimeout(() => {
+                    //       {
+                    //         const data = shipRestricationData;
+                    //         const index = data.indexOf(oldData);
 
-                            const usershipingpoliciesid =
-                              shipRestricationData[index].userShipingPoliciesId;
+                    //         const usershipingpoliciesid =
+                    //           shipRestricationData[index].userShipingPoliciesId;
 
-                            deleteShipRestrication(usershipingpoliciesid);
-                          }
-                          resolve();
-                        }, 1000);
-                      }),
+                    //         deleteShipRestrication(usershipingpoliciesid);
+                    //       }
+                    //       resolve();
+                    //     }, 1000);
+                    //   }),
                   }}
                 />
               </Grid>

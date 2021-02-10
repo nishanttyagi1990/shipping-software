@@ -20,7 +20,7 @@ import ProgressBar from ".././feedback//ProgressBar";
 import * as shiphypeservice from ".././ShipService/shiphype_service";
 /**For Style */
 import popUpStyle from ".././style/popUpStyle";
-
+import IntegrationSuccesfully from '../dialog/IntegrationSuccesfully';
 import validate from "validate.js";
 
 const useStyles = makeStyles((theme) => ({
@@ -179,7 +179,7 @@ const DialogTitle = withStyles(styles)((props) => {
 });
 
 const schema = {
-  WebSiteName: {
+  AppName: {
     presence: { allowEmpty: false, message: "is required" },
     length: {
       maximum: 200,
@@ -215,7 +215,10 @@ export default function ShippingProfile(props) {
   const [type, setType] = React.useState("");
   const [status, setStatus] = React.useState(false);
   const [step,setStep]=React.useState(1);
-
+  const [integrationopen,setIntegrationopen]=React.useState(false);
+  const [inegrationStatus, setStausofInstgartion] = React.useState(false);
+  let screenWidth = Dimensions.get('window').width;
+  let screenHeight = Dimensions.get("window").height;
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
@@ -268,17 +271,18 @@ export default function ShippingProfile(props) {
     formState.touched[field] && formState.errors[field] ? true : false;
 
   const handleClose1 = () => {
+    setIntegrationopen(false);
     props.handleCancle();
   };
 
-  const sendShopfyDetails = () => {
-    const appname = formState.values.WebSiteName;
-    var myArray = appname.split('.');
+  const sendShopfyDetails2 = () => {
+    const appname = formState.values.AppName;
+    //var myArray = appname.split('.');
     
-    const appname1=myArray[1]+".com"
-    console.log("appname1",appname1);
-    const apikey = formState.values.ConsumerKey;
-    const apipass = formState.values.Consumersecret;
+    //const appname1=myArray[1]+".com"
+    //console.log("appname1",appname1);
+    //const apikey = formState.values.ConsumerKey;
+    //const apipass = formState.values.Consumersecret;
 
     const url1="https://";
     const url2=appname;
@@ -293,6 +297,8 @@ export default function ShippingProfile(props) {
       "",   
       "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=150,width=1000,height=500"
     );
+
+
     setLoading(true);
     shiphypeservice
       .sendShopfydetail(userid, 3, appname1, apikey, apipass)
@@ -319,6 +325,94 @@ export default function ShippingProfile(props) {
         console.error(error);
       });
   };
+  let flag=false;
+
+  const fetchUserIntegrationShopify = (useridshopify)=>{
+
+    //const userid=5;
+    setLoading(true);
+    if(flag===true)
+    {
+      shiphypeservice.fetchUserIntegration(useridshopify)
+      .then(response => {
+       console.log("status",response.status);
+            if(response.status === true) {
+              setLoading(false);
+              if(response.data.length!==0)
+              { 
+                for(let i=0;i<response.data.length;i++)
+                {
+                  if(response.data[i].integrationId===3)
+                  {
+                    setStausofInstgartion(false);
+                    flag=false;
+                    HandleClose2();
+                  }
+
+                }
+                if(flag===true)
+                {
+                  fetchUserIntegrationShopify(userid);
+                }
+                
+              }
+              else{
+                fetchUserIntegrationShopify(userid);
+              }
+
+            
+                       }else{
+                        fetchUserIntegrationShopify(userid);
+                        setLoading(false);
+                        console.log("message",response.message);
+                       }   
+          }).catch((error) =>{
+                console.error(error);
+          });
+    }
+   
+  }
+   function HandleClose2(){
+    setIntegrationopen(true);
+  };
+  const sendShopfyDetails = () => {
+    const appStorename=formState.values.AppName;
+    shiphypeservice.checkShopifyIntegration(userid,3,appStorename)
+          .then(response => {
+           console.log("status",response.status);
+                if(response.status === true) {
+                 // setMsg(response.message);
+          setLoading(false);
+          setStausofInstgartion(true);
+          window.sessionStorage.setItem("storename", formState.values.AppName);
+          const appname=formState.values.AppName;
+          const url1="https://www.";
+          const url2=appname;
+          const url3=`/wc-auth/v1/authorize?app_name=${appname}&scope=read_write&user_id=${userid}&return_url=https://app.shiphype.com/&callback_url=https://api.shiphype.com/api/WooCommerce/callback`;
+          const url4=url1+url2+url3;
+          window.open(url4, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=150,width="+{screenWidth}+",height="+{screenHeight}+"fullscreen=yes");
+         // HandleClose2();
+         flag=true;
+         fetchUserIntegrationShopify(userid);
+
+                           }else{
+                            //setLoading(false);
+                            setOpen(true);
+                            setType("error");
+                            setMsg(response.message);
+                            setStatus(response.status);
+                            setLoading(false);
+                            console.log("message",response.message);
+                           }   
+              }).catch((error) =>{
+                    console.error(error);
+              });
+
+
+    
+    
+  };
+
 
   return (
     <View>
@@ -355,6 +449,14 @@ export default function ShippingProfile(props) {
             <Grid item xs={12} md={6} lg={6} container justify="flex-end">
               <Grid item xs={4} md={6} lg={6}></Grid>
             </Grid>
+            {integrationopen === false ? (
+              " "
+            ) : (
+              <IntegrationSuccesfully
+                integrationopen={integrationopen}
+                handleClose1={handleClose1}
+              />
+            )}
           </Grid>
           <form className={classes.form}>
             <Grid container className={classes.root} spacing={1}>
@@ -384,24 +486,25 @@ export default function ShippingProfile(props) {
         </Typography>
                       <Grid item xs={10}>
                         <TextField
-                          id="WebSiteName"
-                          name="WebSiteName"
+                          id="AppName"
+                          name="AppName"
                           variant="outlined"
                           fullWidth
-                          error={hasError("WebSiteName")}
+                          error={hasError("AppName")}
                           helperText={
-                            hasError("WebSiteName")
-                              ? formState.errors.WebSiteName[0]
+                            hasError("AppName")
+                              ? formState.errors.AppName[0]
                               : null
                           }
-                          placeholder="Store URL e.g. www.yoursite.com"
+                          placeholder="Store Name"
                           size="small"
                           type="text"
-                          onChange={handleChange("WebSiteName")}
+                          onChange={handleChange("AppName")}
                           className={classes.profileMargin1}
-                          value={formState.values.WebSiteName || ""}
+                          value={formState.values.AppName || ""}
                         />
                       </Grid>
+                      
                       </Grid>
                       <Grid justify="center" container spacing={24} style={{marginTop:'5px'}}>
             <Grid item>
@@ -411,10 +514,10 @@ export default function ShippingProfile(props) {
                     size="large"
                     variant="contained"
                     color="primary"
-                    disabled={(formState.values.WebSiteName === undefined || hasError("WebSiteName") === true) === true ? true : false}
+                    disabled={(formState.values.AppName === undefined || hasError("AppName") === true) === true ? true : false}
                     className={classes.submit}
                     onClick={() => {
-                      setStep(2);
+                      sendShopfyDetails();
                     }}
                   >
                     Link Store

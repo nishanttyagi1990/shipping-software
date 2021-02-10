@@ -13,6 +13,7 @@ import {
   Image,
   Text,
   Dimensions,
+  ImageBackground,
   Clipboard,
 } from "react-native";
 import Link from "@material-ui/core/Link";
@@ -41,6 +42,7 @@ import ProgressBar from "./feedback/ProgressBar";
 import { forwardRef } from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -370,7 +372,7 @@ export default function ScrollableTabsButtonAuto(props) {
       {
         title: "Customer Type",
         field: "customertype",
-        lookup: { 1: "B2B", 2: "B2C" },
+        lookup: { 1: "Residential", 2: "Business" },
         render: (rowData) => (
           <Text>
             {(() => {
@@ -378,7 +380,7 @@ export default function ScrollableTabsButtonAuto(props) {
                 return (
                   <Text
                     onClick={() => {
-                      copyLinkOnClick("B2B");
+                      copyLinkOnClick("Residential");
                     }}
                     style={{
                       fontSize: "11px",
@@ -388,14 +390,14 @@ export default function ScrollableTabsButtonAuto(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    B2B
+                    Residential
                   </Text>
                 );
               } else {
                 return (
                   <Text
                     onClick={() => {
-                      copyLinkOnClick("B2C");
+                      copyLinkOnClick("Business");
                     }}
                     style={{
                       fontSize: "11px",
@@ -405,7 +407,7 @@ export default function ScrollableTabsButtonAuto(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    B2C
+                   Business
                   </Text>
                 );
               }
@@ -432,7 +434,7 @@ export default function ScrollableTabsButtonAuto(props) {
             }}
           >
             {" "}
-                  {rowData.customer.firstname} {rowData.customer.lastname}{" "}
+            {rowData.customer.firstname} {rowData.customer.lastname}{" "}
           </Text>
         ),
       },
@@ -440,252 +442,216 @@ export default function ScrollableTabsButtonAuto(props) {
         title: "Company Name",
         field: "companyname",
         type: "text",
-        render: (rowData) =>  <Text>
-        {(() => { 
-             if(rowData!==undefined){
-              if(rowData.customer!==null)
-              {
-                return(
-                  <Text
-          onClick={() => {
-            copyLinkOnClick(rowData.customer.companyname);
-          }}
-          style={{
-            fontSize: "11px",
-            cursor: "pointer",
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-            transition: "all 0.25s",
-          }}
-        >
-          {rowData.customer.companyname}
-        </Text>
-                  )
-              
-                }
-                else{
-                  return(
+        render: (rowData) => (
+          <Text>
+            {(() => {
+              if (rowData !== undefined) {
+                if (rowData.customer !== null) {
+                  return (
                     <Text
-           
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            
-          </Text>
-                    )
-                
+                      onClick={() => {
+                        copyLinkOnClick(rowData.customer.companyname);
+                      }}
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    >
+                      {rowData.customer.companyname}
+                    </Text>
+                  );
+                } else {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    ></Text>
+                  );
                 }
-               }
-               
-                  })()} 
-      </Text>
-        
+              }
+            })()}
+          </Text>
+        ),
       },
       {
         title: "Address",
         field: "addressline1",
         type: "text",
-        render: (rowData) => <Text>
-          {(() => { 
-               if(rowData!==undefined){
-                if(rowData.customer!==null)
-                {
-                  return(
+        render: (rowData) => (
+          <Text>
+            {(() => {
+              if (rowData !== undefined) {
+                if (rowData.customer !== null) {
+                  return (
                     <Text
-            onClick={() => {
-              copyLinkOnClick(rowData.customer.addressline1);
-            }}
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            {rowData.customer.addressline1}
+                      onClick={() => {
+                        copyLinkOnClick(rowData.customer.addressline1);
+                      }}
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    >
+                      {rowData.customer.addressline1}
+                    </Text>
+                  );
+                } else {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    ></Text>
+                  );
+                }
+              }
+            })()}
           </Text>
-                    )
-                
-                  }
-                  else{
-                    return(
-                      <Text
-             
-              style={{
-                fontSize: "11px",
-                cursor: "pointer",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                transition: "all 0.25s",
-              }}
-            >
-              
-            </Text>
-                      )
-                  
-                  }
-                 }
-                 
-                    })()} 
-        </Text>
-          
-        
+        ),
       },
       {
         title: "City",
         field: "city",
         type: "text",
-        render: (rowData) =><Text>
-        {(() => { 
-             if(rowData!==undefined){
-              if(rowData.customer!==null)
-              {
-                return(
-                  <Text
-          onClick={() => {
-            copyLinkOnClick(rowData.customer.city);
-          }}
-          style={{
-            fontSize: "11px",
-            cursor: "pointer",
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-            transition: "all 0.25s",
-          }}
-        >
-          {rowData.customer.city}
-        </Text>
-                  )
-              
-                }
-                else{
-                  return(
+        render: (rowData) => (
+          <Text>
+            {(() => {
+              if (rowData !== undefined) {
+                if (rowData.customer !== null) {
+                  return (
                     <Text
-           
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            
-          </Text>
-                    )
-                
+                      onClick={() => {
+                        copyLinkOnClick(rowData.customer.city);
+                      }}
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    >
+                      {rowData.customer.city}
+                    </Text>
+                  );
+                } else {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    ></Text>
+                  );
                 }
-               }
-               
-                  })()} 
-      </Text>
-        
+              }
+            })()}
+          </Text>
+        ),
       },
       {
         title: "State/Province",
         field: "state",
         type: "text",
-        render: (rowData) =><Text>
-        {(() => { 
-             if(rowData!==undefined){
-              if(rowData.customer!==null)
-              {
-                return(
-                  <Text
-          onClick={() => {
-            copyLinkOnClick(rowData.customer.state);
-          }}
-          style={{
-            fontSize: "11px",
-            cursor: "pointer",
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-            transition: "all 0.25s",
-          }}
-        >
-          {rowData.customer.state}
-        </Text>
-                  )
-              
-                }
-                else{
-                  return(
+        render: (rowData) => (
+          <Text>
+            {(() => {
+              if (rowData !== undefined) {
+                if (rowData.customer !== null) {
+                  return (
                     <Text
-           
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            
-          </Text>
-                    )
-                
+                      onClick={() => {
+                        copyLinkOnClick(rowData.customer.state);
+                      }}
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    >
+                      {rowData.customer.state}
+                    </Text>
+                  );
+                } else {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    ></Text>
+                  );
                 }
-               }
-               
-                  })()} 
-      </Text>
-        
+              }
+            })()}
+          </Text>
+        ),
       },
       {
         title: "Zip/Postal Code",
         field: "zip",
         type: "text",
-        render: (rowData) => <Text>
-        {(() => { 
-             if(rowData!==undefined){
-              if(rowData.customer!==null)
-              {
-                return(
-                  <Text
-          onClick={() => {
-            copyLinkOnClick(rowData.customer.zip);
-          }}
-          style={{
-            fontSize: "11px",
-            cursor: "pointer",
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-            transition: "all 0.25s",
-          }}
-        >
-          {rowData.customer.zip}
-        </Text>
-                  )
-              
-                }
-                else{
-                  return(
+        render: (rowData) => (
+          <Text>
+            {(() => {
+              if (rowData !== undefined) {
+                if (rowData.customer !== null) {
+                  return (
                     <Text
-           
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            
-          </Text>
-                    )
-                
+                      onClick={() => {
+                        copyLinkOnClick(rowData.customer.zip);
+                      }}
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    >
+                      {rowData.customer.zip}
+                    </Text>
+                  );
+                } else {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    ></Text>
+                  );
                 }
-               }
-               
-                  })()} 
-      </Text>
-        
+              }
+            })()}
+          </Text>
+        ),
       },
       {
         title: "Country",
@@ -694,12 +660,10 @@ export default function ScrollableTabsButtonAuto(props) {
         render: (rowData) => <Text>
         {(() => { 
              if(rowData!==undefined){
-              if(rowData.customer!==null)
-              {
-                return(
+              return(
                   <Text
           onClick={() => {
-            copyLinkOnClick(rowData.customer.country);
+            copyLinkOnClick(rowData.ordercountry);
           }}
           style={{
             fontSize: "11px",
@@ -709,28 +673,9 @@ export default function ScrollableTabsButtonAuto(props) {
             transition: "all 0.25s",
           }}
         >
-          {rowData.customer.country}
+          {rowData.ordercountry}
         </Text>
                   )
-              
-                }
-                else{
-                  return(
-                    <Text
-           
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            
-          </Text>
-                    )
-                
-                }
                }
                
                   })()} 
@@ -741,101 +686,87 @@ export default function ScrollableTabsButtonAuto(props) {
         title: "Telephone",
         field: "phone",
         type: "text",
-        render: (rowData) => <Text>
-        {(() => { 
-             if(rowData!==undefined){
-              if(rowData.customer!==null)
-              {
-                return(
-                  <Text
-          onClick={() => {
-            copyLinkOnClick(rowData.customer.phone);
-          }}
-          style={{
-            fontSize: "11px",
-            cursor: "pointer",
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-            transition: "all 0.25s",
-          }}
-        >
-          {rowData.customer.phone}
-        </Text>
-                  )
-              
-                }
-                else{
-                  return(
+        render: (rowData) => (
+          <Text>
+            {(() => {
+              if (rowData !== undefined) {
+                if (rowData.customer !== null) {
+                  return (
                     <Text
-           
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            
-          </Text>
-                    )
-                
+                      onClick={() => {
+                        copyLinkOnClick(rowData.customer.phone);
+                      }}
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    >
+                      {rowData.customer.phone}
+                    </Text>
+                  );
+                } else {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    ></Text>
+                  );
                 }
-               }
-               
-                  })()} 
-      </Text>
-        
+              }
+            })()}
+          </Text>
+        ),
       },
       {
         title: "Email",
         field: "email",
         type: "text",
-        render: (rowData) => <Text>
-        {(() => { 
-             if(rowData!==undefined){
-              if(rowData.customer!==null)
-              {
-                return(
-                  <Text
-          onClick={() => {
-            copyLinkOnClick(rowData.customer.email);
-          }}
-          style={{
-            fontSize: "11px",
-            cursor: "pointer",
-            fontFamily:
-              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-            transition: "all 0.25s",
-          }}
-        >
-          {rowData.customer.email}
-        </Text>
-                  )
-              
-                }
-                else{
-                  return(
+        render: (rowData) => (
+          <Text>
+            {(() => {
+              if (rowData !== undefined) {
+                if (rowData.customer !== null) {
+                  return (
                     <Text
-           
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            
-          </Text>
-                    )
-                
+                      onClick={() => {
+                        copyLinkOnClick(rowData.customer.email);
+                      }}
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    >
+                      {rowData.customer.email}
+                    </Text>
+                  );
+                } else {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        fontFamily:
+                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        transition: "all 0.25s",
+                      }}
+                    ></Text>
+                  );
                 }
-               }
-               
-                  })()} 
-      </Text>
-        
+              }
+            })()}
+          </Text>
+        ),
       },
       {
         title: "Additional Notes",
@@ -905,6 +836,517 @@ export default function ScrollableTabsButtonAuto(props) {
           </Text>
         ),
       },
+      {
+        title: "Shipping Service",
+        field: "shipmenttype",
+        type: "text",
+
+        render: (rowData) => (
+          <FormControlLabel
+          onClick={() => {
+            
+          }}
+         
+          control={
+            <Typography
+              style={{
+                marginLeft: "20px",
+                fontSize: "2px",
+                cursor: "pointer",
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+              }}
+            >
+          <Text>
+            {(() => {
+              if (rowData.shipmenttype === "10") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Custom Shipping Label
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "2") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    2-Day Shipping
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "3") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Overnight Shipping
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "4") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Stamped Postage
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "5") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Oversize LetterMail
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "6") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Pallet Freight
+                  </Text>
+                );
+              }else if (rowData.shipmenttype === "1") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Standard Shipping
+                  </Text>
+                );
+              }else{
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                   {' '}
+                  </Text>
+                );
+              }
+            })()}
+          </Text>
+          </Typography>
+          }
+        />
+        ),
+      },
+      {
+        title: "Packing Type",
+        field: "packagetype",
+        type: "text",
+
+        render: (rowData) => (
+          <FormControlLabel
+          onClick={() => {
+            handleChangeCheckbox(rowData.internalorderId);
+          }}
+          className={classes.quantitycss}
+          control={
+            <Typography
+              style={{
+                marginLeft: "20px",
+                fontSize: "2px",
+                cursor: "pointer",
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+              }}
+            >
+          <Text>
+            {(() => {
+              if (rowData.packagetype === "1") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    No Packing Slips
+                  </Text>
+                );
+              } else if (rowData.packagetype === "2") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Packing Slip Inside
+                  </Text>
+                );
+              } else if (rowData.packagetype === "3") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Packing Slip Outside
+                  </Text>
+                );
+              } else if (rowData.packagetype === "4") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Packing Slip Inside + Outside
+                  </Text>
+                );
+              
+              }else{
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                   {' '}
+                  </Text>
+                );
+              }
+            })()}
+          </Text>
+          </Typography>
+          }
+        />
+        ),
+      },
+      {
+        title: "Invoice Type",
+        field: "invoicetype",
+        type: "text",
+
+        render: (rowData) => (
+          <FormControlLabel
+          onClick={() => {
+            handleChangeCheckbox(rowData.internalorderId);
+          }}
+          className={classes.quantitycss}
+          control={
+            <Typography
+              style={{
+                marginLeft: "20px",
+                fontSize: "2px",
+                cursor: "pointer",
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+              }}
+            >
+          <Text>
+            {(() => {
+              if (rowData.invoicetype === "4") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    No Invoice
+                  </Text>
+                );
+              } else if (rowData.invoicetype === "1") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Invoice Inside
+                  </Text>
+                );
+              } else if (rowData.invoicetype === "2") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                   Add Invoice Outside
+                  </Text>
+                );
+              } else if (rowData.invoicetype === "3") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Invoice Inside + Outside
+                  </Text>
+                );
+              }else{
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                   {' '}
+                  </Text>
+                );
+              }
+            })()}
+          </Text>
+          </Typography>
+          }
+        />
+        ),
+      },
+      {
+        title: "Uploaded Label",
+        field: "shippinglabel",
+        render: (rowData) => (
+<View>
+{(() => {
+if(rowData.shippinglabel === 0 || rowData.shippinglabel === null){
+  return(
+<Text style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}>No Attachment</Text>
+  )
+}else{
+  return(
+
+  <ImageBackground
+                  onPress={() => {
+                    window.open(
+                      `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.shippinglabel}`
+                    );
+                  }}
+                  style={{
+                    width: 65,
+                    height: 65,
+                    flexDirection: "column",
+                    borderRadius: 5,
+                    marginHorizontal: 5,
+                    marginVertical: 5,
+                  }}
+                  source={require("../../assets/icons/free_pdf_download_icon.png")}
+                >
+                  <View
+                    style={{
+                      alignItems: "flex-end",
+                      marginTop: 10,
+                      marginRight: 10,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <CloudDownloadIcon
+                      onClick={() => {
+                        window.open(
+                          `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.shippinglabel}`
+                        );
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
+                )
+}
+
+})()}
+</View>
+
+         
+        
+        ),
+      },
+      {
+        title: "Packing Slip",
+        field: "packaginslipdocnameid",
+        render: (rowData) => (
+<View>
+{(() => {
+if(rowData.packaginslipdocnameid === 0 || rowData.packaginslipdocnameid === null){
+  return(
+<Text style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}>No Attachment</Text>
+  )
+}else{
+  return(
+
+  <ImageBackground
+                  onPress={() => {
+                    window.open(
+                      `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.packaginslipdocnameid}`
+                    );
+                  }}
+                  style={{
+                    width: 65,
+                    height: 65,
+                    flexDirection: "column",
+                    borderRadius: 5,
+                    marginHorizontal: 5,
+                    marginVertical: 5,
+                  }}
+                  source={require("../../assets/icons/free_pdf_download_icon.png")}
+                >
+                  <View
+                    style={{
+                      alignItems: "flex-end",
+                      marginTop: 10,
+                      marginRight: 10,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <CloudDownloadIcon
+                      onClick={() => {
+                        window.open(
+                          `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.packaginslipdocnameid}`
+                        );
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
+                )
+}
+
+})()}
+</View>
+
+         
+        
+        ),
+      },
+      {
+        title: "Order Invoice",
+        field: "invoicetypedocnameid",
+        render: (rowData) => (
+<View>
+{(() => {
+if(rowData.invoicetypedocnameid === 0 || rowData.invoicetypedocnameid === null){
+  return(
+<Text style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}>No Attachment</Text>
+  )
+}else{
+  return(
+
+  <ImageBackground
+                  onPress={() => {
+                    window.open(
+                      `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.invoicetypedocnameid}`
+                    );
+                  }}
+                  style={{
+                    width: 65,
+                    height: 65,
+                    flexDirection: "column",
+                    borderRadius: 5,
+                    marginHorizontal: 5,
+                    marginVertical: 5,
+                  }}
+                  source={require("../../assets/icons/free_pdf_download_icon.png")}
+                >
+                  <View
+                    style={{
+                      alignItems: "flex-end",
+                      marginTop: 10,
+                      marginRight: 10,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <CloudDownloadIcon
+                      onClick={() => {
+                        window.open(
+                          `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.invoicetypedocnameid}`
+                        );
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
+                )
+}
+
+})()}
+</View>
+
+         
+        
+        ),
+      },
     ],
     data: [],
   });
@@ -913,16 +1355,15 @@ export default function ScrollableTabsButtonAuto(props) {
     columns: [
       { title: "Item Title", field: "productname", type: "text" },
       { title: "Item SKU", field: "productsku", type: "text" },
-    
-      { title: 'ShipHype Internal SKU', field: 'shiphypeSku',type: 'text',
-     },
-     { title: "Qty", field: "itemquantity", type: "numeric" },
 
-     {
-      title: "HS Code",
-      field: "hscode",
-      type: "text",
-    },
+      { title: "ShipHype Internal SKU", field: "shiphypeSku", type: "text" },
+      { title: "Qty", field: "itemquantity", type: "numeric" },
+
+      {
+        title: "HS Code",
+        field: "hscode",
+        type: "text",
+      },
       { title: "Item Value", field: "itemvalue", type: "text" },
       {
         title: "Dangerous Goods",
@@ -930,8 +1371,6 @@ export default function ScrollableTabsButtonAuto(props) {
         type: "boolean",
         render: (rowData) => (
           <FormControlLabel
-           
-            
             control={
               <Typography
                 style={{
@@ -988,114 +1427,115 @@ export default function ScrollableTabsButtonAuto(props) {
           5: "Corrugated Box (Heavy Duty)",
           6: "Corrugated Box (Cube)",
         },
-
       },
 
-        {
-                     title: 'Promotional Inserts',
-                     field: 'promotionalpackaging',
-                     lookup: {
-                      1: "Envelope",
-                      2: "Courier Bags",
-                      3: "Poly Bubble Mailer",
-                      4: "Corrugated Box",
-                      5: "Corrugated Box (Heavy Duty)",
-                      6: "Corrugated Box (Cube)",
-                    },
+      {
+        title: "Promotional Inserts",
+        field: "promotionalpackaging",
+        lookup: {
+          1: "Envelope",
+          2: "Courier Bags",
+          3: "Poly Bubble Mailer",
+          4: "Corrugated Box",
+          5: "Corrugated Box (Heavy Duty)",
+          6: "Corrugated Box (Cube)",
+        },
 
-                   //  lookup: promoData ,
-    },
-    {
-      title: "Serial Number",
-      field: "serialno",
-      type: "boolean",
-      render: (rowData) => (
-        <FormControlLabel
-          control={
-            <Typography
-              style={{
-                marginLeft: "20px",
-                fontSize: "2px",
-                cursor: "pointer",
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              }}
-            >
-              {(() => {
-                if (rowData.serialno === true) {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      Yes
-                    </Text>
-                  );
-                } else {
-                  return (
-                    <Text
-                      style={{
-                        fontSize: "11px",
-                        fontFamily:
-                          '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        transition: "all 0.25s",
-                      }}
-                    >
-                      No
-                    </Text>
-                  );
-                }
-              })()}
-            </Typography>
-          }
-        />
-      ),
-    },
-    { title: "Serial Number Value", field: "serialnovalue", type: "text" },
-     
+        //  lookup: promoData ,
+      },
+      {
+        title: "Serial Number",
+        field: "serialno",
+        type: "boolean",
+        render: (rowData) => (
+          <FormControlLabel
+            control={
+              <Typography
+                style={{
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                }}
+              >
+                {(() => {
+                  if (rowData.serialno === true) {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                        Yes
+                      </Text>
+                    );
+                  } else {
+                    return (
+                      <Text
+                        style={{
+                          fontSize: "11px",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                          transition: "all 0.25s",
+                        }}
+                      >
+                        No
+                      </Text>
+                    );
+                  }
+                })()}
+              </Typography>
+            }
+          />
+        ),
+      },
+      { title: "Serial Number Value", field: "serialnovalue", type: "text" },
     ],
   });
   //const column1FilterList = state.column1FilterList;
   React.useEffect(() => {
     //   fetchOderType();
- 
+
     fetchPackingList(userid);
     fetchOrderDetails();
   }, []);
-  const fetchPackageForPromotional = (userid,packageDataPro11) => {
-
+  const fetchPackageForPromotional = (userid, packageDataPro11) => {
     var column1FilterList2 = state.column1FilterList2;
     setLoading(true);
-    shiphypeservice.fetchCustomePaching(userid,2)
-          .then(response => {
-           console.log("status",response.status);
-                if(response.status === true) {
-                  setLoading(false);
-                setPromotionalPackage(response.data);
-                var packageDataPro111 = {};
-    var data1=response.data;
-    data1.map(orderCouierOp => {
-        const { packaggingId, packaggingName } = orderCouierOp;
-        packageDataPro111[ packaggingId ] = packaggingName
-    })
-     setState1({
+    shiphypeservice
+      .fetchCustomePaching(userid, 2)
+      .then((response) => {
+        console.log("status", response.status);
+        if (response.status === true) {
+          setLoading(false);
+          setPromotionalPackage(response.data);
+          var packageDataPro111 = {};
+          var data1 = response.data;
+          data1.map((orderCouierOp) => {
+            const { packaggingId, packaggingName } = orderCouierOp;
+            packageDataPro111[packaggingId] = packaggingName;
+          });
+          setState1({
             packageDataPro11,
             columns: [
               { title: "Item Title", field: "productname", type: "text" },
               { title: "Item SKU", field: "productsku", type: "text" },
-             
-              { title: 'ShipHype Internal SKU', field: 'shiphypeSku',type: 'text',
-     },
-     { title: "Qty", field: "productquantity", type: "numeric" },
-     {
-      title: "HS Code",
-      field: "hscode",
-      type: "text",
-    },
+
+              {
+                title: "ShipHype Internal SKU",
+                field: "shiphypeSku",
+                type: "text",
+              },
+              { title: "Qty", field: "productquantity", type: "numeric" },
+              {
+                title: "HS Code",
+                field: "hscode",
+                type: "text",
+              },
               { title: "Item Value", field: "itemvalue", type: "text" },
               {
                 title: "Dangerous Goods",
@@ -1103,8 +1543,6 @@ export default function ScrollableTabsButtonAuto(props) {
                 type: "boolean",
                 render: (rowData) => (
                   <FormControlLabel
-                   
-                    
                     control={
                       <Typography
                         style={{
@@ -1156,8 +1594,8 @@ export default function ScrollableTabsButtonAuto(props) {
                 lookup: packageDataPro11,
               },
               {
-                title: 'Promotional Inserts',
-                field: 'promotionalpackaging',
+                title: "Promotional Inserts",
+                field: "promotionalpackaging",
                 lookup: packageDataPro111,
               },
               {
@@ -1210,8 +1648,11 @@ export default function ScrollableTabsButtonAuto(props) {
                   />
                 ),
               },
-              { title: "Serial Number Value", field: "serialnovalue", type: "text" },
-             
+              {
+                title: "Serial Number Value",
+                field: "serialnovalue",
+                type: "text",
+              },
             ],
           });
         } else {
@@ -1234,21 +1675,24 @@ export default function ScrollableTabsButtonAuto(props) {
             const { packaggingId, packaggingName } = orderCouierOp;
             packageDataPro11[packaggingId] = packaggingName;
           });
-        //  fetchPackageForPromotional(userid,packageDataPro11);
+          //  fetchPackageForPromotional(userid,packageDataPro11);
           setState1({
             packageDataPro11,
             columns: [
               { title: "Item Title", field: "productname", type: "text" },
               { title: "Item SKU", field: "productsku", type: "text" },
-            
-              { title: 'ShipHype Internal SKU', field: 'shiphypeSku',type: 'text',
-     },
-     { title: "Qty", field: "productquantity", type: "numeric" },
-     {
-      title: "HS Code",
-      field: "hscode",
-      type: "text",
-    },
+
+              {
+                title: "ShipHype Internal SKU",
+                field: "shiphypeSku",
+                type: "text",
+              },
+              { title: "Qty", field: "productquantity", type: "numeric" },
+              {
+                title: "HS Code",
+                field: "hscode",
+                type: "text",
+              },
               { title: "Item Value", field: "itemvalue", type: "text" },
               {
                 title: "Dangerous Goods",
@@ -1256,8 +1700,6 @@ export default function ScrollableTabsButtonAuto(props) {
                 type: "boolean",
                 render: (rowData) => (
                   <FormControlLabel
-                   
-                    
                     control={
                       <Typography
                         style={{
@@ -1309,8 +1751,8 @@ export default function ScrollableTabsButtonAuto(props) {
                 lookup: packageDataPro11,
               },
               {
-                title: 'Promotional Inserts',
-                field: 'promotionalpackaging',
+                title: "Promotional Inserts",
+                field: "promotionalpackaging",
                 width: 50,
                 lookup: packageDataPro11,
               },
@@ -1364,8 +1806,11 @@ export default function ScrollableTabsButtonAuto(props) {
                   />
                 ),
               },
-              { title: "Serial Number Value", field: "serialnovalue", type: "text" },
-             
+              {
+                title: "Serial Number Value",
+                field: "serialnovalue",
+                type: "text",
+              },
             ],
           });
         } else {
@@ -1393,20 +1838,18 @@ export default function ScrollableTabsButtonAuto(props) {
           if (response.data[0].externalorderId === 0) {
             response.data[0].externalorderId = "";
           }
-         
+
           // setOrderList(response.data);
           setState((prevState) => {
             const data = [...prevState.data];
             data.push(response.data[0]);
             return { ...prevState, data };
           });
-for(let i=0;i<response.data[0].product.length;i++)
-{
-  if(response.data[0].product[i].itemvalue===0)
-  {
-    response.data[0].product[i].itemvalue='';
-  }
-}
+          for (let i = 0; i < response.data[0].product.length; i++) {
+            if (response.data[0].product[i].itemvalue === 0) {
+              response.data[0].product[i].itemvalue = "";
+            }
+          }
           setdataproductData(response.data[0].product);
         } else {
           setLoading(false);
@@ -1487,8 +1930,7 @@ for(let i=0;i<response.data[0].product.length;i++)
           lg={4}
           //style={{marginRight:'70px'}}
         >
-          <Grid container item justify="flex-end">
-            <Grid>
+         <Grid style={{marginLeft:230}}>
               <ColorButton
                 size="large"
                 variant="contained"
@@ -1500,7 +1942,7 @@ for(let i=0;i<response.data[0].product.length;i++)
               >
                 Back
               </ColorButton>
-            </Grid>
+           
           </Grid>
         </Grid>
       </Grid>
@@ -1511,7 +1953,7 @@ for(let i=0;i<response.data[0].product.length;i++)
 
         <View style={popUpStyle.paddingSide}>
           <MaterialTable
-            style={{ padding: "0px" }}
+            style={{ padding: "0px", marginTop: "10px" }}
             //  title="."
             columns={state.columns}
             data={state.data}

@@ -13,6 +13,7 @@ import {
   Image,
   Text,
   Dimensions,
+  ImageBackground,
   Clipboard,
 } from "react-native";
 import Link from "@material-ui/core/Link";
@@ -41,6 +42,7 @@ import ProgressBar from "./feedback/ProgressBar";
 import { forwardRef } from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -370,7 +372,7 @@ export default function ScrollableTabsButtonAuto(props) {
       {
         title: "Customer Type",
         field: "customertype",
-        lookup: { 1: "B2B", 2: "B2C" },
+        lookup: { 1: "Residential", 2: "Business" },
         render: (rowData) => (
           <Text>
             {(() => {
@@ -378,7 +380,7 @@ export default function ScrollableTabsButtonAuto(props) {
                 return (
                   <Text
                     onClick={() => {
-                      copyLinkOnClick("B2B");
+                      copyLinkOnClick("Residential");
                     }}
                     style={{
                       fontSize: "11px",
@@ -388,14 +390,14 @@ export default function ScrollableTabsButtonAuto(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    B2B
+                    Residential
                   </Text>
                 );
               } else {
                 return (
                   <Text
                     onClick={() => {
-                      copyLinkOnClick("B2C");
+                      copyLinkOnClick("Business");
                     }}
                     style={{
                       fontSize: "11px",
@@ -405,7 +407,7 @@ export default function ScrollableTabsButtonAuto(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    B2C
+                   Business
                   </Text>
                 );
               }
@@ -689,17 +691,15 @@ export default function ScrollableTabsButtonAuto(props) {
       },
       {
         title: "Country",
-        field: "country",
+        field: "ordercountry",
         type: "text",
         render: (rowData) => <Text>
         {(() => { 
              if(rowData!==undefined){
-              if(rowData.customer!==null)
-              {
-                return(
+              return(
                   <Text
           onClick={() => {
-            copyLinkOnClick(rowData.customer.country);
+            copyLinkOnClick(rowData.ordercountry);
           }}
           style={{
             fontSize: "11px",
@@ -709,28 +709,9 @@ export default function ScrollableTabsButtonAuto(props) {
             transition: "all 0.25s",
           }}
         >
-          {rowData.customer.country}
+          {rowData.ordercountry}
         </Text>
                   )
-              
-                }
-                else{
-                  return(
-                    <Text
-           
-            style={{
-              fontSize: "11px",
-              cursor: "pointer",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-              transition: "all 0.25s",
-            }}
-          >
-            
-          </Text>
-                    )
-                
-                }
                }
                
                   })()} 
@@ -903,6 +884,517 @@ export default function ScrollableTabsButtonAuto(props) {
           >
             {rowData.tracking}
           </Text>
+        ),
+      },
+      {
+        title: "Shipping Service",
+        field: "shipmenttype",
+        type: "text",
+
+        render: (rowData) => (
+          <FormControlLabel
+          onClick={() => {
+            
+          }}
+         
+          control={
+            <Typography
+              style={{
+                marginLeft: "20px",
+                fontSize: "2px",
+                cursor: "pointer",
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+              }}
+            >
+          <Text>
+            {(() => {
+              if (rowData.shipmenttype === "10") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Custom Shipping Label
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "2") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    2-Day Shipping
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "3") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Overnight Shipping
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "4") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Stamped Postage
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "5") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Oversize LetterMail
+                  </Text>
+                );
+              } else if (rowData.shipmenttype === "6") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Pallet Freight
+                  </Text>
+                );
+              }else if (rowData.shipmenttype === "1") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Standard Shipping
+                  </Text>
+                );
+              }else{
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                   {' '}
+                  </Text>
+                );
+              }
+            })()}
+          </Text>
+          </Typography>
+          }
+        />
+        ),
+      },
+      {
+        title: "Packing Type",
+        field: "packagetype",
+        type: "text",
+
+        render: (rowData) => (
+          <FormControlLabel
+          onClick={() => {
+            //handleChangeCheckbox(rowData.internalorderId);
+          }}
+          className={classes.quantitycss}
+          control={
+            <Typography
+              style={{
+                marginLeft: "20px",
+                fontSize: "2px",
+                cursor: "pointer",
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+              }}
+            >
+          <Text>
+            {(() => {
+              if (rowData.packagetype === "1") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    No Packing Slips
+                  </Text>
+                );
+              } else if (rowData.packagetype === "2") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Packing Slip Inside
+                  </Text>
+                );
+              } else if (rowData.packagetype === "3") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Packing Slip Outside
+                  </Text>
+                );
+              } else if (rowData.packagetype === "4") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Packing Slip Inside + Outside
+                  </Text>
+                );
+              
+              }else{
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                   {' '}
+                  </Text>
+                );
+              }
+            })()}
+          </Text>
+          </Typography>
+          }
+        />
+        ),
+      },
+      {
+        title: "Invoice Type",
+        field: "invoicetype",
+        type: "text",
+
+        render: (rowData) => (
+          <FormControlLabel
+          onClick={() => {
+           // handleChangeCheckbox(rowData.internalorderId);
+          }}
+          className={classes.quantitycss}
+          control={
+            <Typography
+              style={{
+                marginLeft: "20px",
+                fontSize: "2px",
+                cursor: "pointer",
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+              }}
+            >
+          <Text>
+            {(() => {
+              if (rowData.invoicetype === "4") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    No Invoice
+                  </Text>
+                );
+              } else if (rowData.invoicetype === "1") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Invoice Inside
+                  </Text>
+                );
+              } else if (rowData.invoicetype === "2") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                   Add Invoice Outside
+                  </Text>
+                );
+              } else if (rowData.invoicetype === "3") {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Add Invoice Inside + Outside
+                  </Text>
+                );
+              }else{
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                   {' '}
+                  </Text>
+                );
+              }
+            })()}
+          </Text>
+          </Typography>
+          }
+        />
+        ),
+      },
+      {
+        title: "Uploaded Label",
+        field: "shippinglabel",
+        render: (rowData) => (
+<View>
+{(() => {
+if(rowData.shippinglabel === 0 || rowData.shippinglabel === null){
+  return(
+<Text style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}>No Attachment</Text>
+  )
+}else{
+  return(
+
+  <ImageBackground
+                  onPress={() => {
+                    window.open(
+                      `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.shippinglabel}`
+                    );
+                  }}
+                  style={{
+                    width: 65,
+                    height: 65,
+                    flexDirection: "column",
+                    borderRadius: 5,
+                    marginHorizontal: 5,
+                    marginVertical: 5,
+                  }}
+                  source={require("../../assets/icons/free_pdf_download_icon.png")}
+                >
+                  <View
+                    style={{
+                      alignItems: "flex-end",
+                      marginTop: 10,
+                      marginRight: 10,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <CloudDownloadIcon
+                      onClick={() => {
+                        window.open(
+                          `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.shippinglabel}`
+                        );
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
+                )
+}
+
+})()}
+</View>
+
+         
+        
+        ),
+      },
+      {
+        title: "Packing Slip",
+        field: "packaginslipdocnameid",
+        render: (rowData) => (
+<View>
+{(() => {
+if(rowData.packaginslipdocnameid === 0 || rowData.packaginslipdocnameid === null){
+  return(
+<Text style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}>No Attachment</Text>
+  )
+}else{
+  return(
+
+  <ImageBackground
+                  onPress={() => {
+                    window.open(
+                      `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.packaginslipdocnameid}`
+                    );
+                  }}
+                  style={{
+                    width: 65,
+                    height: 65,
+                    flexDirection: "column",
+                    borderRadius: 5,
+                    marginHorizontal: 5,
+                    marginVertical: 5,
+                  }}
+                  source={require("../../assets/icons/free_pdf_download_icon.png")}
+                >
+                  <View
+                    style={{
+                      alignItems: "flex-end",
+                      marginTop: 10,
+                      marginRight: 10,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <CloudDownloadIcon
+                      onClick={() => {
+                        window.open(
+                          `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.packaginslipdocnameid}`
+                        );
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
+                )
+}
+
+})()}
+</View>
+
+         
+        
+        ),
+      },
+      {
+        title: "Order Invoice",
+        field: "invoicetypedocnameid",
+        render: (rowData) => (
+<View>
+{(() => {
+if(rowData.invoicetypedocnameid === 0 || rowData.invoicetypedocnameid === null){
+  return(
+<Text style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}>No Attachment</Text>
+  )
+}else{
+  return(
+
+  <ImageBackground
+                  onPress={() => {
+                    window.open(
+                      `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.invoicetypedocnameid}`
+                    );
+                  }}
+                  style={{
+                    width: 65,
+                    height: 65,
+                    flexDirection: "column",
+                    borderRadius: 5,
+                    marginHorizontal: 5,
+                    marginVertical: 5,
+                  }}
+                  source={require("../../assets/icons/free_pdf_download_icon.png")}
+                >
+                  <View
+                    style={{
+                      alignItems: "flex-end",
+                      marginTop: 10,
+                      marginRight: 10,
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <CloudDownloadIcon
+                      onClick={() => {
+                        window.open(
+                          `https://api.shiphype.com/api/Upload/Download?shipinglabelid=${rowData.invoicetypedocnameid}`
+                        );
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
+                )
+}
+
+})()}
+</View>
+
+         
+        
         ),
       },
     ],
@@ -1485,10 +1977,9 @@ for(let i=0;i<response.data[0].product.length;i++)
           xs={12}
           md={4}
           lg={4}
-          //style={{marginRight:'70px'}}
         >
-          <Grid container item justify="flex-end">
-            <Grid>
+         
+            <Grid style={{marginLeft:230}}>
               <ColorButton
                 size="large"
                 variant="contained"
@@ -1500,7 +1991,7 @@ for(let i=0;i<response.data[0].product.length;i++)
               >
                 Back
               </ColorButton>
-            </Grid>
+           
           </Grid>
         </Grid>
       </Grid>
@@ -1511,7 +2002,8 @@ for(let i=0;i<response.data[0].product.length;i++)
 
         <View style={popUpStyle.paddingSide}>
           <MaterialTable
-            style={{ padding: "0px" }}
+            
+            style={{ padding: "0px",marginTop: '10px'}}
             //  title="."
             columns={state.columns}
             data={state.data}

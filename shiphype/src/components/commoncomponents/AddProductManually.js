@@ -339,6 +339,7 @@ export default function Slide17(props) {
   const[wahouseValue,setWarehouseValue]=React.useState(0);
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
   const [openProductName, setOpenProductName] = React.useState(false);
   const [open11, setOpen11] = React.useState(false);
   var valueofsouceid=3;
@@ -350,6 +351,10 @@ export default function Slide17(props) {
   };
   const handleClose4 = () => {
     setOpen2(false);
+    // handleNextPage(22);
+  };
+  const handleClose5 = () => {
+    setOpen3(false);
     // handleNextPage(22);
   };
   const handleCloseProductName = () => {
@@ -1454,7 +1459,9 @@ pushds.push(customproduct_id);
       // setOpen2(true);
       packaging=valueofsouceid;
     }
-   
+   if(promotionalPackage === undefined){
+    promotionalPackage=valueofprom;
+   }
 
 
       if (productsku === undefined) {
@@ -1463,6 +1470,8 @@ pushds.push(customproduct_id);
     else if(packaging === 0){
       setOpen2(true);
      //packaging=valueofsouceid;
+   }else if(promotionalPackage === 0){
+    setOpen3(true);
    }
    else  if(productname === undefined){
     setOpenProductName(true);
@@ -1521,6 +1530,9 @@ pushds.push(customproduct_id);
                   if(newData.packaging===undefined)
                   {
                     newData.packaging= valueofsouceid;
+                  }
+                  if(newData.promotionalpackaging === undefined){
+                    newData.promotionalpackaging=valueofprom;
                   }
                   data.push(newData);
                   return { ...prevState, data };
@@ -1582,6 +1594,9 @@ pushds.push(customproduct_id);
                   {
                     newData.packaging= valueofsouceid;
                   }
+                  if(newData.promotionalpackaging === undefined){
+                    newData.promotionalpackaging=valueofprom;
+                  }
                 data.push(newData);
                 return { ...prevState, data };
               });
@@ -1641,6 +1656,8 @@ pushds.push(customproduct_id);
       else  if(packaging === 0){
         setOpen2(true);
        //packaging=valueofsouceid;
+     }else if(promotional === 0){
+      setOpen3(true);
      }
      else  if(productname === ''){
       setOpenProductName(true);
@@ -1772,7 +1789,6 @@ pushds.push(customproduct_id);
       const target=event.target;
       const fileReader = new FileReader();
       const file=target.files[0];
-    
       var formData =  new FormData();
       if(file.type==='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
       {
@@ -1781,8 +1797,6 @@ pushds.push(customproduct_id);
             console.log(err);            
           }
           else{
-           
-          
             shiphypeservice.uploadProductSheet(resp.rows,userid)
         .then(response => {
          console.log("status",response.status);
@@ -2122,6 +2136,17 @@ const addStepStatus =()=>{
           <Snackbar
             anchorOrigin={{ vertical, horizontal }}
             key={`${vertical},${horizontal}`}
+            open={open3}
+            autoHideDuration={3000}
+            onClose={handleClose5}
+          >
+            <Alert onClose={handleClose5} severity="error">
+            Promotional must be selected.
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            anchorOrigin={{ vertical, horizontal }}
+            key={`${vertical},${horizontal}`}
             open={openProductName}
             autoHideDuration={3000}
             onClose={handleCloseProductName}
@@ -2132,6 +2157,7 @@ const addStepStatus =()=>{
           </Snackbar>
                 <View>
                   <MaterialTable
+                  style={{ padding: "0px",marginTop: '10px'}}
                     title={
                       <Text
                         style={{
@@ -2237,13 +2263,48 @@ const addStepStatus =()=>{
                           setTimeout(() => {
                             {
                              
-                              console.log("sku", newData.productsku);
-                              console.log("name", newData.productname);
-                              var str = newData.itemvaluecurrency;
+                            //  if(newData.packaging === undefined){
+                            //   setOpen(true);
+                            // setType("error");
+                            // setMsg(
+                            //   "Packaging must be selected"
+                            // );
+                            // reject();
+
+
+                            // return;
+                            //  }else{
+                            //   console.log("sku", newData.productsku);
+                            //   console.log("name", newData.productname);
+                            //   var str = newData.itemvaluecurrency;
+                            //   var currency = "USD";
+                            //   var currencyvalue = newData.itemvalue;
+                            //   console.log("currency", currency);
+                            //   console.log("currencyvalue", currencyvalue);
+                             
+                            //   addNewProduct(
+                            //     newData.productsku,
+                            //     newData.serialno,
+                            //     newData.productname,
+                            //     true,
+                            //     newData.internationalshipping,
+                            //     newData.dangerousgoods,
+                            //     newData.isprocess,
+                            //     newData.hscode,
+                            //     currencyvalue,
+                            //     currency,
+                            //     0,
+                            //     newData.packaging,
+                            //     userid,
+                            //     newData.promotionalpackaging,
+                            //     newData.warehouseid,newData
+                            //   );
+                            //  }
+                            var str = newData.itemvaluecurrency;
                               var currency = "USD";
-                              var currencyvalue = newData.itemvalue;
-                              console.log("currency", currency);
-                              console.log("currencyvalue", currencyvalue);
+                               var currencyvalue = newData.itemvalue;
+                               console.log("currency", currency);
+                               console.log("currencyvalue", currencyvalue);
                              
                               addNewProduct(
                                 newData.productsku,
@@ -2274,7 +2335,55 @@ const addStepStatus =()=>{
                           setTimeout(() => {
                             {
                            
-                             const dataup=state.data;
+
+                          //  if(newData.packaging === undefined){
+                          //   setOpen(true);
+                          //   setType("error");
+                          //   setMsg(
+                          //     "Packaging must be selected."
+                          //   );
+                          //   reject();
+                          //   return;
+                          //  }else{
+                          //    const dataup=state.data;
+                          //     const index = dataup.indexOf(oldData);
+                          //     // data[index] = newData;
+                          //     // setState({ data }, () => resolve());
+
+                          //     const customproduct_id =ids[index];
+                          //       //dataproduct[index].customproductId;
+
+
+                          //     console.log("sku", newData.productsku);
+                          //     console.log("name", newData.productname);
+                          //     console.log("customproduct_id", ids[index]);
+                          //     console.log("arrayvalue",ids.length);
+                          //     console.log("index", index);
+                          //     var str = newData.itemvaluecurrency;
+                          //     var currency = "USD";
+                          //     var currencyvalue = newData.itemvalue;
+                          //     console.log("currency", currency);
+                          //     console.log("currencyvalue", currencyvalue);
+                          //     updataExistsProduct(
+                          //       customproduct_id,
+                          //       newData.productsku,
+                          //       newData.serialno,
+                          //       newData.productname,
+                          //       true,
+                          //       newData.internationalshipping,
+                          //       newData.dangerousgoods,
+                          //       newData.isprocess,
+                          //       newData.hscode,
+                          //       currencyvalue,
+                          //       currency,
+                          //       0,
+                          //       newData.packaging,
+                          //       userid,
+                          //       newData.promotionalpackaging,
+                          //       newData.warehouseid,newData,oldData
+                          //     );
+                          //  }
+                           const dataup=state.data;
                               const index = dataup.indexOf(oldData);
                               // data[index] = newData;
                               // setState({ data }, () => resolve());

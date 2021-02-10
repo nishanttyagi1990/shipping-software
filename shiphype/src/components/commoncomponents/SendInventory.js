@@ -37,6 +37,7 @@ import CancelOrder from './ShipmentStatus/CancelOrder';
 import ProgressBar from "./feedback/ProgressBar";
 import AsyncStorage from "@react-native-community/async-storage";
 import RefreshIcon from '@material-ui/icons/Refresh';
+import moment from "moment";
 const ColorButtonRefresh = withStyles((theme) => ({
   root: {
     borderRadius: "3px",
@@ -773,9 +774,20 @@ columns: [
 render: rowData => <Link href="#" onClick={() => handleGetShipmentId34(rowData)} variant="body2">
 {rowData.shippingId} </Link>
 },
-{ title: 'Creation Date', field: 'createddate',type: 'date',
+{ title: 'Creation Date', field: 'createddate',type: 'text',
+    render: rowData =><FormControlLabel
 
-},
+           onClick={()=>{handleGetShipmentId(rowData)}}
+           className={classes.quantitycss}
+           control={<Typography style={{marginLeft:'20px',cursor:'pointer',
+         }}>
+
+<Text style={{ fontSize: '11px'}}>{moment(rowData.createddate).format("MM/DD/YYYY")}</Text>
+
+             </Typography>}
+         />
+
+  },
 
 { title: 'Ship From Name', field: 'shippingfromname', type: 'text',
 render: rowData =><FormControlLabel
@@ -834,10 +846,59 @@ render: rowData =><FormControlLabel
 
 // },
 {
-title: 'Warehouse',
-field: 'shippingtowarehouseId',
-lookup: { 1: 'Canada Warehouse', 2: 'US Warehouse' },
-},
+  title: 'Warehouse',
+  field: 'shippingtowarehouseId',
+  lookup: { 1: 'Canada Warehouse', 2: 'US Warehouse' },
+
+  render: (rowData) => (
+    <FormControlLabel
+      onClick={()=>{handleGetShipmentId(rowData)}}
+      className={classes.quantitycss}
+      control={
+        <Typography
+          style={{
+            marginLeft: "20px",
+            fontSize: "2px",
+            cursor: "pointer",
+            fontFamily:
+              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+          }}
+        >
+          {(() => {
+            if (rowData.shippingtowarehouseId === 1) {
+              return (
+                <Text
+                  style={{
+                    fontSize: "11px",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                    transition: "all 0.25s",
+                  }}
+                >
+                  US Warehouse
+                </Text>
+              );
+            }
+             else {
+              return (
+                <Text
+                  style={{
+                    fontSize: "11px",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                    transition: "all 0.25s",
+                  }}
+                >
+                  Canada Warehouse
+                </Text>
+              );
+            }
+          })()}
+        </Typography>
+      }
+    />
+  ),
+  },
 {
   title: 'Shipping Carrier',
   field: 'shippingcarrier',
@@ -1053,7 +1114,18 @@ setState({
     render: rowData => <Link href="#" onClick={() => handleGetShipmentId34(rowData)} variant="body2">
     {rowData.shippingId} </Link>
     },
-    { title: 'Creation Date', field: 'createddate',type: 'date',
+    { title: 'Creation Date', field: 'createddate',type: 'text',
+    render: rowData =><FormControlLabel
+
+           onClick={()=>{handleGetShipmentId(rowData)}}
+           className={classes.quantitycss}
+           control={<Typography style={{marginLeft:'20px',cursor:'pointer',
+         }}>
+
+<Text style={{ fontSize: '11px'}}>{moment(rowData.createddate).format("MM/DD/YYYY")}</Text>
+
+             </Typography>}
+         />
 
   },
     { title: 'Ship From Name', field: 'shippingfromname', type: 'text',
@@ -1116,13 +1188,61 @@ render: rowData =><FormControlLabel
     title: 'Warehouse',
     field: 'shippingtowarehouseId',
     lookup: { 1: 'Canada Warehouse', 2: 'US Warehouse' },
+
+    render: (rowData) => (
+      <FormControlLabel
+        onClick={()=>{handleGetShipmentId(rowData)}}
+        className={classes.quantitycss}
+        control={
+          <Typography
+            style={{
+              marginLeft: "20px",
+              fontSize: "2px",
+              cursor: "pointer",
+              fontFamily:
+                '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+            }}
+          >
+            {(() => {
+              if (rowData.shippingtowarehouseId === 1) {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    US Warehouse
+                  </Text>
+                );
+              }
+               else {
+                return (
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    Canada Warehouse
+                  </Text>
+                );
+              }
+            })()}
+          </Typography>
+        }
+      />
+    ),
     },
     {
       title: 'Shipping Carrier',
       field: 'shippingcarrier',
       lookup: orderCouierOptions,
       },
-
       {
         title: 'Tracking',
         field: 'trackingnumber',

@@ -112,6 +112,8 @@ const styles = (theme) => ({
     color: theme.palette.grey[500],
   },
 });
+
+//✔this is emozi
 //Make custom button
 const ColorButton = withStyles((theme) => ({
   root: {
@@ -674,8 +676,7 @@ export default function ShippingProfile(props) {
                             component="label"
                             color="primary"
                             startIcon={<CloudUploadIcon />}
-                            //disabled={packageBool}
-                            //onClick={()=>{handleNextPage(10)}}
+                            
                           >
                             Upload
                             <input

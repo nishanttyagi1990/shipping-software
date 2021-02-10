@@ -1005,8 +1005,7 @@ export default function ScrollableTabsButtonAuto(props) {
           lg={4}
           //style={{marginRight:'70px'}}
         >
-          <Grid container item justify="flex-end">
-            <Grid>
+         <Grid style={{marginLeft:230}}>
               <ColorButton
                 size="large"
                 variant="contained"
@@ -1018,7 +1017,7 @@ export default function ScrollableTabsButtonAuto(props) {
               >
                 Back
               </ColorButton>
-            </Grid>
+            
           </Grid>
         </Grid>
       </Grid>
@@ -1029,7 +1028,7 @@ export default function ScrollableTabsButtonAuto(props) {
 
         <View style={popUpStyle.paddingSide}>
           <MaterialTable
-            style={{ padding: "0px" }}
+            style={{ padding: "0px",marginTop: '10px'}}
             //  title="."
             columns={state.columns}
             data={state.data}
