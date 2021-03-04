@@ -1302,7 +1302,8 @@ export function updateOrderTracking(
   warehouseid,
   refreshcode,
   trackingservice,
-  trackingshipDate
+  trackingshipDate,
+  locationid
 ) {
   const requestOptions = {
     method: "POST",
@@ -1340,6 +1341,7 @@ export function updateOrderTracking(
       refreshcode,
       trackingservice,
       trackingshipDate,
+      locationid
     }),
   };
   return fetch(BASE_URL + "Order/Update", requestOptions)
@@ -1379,7 +1381,8 @@ export function updateManualTracking(
   tracking_company,
   refreshcode,
   consumerkey,
-  consumersecret
+  consumersecret,
+  locationid
 ) {
   const requestOptions = {
     method: "POST",
@@ -1415,6 +1418,7 @@ export function updateManualTracking(
       refreshcode,
       consumerkey,
       consumersecret,
+      locationid
     }),
   };
   return fetch(BASE_URL + "Order/Update", requestOptions)
@@ -4473,3 +4477,100 @@ export function wocommerceToken(userid, appname) {
       return response;
     });
 }
+
+export function fetchProductListPagination(userid,numberOfObjectsPerPage,pageNumber) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userid,numberOfObjectsPerPage,pageNumber }),
+  };
+  return fetch(BASE_URL + "Product/Fetchcopy", requestOptions)
+    .then((response) => response.json())
+    .then((response) => {
+      return response;
+    });
+}
+
+export function fetchCustomerListPagination(userid,numberOfObjectsPerPage,pageNumber) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userid,numberOfObjectsPerPage,pageNumber }),
+  };
+  return fetch(BASE_URL + "Customer/Fetchcopy", requestOptions)
+    .then((response) => response.json())
+    .then((response) => {
+      return response;
+    });
+}
+
+
+export function fetchOrderListPagination(user_id, orderstatus,numberOfObjectsPerPage,pageNumber) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id, orderstatus,numberOfObjectsPerPage,pageNumber }),
+  };
+  return fetch(BASE_URL + "Order/Fetchcopy", requestOptions)
+    .then((response) => response.json())
+    .then((response) => {
+      return response;
+    });
+}
+
+export function fetchCustomerProOrderCount(userid,cusProOrd) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userid,cusProOrd }),
+  };
+  return fetch(BASE_URL + "Customer/count", requestOptions)
+    .then((response) => response.json())
+    .then((response) => {
+      return response;
+    });
+}
+
+export function shopifyfullfilmentAdd(code,storename,userid,fulfillment_service) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code,storename,userid,fulfillment_service }),
+  };
+  return fetch(BASE_URL + "Shopify/FulfillmentService", requestOptions)
+    .then((response) => response.json())
+    .then((response) => {
+      return response;
+    });
+}
+
+export function fetchShopifyFUllfillment(userid,integrationid) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userid,integrationid }),
+  };
+  return fetch(BASE_URL + "Shopify/FetchFulfillmentService", requestOptions)
+    .then((response) => response.json())
+    .then((response) => {
+      return response;
+    });
+}
+
+
+export function removeFullfillment(fulfillmentserviceid) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fulfillmentserviceid }),
+  };
+  return fetch(BASE_URL + "Shopify/RemoveFulfillmentService", requestOptions)
+    .then((response) => response.json())
+    .then((response) => {
+      return response;
+    });
+}
+
+
+
+

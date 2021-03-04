@@ -22,7 +22,7 @@ import * as shiphypeservice from ".././ShipService/shiphype_service";
 import popUpStyle from ".././style/popUpStyle";
 import IntegrationSuccesfully from '../dialog/IntegrationSuccesfully';
 import validate from "validate.js";
-
+import ShopifyFullfillment from '../dialog/ShopifyFullfillment';
 const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(0, 0, 0),
@@ -221,13 +221,14 @@ export default function ShippingProfile(props) {
   let screenHeight = Dimensions.get("window").height;
   const [step,setStep]=React.useState(1);
   const [integrationopen,setIntegrationopen]=React.useState(false);
+  const [fullfillmentOpen,setFullfillmentOpen]=React.useState(false);
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
     touched: {},
     errors: {},
   });
-
+const [shopifycode,setShopifycode]=React.useState('');
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
@@ -272,13 +273,22 @@ export default function ShippingProfile(props) {
   const hasError = (field) =>
     formState.touched[field] && formState.errors[field] ? true : false;
 
-  const handleClose1 = () => {
-    setIntegrationopen(false);
-    props.handleCancle();
-    
+  const handleClose1 = (isCross) => {
+    if(!isCross){
+      setIntegrationopen(false);
+      props.handleCancle();
+    }else{
+      setFullfillmentOpen(true);
+      setIntegrationopen(false);
+    }
+   
   };
 
- 
+ const closeScreen=()=>{
+  setFullfillmentOpen(false);
+  props.handleCancle();
+ }
+
   let flag=false;
 
   const fetchUserIntegrationShopify = (useridshopify)=>{
@@ -298,6 +308,7 @@ export default function ShippingProfile(props) {
                 {
                   if(response.data[i].integrationId===4)
                   {
+                    setShopifycode(response.data[i].token);
                     setStausofInstgartion(false);
                     flag=false;
                     HandleClose2();
@@ -343,11 +354,11 @@ export default function ShippingProfile(props) {
           const appname=formState.values.AppName;
           const url1="https://";
           const url2=appname;
-          const url3=".myshopify.com/admin/oauth/authorize?client_id=f8686c1bc3f69acb051cd93d787dbd6a&redirect_uri=https://app.shiphype.com/&response_type=code&scope=write_orders,write_products,write_customers,read_orders,read_products,read_customers&state=24abdb4a773b68d59d0e6b95355b4eceb2d9af80e12209fb";
+          const url3=".myshopify.com/admin/oauth/authorize?client_id=f8686c1bc3f69acb051cd93d787dbd6a&redirect_uri=https://app.shiphype.com/&response_type=code&state=24abdb4a773b68d59d0e6b95355b4eceb2d9af80e12209fb&scope=read_products,write_products,read_customers,write_customers,read_orders,write_orders,read_fulfillments,write_fulfillments,read_shipping,write_shipping,read_inventory,write_inventory,read_analytics,read_locations,read_product_listings,read_draft_orders,write_draft_orders,read_script_tags,write_script_tags,read_checkouts,write_checkouts,read_price_rules,write_price_rules,read_marketing_events,write_marketing_events,read_reports,write_reports,read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_orders,read_third_party_fulfillment_orders,write_assigned_fulfillment_orders,write_merchant_managed_fulfillment_orders,write_third_party_fulfillment_orders";
           const url4=url1+url2+url3;
       
-          window.open(url4, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=150,width="+{screenWidth}+",height="+{screenHeight}+"fullscreen=yes");
-         // HandleClose2();
+        window.open(url4, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=150,width="+{screenWidth}+",height="+{screenHeight}+"fullscreen=yes");
+         
 
          
          flag=true;
@@ -418,6 +429,17 @@ export default function ShippingProfile(props) {
                 handleClose1={handleClose1}
               />
             )}
+
+            {
+              fullfillmentOpen === false ? "" :
+
+              <ShopifyFullfillment
+              userid={userid}
+              shopifycode={shopifycode}
+                fullfillmentOpen={fullfillmentOpen}
+                handleClose1={closeScreen}
+              />
+            }
           </Grid>
           <form className={classes.form}>
             <Grid container className={classes.root} spacing={1}>

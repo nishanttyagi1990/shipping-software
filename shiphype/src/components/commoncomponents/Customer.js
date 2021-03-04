@@ -52,6 +52,7 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import TablePagination from "@material-ui/core/TablePagination";
 const ColorButtonRefresh = withStyles((theme) => ({
   root: {
     borderRadius: "3px",
@@ -2372,14 +2373,48 @@ export default function Slide17(props) {
   const [msg, setMsg] = React.useState("");
   const [type, setType] = React.useState("");
   const [userData, setUserData] = React.useState([]);
+  const [tablelength, setTablelength] = React.useState(0);
   /**
    * Description:Custome switch
    */
   var valueofsouceid = stateData;
   const [changedWarehouseid, setchangedWarehouseid] = React.useState([]);
   const [openChecked, setOpenChekced] = React.useState(false);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   var ids = [];
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    fetchCustomerList(rowsPerPage,newPage);
+    console.log("newpage", newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    
+    setRowsPerPage(parseInt(event.target.value, 10));
+    fetchCustomerList(parseInt(event.target.value, 10),0);
+    setPage(0);
+    console.log("newpage122", event.target.value);
+  };
+
+  const fetchTableLength = () => {
+    //const userid=5;
+
+    shiphypeservice
+      .fetchCustomerProOrderCount(userid, 1)
+      .then((response) => {
+        console.log("status", response.status);
+        if (response.status === true) {
+          setTablelength(response.data);
+        } else {
+          console.log("message", response.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   const validate = {
     phone: (s) =>
       s.length < 10 && s.length > 10 ? "" : "Phone length is not correct",
@@ -4047,13 +4082,14 @@ export default function Slide17(props) {
 
   useEffect(() => {
     // fetchShiphypeCompleteStep();
-    fetchCustomerList();
+    fetchCustomerList(rowsPerPage, page);
   }, []);
+
 
   /**
    * Description:To do fetch customer list
    */
-  const fetchCustomerList = () => {
+  const fetchCustomerList = (rowsPerPage, page) => {
     //const userid=5;
     if (sellerid === 0) {
       uuid = userid;
@@ -4062,7 +4098,7 @@ export default function Slide17(props) {
     }
     setLoading(true);
     shiphypeservice
-      .fetchCustomerList(uuid)
+      .fetchCustomerListPagination(uuid,rowsPerPage,page)
       .then((response) => {
         console.log("status", response.status);
         if (response.status === true) {
@@ -4091,7 +4127,7 @@ export default function Slide17(props) {
         console.log("status", response.status);
         if (response.status === true) {
           setLoading(false);
-          fetchCustomerList();
+          fetchCustomerList(rowsPerPage, page);
           handleChangeCheckbox5();
         } else {
           setLoading(false);
@@ -4115,7 +4151,7 @@ export default function Slide17(props) {
         console.log("status", response.status);
         if (response.status === true) {
           setLoading(false);
-          fetchCustomerList();
+          fetchCustomerList(rowsPerPage, page);
           handleChangeCheckbox5();
         } else {
           setLoading(false);
@@ -4163,7 +4199,7 @@ export default function Slide17(props) {
         if (response.status === true) {
           setLoading(false);
 
-          fetchCustomerList();
+          fetchCustomerList(rowsPerPage,page);
         } else {
           setLoading(false);
           console.log("message", response.message);
@@ -4200,13 +4236,11 @@ export default function Slide17(props) {
     );
   };
 
-  const handleChange1 = (event) => {
-    setWarehouse(event.target.value);
-    fetchProductListById(event.target.value);
-  };
+  
   React.useEffect(() => {
     // fetchProductListOfLastWeek();
     fetchUserInfo();
+    fetchTableLength();
   }, []);
 
   var newArr = [];
@@ -4251,11 +4285,11 @@ export default function Slide17(props) {
         console.error(error);
       });
   };
-  const fetchProductListById = (User) => {
+  const fetchProductListById = (User,rowsPerPage,page) => {
     //const userid=5;
     setLoading(true);
     shiphypeservice
-      .fetchCustomerList(User)
+      .fetchCustomerListPagination(User,rowsPerPage,page)
       .then((response) => {
         console.log("status", response.status);
         if (response.status === true) {
@@ -4334,7 +4368,7 @@ export default function Slide17(props) {
                       )}
                       onChange={(event, newValue) => {
                         if (newValue !== null) {
-                          fetchProductListById(newValue.id);
+                          fetchProductListById(newValue.id,rowsPerPage,page);
                           setSellerid(newValue.id);
                         } else {
                           setSellerid(0);
@@ -4389,6 +4423,24 @@ export default function Slide17(props) {
               Container: (props) => <Paper {...props} elevation={0} />,
 
               Toolbar: (props) => <StyledMTableToolbar {...props} />,
+              Pagination: (props) => (
+                <TablePagination
+                  {...props}
+                  rowsPerPageOptions={[10, 20, 30, 40, 50, 100]}
+                  component="div"
+                  count={tablelength}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={(event, page) => {
+                    props.onChangePage(event, page);
+                    handleChangePage(event, page);
+                  }}
+                  onChangeRowsPerPage={(event) => {
+                    props.onChangeRowsPerPage(event);
+                    handleChangeRowsPerPage(event);
+                  }}
+                />
+              ),
             }}
             localization={{
               toolbar: {
@@ -4423,7 +4475,7 @@ export default function Slide17(props) {
                 ),
                 //tooltip: "Refresh",
                 isFreeAction: true,
-                onClick: (event) => fetchCustomerList(),
+                onClick: (event) => fetchCustomerList(rowsPerPage, page),
               },
 
               // {
@@ -4443,7 +4495,7 @@ export default function Slide17(props) {
               doubleHorizontalScroll: true,
               headerStyle: { position: "sticky", top: 0 },
               pageSize: 10,
-              pageSizeOptions: [10, 20, 30, 40, 50, 100],
+             // pageSizeOptions: [10, 20, 30, 40, 50, 100],
               showTitle: true,
               addRowPosition: "first",
               actionsColumnIndex: -1,
@@ -4600,6 +4652,24 @@ export default function Slide17(props) {
               Container: (props) => <Paper {...props} elevation={0} />,
 
               Toolbar: (props) => <StyledMTableToolbar {...props} />,
+              Pagination: (props) => (
+                <TablePagination
+                  {...props}
+                  rowsPerPageOptions={[10, 20, 30, 40, 50, 100]}
+                  component="div"
+                  count={tablelength}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={(event, page) => {
+                    props.onChangePage(event, page);
+                    handleChangePage(event, page);
+                  }}
+                  onChangeRowsPerPage={(event) => {
+                    props.onChangeRowsPerPage(event);
+                    handleChangeRowsPerPage(event);
+                  }}
+                />
+              ), 
             }}
             localization={{
               toolbar: {
@@ -4640,15 +4710,9 @@ export default function Slide17(props) {
                 ),
                 //tooltip: "Refresh",
                 isFreeAction: true,
-                onClick: (event) => fetchCustomerList(),
+                onClick: (event) => fetchCustomerList(rowsPerPage, page),
               },
-              //  {
-              //   icon: () => <RefreshIcon style={{ backgroundColor:'#33cc00',color:'#fff',borderRadius : '3px',margin:'3px', width:30,
-              //                   height:30}}/>,
-              //   //tooltip: 'Refresh',
-              //   isFreeAction: true,
-              //   onClick: (event) =>   fetchCustomerList()
-              // }
+             
             ]}
             options={{
               paging: true,
@@ -4657,7 +4721,7 @@ export default function Slide17(props) {
               doubleHorizontalScroll: true,
               headerStyle: { position: "sticky", top: 0 },
               pageSize: 10,
-              pageSizeOptions: [10, 20, 30, 40, 50, 100],
+             // pageSizeOptions: [10, 20, 30, 40, 50, 100],
               showTitle: true,
               addRowPosition: "first",
               actionsColumnIndex: -1,

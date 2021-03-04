@@ -1479,6 +1479,7 @@ else{
             } else {
               setOpenImportProduct(true);
               setOpenProductList(false);
+              setOpenCustomerSelection(false);
             }
           } else if (isSprintCreate === 13) {
             setOpenProductList(true);
@@ -1645,6 +1646,7 @@ else{
     } else if (isSprintCreate === 14) {
       setOpenProductSelection(false);
       setOpenProductList(false);
+      setOpenImportProduct(false);
       setOpenCustomerSelection(true);
     } else if (isSprintCreate === 15) {
       //  setOpenProductList(false);
@@ -2155,7 +2157,7 @@ const updateData = (data, integrateDataid) => {
   <Grid container item  justify="flex-end" >
 <Grid style={{marginTop:'17px'}}>
 
-                  <ColorButtonBlog
+                  {/* <ColorButtonBlog
     size='large'
     variant="contained"
     color="primary"
@@ -2164,7 +2166,7 @@ const updateData = (data, integrateDataid) => {
     >BLOG
     
    
-  </ColorButtonBlog>
+  </ColorButtonBlog> */}
 
   <ColorButtonHome
     size='large'
@@ -2289,13 +2291,14 @@ const updateData = (data, integrateDataid) => {
         <Grid item lg={3} ></Grid>
         <Grid item lg={9} >
               <Avatar alt="Remy Sharp" src={icon} className={s4} /> 
-            <Text style={{ fontSize: '11px',
-           // fontWeight: '700',
+            {/* <Text style={{ fontSize: '11px',
+          
             fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
             color: '#001737',
           marginLeft:'10%',
-            transition : 'all 0.25s',}}>Founder & CEO{'\n'} </Text><Text style={{ fontSize: '11px',
-            // fontWeight: '700',
+            transition : 'all 0.25s',}}>Founder & CEO{'\n'} </Text> */}
+            <Text style={{ fontSize: '11px',
+           
              fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
              color: '#001737',
            marginLeft:'8%',
@@ -2867,7 +2870,7 @@ else{
 }
 })()} */}
 
-{(() => { 
+{/* {(() => { 
 if(returnsettingdone===true)
 {
 return(
@@ -2901,7 +2904,7 @@ else{
      transition : 'all 0.25s',}}>Return Settings</Text> }/>
   )
 }
-})()}
+})()} */}
 
 {/* {(() => { 
 if(customepackingdone===true)
@@ -3047,7 +3050,7 @@ else{
 }
 })()}
 
-{(() => { 
+{/* {(() => { 
 if(pricePlan===true)
 {
 return(
@@ -3082,9 +3085,9 @@ else{
      transition : 'all 0.25s',}}>Price Plan Agreement</Text> }/>
   )
 }
-})()}
+})()} */}
 
-{(() => { 
+{/* {(() => { 
 if(connectCredit===true)
 {
 return(
@@ -3118,9 +3121,9 @@ else{
             transition : 'all 0.25s',}}>Payment Method</Text> }/>
   )
 }
-})()}
+})()} */}
 
-{(() => { 
+{/* {(() => { 
 if(recieveSet===true)
 {
 return(
@@ -3155,7 +3158,7 @@ else{
             transition : 'all 0.25s',}}>Receiving Settings</Text> }/>
   )
 }
-})()}
+})()} */}
 
 {(() => { 
 if(orderSet===true)

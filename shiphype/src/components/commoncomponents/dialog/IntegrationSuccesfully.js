@@ -133,7 +133,7 @@ export default function DeleteCard(props) {
 
 
   const handleClose = () => {
-    props.handleClose1();
+    props.handleClose1(true);
   };
 
   return (

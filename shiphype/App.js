@@ -4,6 +4,8 @@ import BrowserRouter from "react-router-dom";
 import { fireabase as firebaseInit } from "./src/components/commoncomponents/firebase/myfirebase";
 import firebase from "firebase/app";
 import "firebase/messaging";
+import {Provider} from 'react-redux';
+import store from './src/store';
 let pushToken;
   const messaging = firebase.messaging();
   messaging
@@ -41,5 +43,9 @@ let pushToken;
 export default function App() {
  
   
-  return <Router />;
+  return (
+    <Provider store={store}>
+  <Router />
+  </Provider>
+  );
 }

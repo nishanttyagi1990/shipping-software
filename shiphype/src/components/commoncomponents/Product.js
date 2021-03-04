@@ -51,11 +51,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import FormGroup from "@material-ui/core/FormGroup";
-import Select from "@material-ui/core/Select";
 
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
+import TablePagination from "@material-ui/core/TablePagination";
+
 import RefreshIcon from "@material-ui/icons/Refresh";
 
 const ColorButtonAdd = withStyles((theme) => ({
@@ -69,7 +67,7 @@ const ColorButtonAdd = withStyles((theme) => ({
     width: "130px",
     fontSize: "11px",
     fontWeight: "550",
-    paddingRight:0,
+    paddingRight: 0,
     color: "#fff",
     backgroundColor: "#0168fa",
     //  paddingLeft: '22%',
@@ -89,7 +87,7 @@ const ColorButtonRefresh = withStyles((theme) => ({
     width: "100px",
     fontSize: "11px",
     fontWeight: "550",
-    paddingLeft:0,
+    paddingLeft: 0,
     color: "#fff",
     backgroundColor: "#33cc00",
     //  paddingLeft: '22%',
@@ -102,16 +100,6 @@ const ColorButtonRefresh = withStyles((theme) => ({
 }))(Button);
 
 const tableIcons = {
-  // Add: () => (
-  //   <ColorButtonAdd
-  //     size="large"
-  //     variant="contained"
-  //     color="primary"
-  //     startIcon={<AddIcon />}
-  //   >
-  //     Product
-  //   </ColorButtonAdd>
-  // ),
   RefreshIcon: forwardRef((props, ref) => (
     <RefreshIcon {...props} ref={ref} color="action" />
   )),
@@ -141,70 +129,6 @@ const tableIcons = {
     <CloudUploadIcon {...props} ref={ref} />
   )),
 };
-
-const data = [
-  {
-    productid: "LS-0001",
-    productname: "Touch screen apple iphone",
-    sellingprice: "$18",
-    shipinternational: "yes",
-    hscode: "FS008",
-    packing: "Corrugated Box",
-  },
-  {
-    productid: "LS-0002",
-    productname: "Battery for apple iphone",
-    sellingprice: "$19",
-    shipinternational: "no",
-    hscode: "FS009",
-    packing: "Polly Bubble Mailer",
-  },
-];
-
-const packageingType = [
-  {
-    value: "w2",
-    label: "Corrugated Box",
-  },
-  {
-    value: "w3",
-    label: "Poly Bubble Mailer",
-  },
-];
-
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    position: "relative",
-    backgroundColor: theme.palette.background.paper,
-    border: "0px solid #ced4da",
-    fontSize: 15,
-    padding: "2px",
-    transition: theme.transitions.create(["border-color", "box-shadow"]),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      borderRadius: 0,
-      borderColor: "#80bdff",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-    },
-  },
-}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
   "@global": {
@@ -245,11 +169,10 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-
-  // grid: {
-  //   width: 100,
-  //   height: 100,
-  // },
+  root1: {
+    flexShrink: 0,
+    marginLeft: theme.spacing(2.5),
+  },
 }));
 
 /****   For changing the textfield radius  : End *********/
@@ -284,34 +207,33 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
-const StyledMTableToolbar = withStyles((theme) =>({
+const StyledMTableToolbar = withStyles((theme) => ({
   root: {
     paddingLeft: 0,
     paddingRight: 0,
-    
   },
   highlight:
     theme.palette.type === "light"
       ? {
           color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.00),
+          backgroundColor: lighten(theme.palette.secondary.light, 0.0),
         }
       : {
           color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.00),
+          backgroundColor: lighten(theme.palette.secondary.light, 0.0),
         },
   spacer: {
     flex: "1 1 10%",
   },
   actions: {
-    paddingLeft:0,
-    paddingRight:0,
-    margin:0,
-    padding:0,
-    justifyContent:'center',
+    paddingLeft: 0,
+    paddingRight: 0,
+    margin: 0,
+    padding: 0,
+    justifyContent: "center",
     "&:hover": {
       color: "#fff",
-     // backgroundColor: "#000",
+      // backgroundColor: "#000",
     },
   },
 }))(MTableToolbar);
@@ -368,7 +290,23 @@ export default function Slide17(props) {
   const [open11, setOpen11] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [openProductName, setOpenProductName] = React.useState(false);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [tablelength, setTablelength] = React.useState(0);
   var ids1 = [];
+  let rowpage = 10;
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    fetchProductList(rowsPerPage, newPage);
+    console.log("newpage", newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    fetchProductList(parseInt(event.target.value, 10), 0);
+    setPage(0);
+    console.log("newpage122", event.target.value);
+  };
 
   const handleClose31 = () => {
     setOpen11(false);
@@ -410,13 +348,29 @@ export default function Slide17(props) {
     // setActiveStep2(true);
   };
 
-  
   React.useEffect(() => {
     fetchPackingList(userid);
+    fetchTableLength(userid);
     console.log("focuedchnaged", "run34");
   }, []);
 
- 
+  const fetchTableLength = () => {
+    //const userid=5;
+
+    shiphypeservice
+      .fetchCustomerProOrderCount(userid, 3)
+      .then((response) => {
+        console.log("status", response.status);
+        if (response.status === true) {
+          setTablelength(response.data);
+        } else {
+          console.log("message", response.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   const opennewOrder = (rowid, rowData) => {
     props.handleDashboard(
       "AddProductManually",
@@ -444,9 +398,7 @@ export default function Slide17(props) {
 
   const theme = useTheme();
   const [state, setState] = React.useState({
-  
     columns: [
-     
       {
         title: "Item Name",
         field: "productname",
@@ -473,7 +425,9 @@ export default function Slide17(props) {
                     transition: "all 0.25s",
                   }}
                 >
-                  {rowData.productname === null || rowData.productname === "" ?  '  ' : rowData.productname}
+                  {rowData.productname === null || rowData.productname === ""
+                    ? "  "
+                    : rowData.productname}
                 </Text>
               </Typography>
             }
@@ -506,14 +460,16 @@ export default function Slide17(props) {
                     transition: "all 0.25s",
                   }}
                 >
-                  {rowData.productsku === null || rowData.productsku === "" ? ' ' : rowData.productsku}
+                  {rowData.productsku === null || rowData.productsku === ""
+                    ? " "
+                    : rowData.productsku}
                 </Text>
               </Typography>
             }
           />
         ),
       },
-      
+
       {
         title: "Ships International",
         field: "internationalshipping",
@@ -1026,13 +982,11 @@ export default function Slide17(props) {
         title: "Toronto Stock",
         field: "torontostock",
         type: "text",
-       
       },
       {
         title: "Los Angeles Stock",
         field: "losangelesstock",
         type: "text",
-      
       },
       {
         title: "Total Sold",
@@ -1086,12 +1040,11 @@ export default function Slide17(props) {
     // const name = target.accept.includes('image') ? 'images' : 'videos';
 
     fileReader.readAsDataURL(target.files[0]);
-   
   };
 
   const fetchSellerProductPackingList = (userid) => {
     fetchPackingList(userid);
-    fetchProductList1(userid);
+    fetchProductList1(userid, rowsPerPage, page);
   };
   const fetchPackingList = (userid) => {
     var column1FilterList = state.column1FilterList;
@@ -1166,10 +1119,6 @@ export default function Slide17(props) {
         if (response.status === true) {
           setLoading(false);
           setCustomePackage(response.data);
-          // if(response.data.length !== 0){
-          //   setPackaging(response.data[0].packaggingId);
-          // }
-          // console.log("packingdata",response.data);
         } else {
           setLoading(false);
           console.log("message", response.message);
@@ -1209,7 +1158,6 @@ export default function Slide17(props) {
             setState({
               packageDataPro111,
               columns: [
-                
                 {
                   title: "Item Name",
                   field: "productname",
@@ -1276,7 +1224,7 @@ export default function Slide17(props) {
                     />
                   ),
                 },
-               
+
                 {
                   title: "ShipHype Internal SKU",
                   field: "shiphypeSku",
@@ -1742,7 +1690,6 @@ export default function Slide17(props) {
                   field: "packaging",
                   //lookup: { 1: 'Corrugated Box', 2: 'Letter' }, packageDataPro111[ packaggingId ] = packaggingName
                   lookup: packageDataPro11,
-  
                 },
 
                 {
@@ -2017,7 +1964,6 @@ export default function Slide17(props) {
                     />
                   ),
                 },
-               
 
                 {
                   title: "Ships International",
@@ -2451,7 +2397,6 @@ export default function Slide17(props) {
 
                   //lookup: { 1: 'Envelope', 2: 'Courier Bags' ,3:'Poly Bubble Mailer',4:'Corrugated Box',5:'Corrugated Box (Heavy Duty)',6:'Corrugated Box (Cube)'},
                   lookup: packageDataPro11,
-                 
                 },
                 {
                   title: "Promotional Inserts",
@@ -2680,11 +2625,11 @@ export default function Slide17(props) {
 
   React.useEffect(() => {
     fetchPackingList1();
-    fetchProductList();
+    fetchProductList(rowsPerPage, page);
   }, []);
 
   var uuid = 0;
-  const fetchProductList = () => {
+  const fetchProductList = (numberOfObjectsPerPage, pageNumber) => {
     if (sellerid === 0) {
       uuid = userid;
     } else {
@@ -2693,7 +2638,7 @@ export default function Slide17(props) {
     //const userid=5;
     setLoading(true);
     shiphypeservice
-      .fetchProductList(uuid)
+      .fetchProductListPagination(uuid, numberOfObjectsPerPage, pageNumber)
       .then((response) => {
         console.log("status", response.status);
         if (response.status === true) {
@@ -2745,10 +2690,10 @@ export default function Slide17(props) {
       });
   };
 
-  const fetchProductList1 = (uuid) => {
+  const fetchProductList1 = (uuid, rowsPerPage, page) => {
     setLoading(true);
     shiphypeservice
-      .fetchProductList(uuid)
+      .fetchProductListPagination(uuid, rowsPerPage, page)
       .then((response) => {
         console.log("status", response.status);
         if (response.status === true) {
@@ -2800,7 +2745,6 @@ export default function Slide17(props) {
   };
 
   const deleteMultipleProduct = () => {
-   
     shiphypeservice
       .deleteProduct(changedWarehouseid)
       .then((response) => {
@@ -2812,19 +2756,14 @@ export default function Slide17(props) {
           setStatus(response.status);
           setLoading(false);
 
-          // setStateproduct1((prevState) => {
-          //   const data = [...prevState.data];
-          //   data.splice(data.indexOf(oldData), 1);
-          //   return { ...prevState, data };
-          // });
-          fetchProductList();
+          fetchProductList(rowsPerPage, page);
         } else {
           setOpen(true);
           setType("error");
           setMsg("Fail to delete Product becasue it used somewhere.");
           setStatus(response.status);
           setLoading(false);
-          fetchProductList();
+          fetchProductList(rowsPerPage, page);
           console.log("message", response.message);
         }
       })
@@ -3108,12 +3047,10 @@ export default function Slide17(props) {
   };
 
   var flag1 = false;
- 
+
   const handleChangeCheckbox2 = (data) => {
-   
     if (ids.length === 0) {
       ids.push(data);
-      
     } else {
       for (let i = 0; i < ids.length; i++) {
         if (data !== ids[i]) {
@@ -3126,38 +3063,31 @@ export default function Slide17(props) {
       }
       if (flag1 === true) {
         ids.push(data);
-       
       } else {
         const index = ids.indexOf(data);
         if (index > -1) {
           ids.splice(index, 1);
-         
         }
-       
       }
     }
-   
-    const updatedaray=[...ids];
+
+    const updatedaray = [...ids];
 
     setchangedWarehouseid(updatedaray);
-   
-   
   };
-
 
   const handleChangeCheckbox = (data) => {
-    var ids=[];
-  
-    console.log("productlength",data.length);
-    for(let i=0;i<data.length ;i++){
-        console.log("productid",data[i].customproductId);
-        ids.push(data[i].customproductId);  
+    var ids = [];
+
+    console.log("productlength", data.length);
+    for (let i = 0; i < data.length; i++) {
+      console.log("productid", data[i].customproductId);
+      ids.push(data[i].customproductId);
     }
-    const updatedaray=[...ids];
+    const updatedaray = [...ids];
 
     setchangedWarehouseid(updatedaray);
   };
-
 
   let screenWidth = Dimensions.get("window").width;
 
@@ -3306,7 +3236,6 @@ export default function Slide17(props) {
                   fontFamily:
                     '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
                   color: "#001737",
-
                   transition: "all 0.25s",
                 }}
               >
@@ -3318,8 +3247,25 @@ export default function Slide17(props) {
             icons={tableIcons}
             components={{
               Container: (props) => <Paper {...props} elevation={0} />,
-
               Toolbar: (props) => <StyledMTableToolbar {...props} />,
+              Pagination: (props) => (
+                <TablePagination
+                  {...props}
+                  rowsPerPageOptions={[10, 20, 30, 40, 50, 100]}
+                  component="div"
+                  count={tablelength}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={(event, page) => {
+                    props.onChangePage(event, page);
+                    handleChangePage(event, page);
+                  }}
+                  onChangeRowsPerPage={(event) => {
+                    props.onChangeRowsPerPage(event);
+                    handleChangeRowsPerPage(event);
+                  }}
+                />
+              ),
             }}
             localization={{
               toolbar: {
@@ -3331,20 +3277,21 @@ export default function Slide17(props) {
             }}
             actions={[
               {
-          tooltip: 'Remove All Selected Product',
-          icon: () => <ColorButtonAdd
-          size='large'
-          variant="contained"
-          color="primary"
-          //startIcon={<AddIcon />}
-          >
-        Remove Products
-        </ColorButtonAdd>,
-         onClick: (event, rowData) => {
-          deleteMultipleProduct();
-        },
-        },
-{
+                tooltip: "Remove All Selected Product",
+                icon: () => (
+                  <ColorButtonAdd
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                  >
+                    Remove Products
+                  </ColorButtonAdd>
+                ),
+                onClick: (event, rowData) => {
+                  deleteMultipleProduct();
+                },
+              },
+              {
                 icon: () => (
                   <ColorButtonAdd
                     size="large"
@@ -3355,39 +3302,40 @@ export default function Slide17(props) {
                     Product
                   </ColorButtonAdd>
                 ),
-                iconProps: { style: { fontSize: "14px", color: "green",paddingRight:0 } },
+                iconProps: {
+                  style: { fontSize: "14px", color: "green", paddingRight: 0 },
+                },
                 onClick: (event, rowData) => {
                   opennewOrder();
                 },
                 isFreeAction: true,
               },
-              
+
               {
-                  icon: () => (
-                    <ColorButtonRefresh
+                icon: () => (
+                  <ColorButtonRefresh
                     size="large"
-                      variant="contained"
-                      color="primary"
-                      startIcon={<RefreshIcon />}
-                    >
-                      Refresh
-                    </ColorButtonRefresh>
-                  ),
-                  iconProps: { style: { fontSize: "14px", color: "green",paddingLeft:0 } },
-                  isFreeAction: true,
-                  onClick: (event) => fetchProductList(),
+                    variant="contained"
+                    color="primary"
+                    startIcon={<RefreshIcon />}
+                  >
+                    Refresh
+                  </ColorButtonRefresh>
+                ),
+                iconProps: {
+                  style: { fontSize: "14px", color: "green", paddingLeft: 0 },
                 },
-             
-              
+                isFreeAction: true,
+                onClick: (event) => fetchProductList(rowsPerPage, page),
+              },
             ]}
-           
             options={{
               paging: true,
               maxBodyHeight: "60vh",
               doubleHorizontalScroll: true,
               headerStyle: { position: "sticky", top: 0 },
               pageSize: 10,
-              pageSizeOptions: [10, 20, 30, 40, 50, 100],
+              // pageSizeOptions: [10, 20, 30, 40, 50, 100],
               showTitle: true,
               addRowPosition: "first",
               actionsColumnIndex: -1,
@@ -3444,27 +3392,18 @@ export default function Slide17(props) {
                 paddingBottom: 0,
                 paddingRight: 0,
               },
-              
               search: true,
               exportButton: false,
-              
-               selection: true,
-          showTextRowsSelected: false,
-          showSelectAllCheckbox:true,
-          selectionProps: rowData => ({
-           
-           
-             color: 'primary'
-          
-         
-        })
-
-        
-              
+              selection: true,
+              showTextRowsSelected: false,
+              showSelectAllCheckbox: true,
+              selectionProps: (rowData) => ({
+                color: "primary",
+              }),
             }}
             onSelectionChange={(rows) => {
-        handleChangeCheckbox(rows);
-    }}
+              handleChangeCheckbox(rows);
+            }}
             onRowClick={(event, rowData) => {
               console.log("rowclick", rowData);
               setOpenChekced(false);
@@ -3472,11 +3411,12 @@ export default function Slide17(props) {
               handleChangeCheckbox2(rowData.customproductId);
               setStateproduct1((prevState) => {
                 let data1 = [...prevState.data];
-                      let index = data1.indexOf(rowData);
-                      data1[index].tableData.checked = !data1[index].tableData.checked;
+                let index = data1.indexOf(rowData);
+                data1[index].tableData.checked = !data1[index].tableData
+                  .checked;
 
-                    return { ...prevState, data1 };
-                  });
+                return { ...prevState, data1 };
+              });
             }}
             editable={{
               onRowUpdate: (newData, oldData) =>

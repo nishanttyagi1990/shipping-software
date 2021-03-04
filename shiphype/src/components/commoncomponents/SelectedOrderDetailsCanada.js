@@ -440,7 +440,7 @@ export default function ScrollableTabsButtonAuto(props) {
       },
       {
         title: "Company Name",
-        field: "companyname",
+        field: "company_name",
         type: "text",
         render: (rowData) => (
           <Text>
@@ -450,7 +450,7 @@ export default function ScrollableTabsButtonAuto(props) {
                   return (
                     <Text
                       onClick={() => {
-                        copyLinkOnClick(rowData.customer.companyname);
+                        copyLinkOnClick(rowData.company_name);
                       }}
                       style={{
                         fontSize: "11px",
@@ -460,7 +460,7 @@ export default function ScrollableTabsButtonAuto(props) {
                         transition: "all 0.25s",
                       }}
                     >
-                      {rowData.customer.companyname}
+                      {rowData.company_name}
                     </Text>
                   );
                 } else {
@@ -655,7 +655,7 @@ export default function ScrollableTabsButtonAuto(props) {
       },
       {
         title: "Country",
-        field: "country",
+        field: "customer",
         type: "text",
         render: (rowData) => <Text>
         {(() => { 
@@ -663,7 +663,7 @@ export default function ScrollableTabsButtonAuto(props) {
               return(
                   <Text
           onClick={() => {
-            copyLinkOnClick(rowData.ordercountry);
+            copyLinkOnClick(rowData.customer.country);
           }}
           style={{
             fontSize: "11px",
@@ -673,7 +673,7 @@ export default function ScrollableTabsButtonAuto(props) {
             transition: "all 0.25s",
           }}
         >
-          {rowData.ordercountry}
+          {rowData.customer.country}
         </Text>
                   )
                }

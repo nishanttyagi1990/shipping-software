@@ -1469,7 +1469,7 @@ pushds.push(customproduct_id);
       } 
     else if(packaging === 0){
       setOpen2(true);
-     //packaging=valueofsouceid;
+    
    }else if(promotionalPackage === 0){
     setOpen3(true);
    }

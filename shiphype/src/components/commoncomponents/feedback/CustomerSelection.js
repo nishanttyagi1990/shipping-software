@@ -553,7 +553,7 @@ container >
        variant="contained"
        color="primary"
        className={classes.profileMargin}
-       onClick={()=>{handlePreviousPage(13)}}>
+       onClick={()=>{handlePreviousPage(12)}}>
           Back
        </ColorButton3> &nbsp;&nbsp;&nbsp;
        <ColorButton3

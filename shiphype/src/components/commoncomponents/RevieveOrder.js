@@ -63,6 +63,7 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import PrintInternalPacakingSlipDialog from "./Order/PrintInternalPacakingSlipDialog";
 import AsyncStorage from "@react-native-community/async-storage";
 import moment from "moment";
+import TablePagination from "@material-ui/core/TablePagination";
 const ColorButtonAdd = withStyles((theme) => ({
   root: {
     borderRadius: "3px",
@@ -257,25 +258,7 @@ const ColorButton = withStyles((theme) => ({
     },
   },
 }))(Button);
-// const ColorButtonRefresh = withStyles((theme) => ({
-//   root: {
-//     borderRadius: "3px",
-//     //  paddingTop: '9%',
-//     //  paddingBottom: '9%',
-//     //marginTop:'3%',
-//     height: "100%",
-//     padding: "1px",
-//     width: "-2px",
-//     color: "#fff",
-//     backgroundColor: "#33cc00",
-//     //  paddingLeft: '22%',
-//     //  paddingRight: '22%',
-//     "&:hover": {
-//       color: "#fff",
-//       backgroundColor: "#33cc00",
-//     },
-//   },
-// }))(Button);
+
 
 //Make custom button
 const ColorButtonProcessed = withStyles((theme) => ({
@@ -531,7 +514,7 @@ export default function Slide17(props) {
   const [codeNameWix, setCodeNameWix] = React.useState("");
   const [refershCodeNameWix, setRefershCodeNameWix] = React.useState("");
   const [storeNameWix, setStoreNameWix] = React.useState("");
-
+  const [locationshopify,setLocationshopify]=React.useState('');
   const [lengthwidthHeight, setLengthWidthH] = useState([
     {
       userid: 0,
@@ -544,6 +527,30 @@ export default function Slide17(props) {
   ]);
 
   const [openinternalslip, setOpeninternalslip] = React.useState(false);
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [tablelength, setTablelength] = React.useState(0);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    if (sellerid === 0) {
+      fetchProductList(user_id,rowsPerPage,newPage);
+    } else {
+      fetchProductList(sellerid,rowsPerPage,newPage);
+    }
+    console.log("newpage", newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    if (sellerid === 0) {
+      fetchProductList(user_id,parseInt(event.target.value, 10),0);
+    } else {
+      fetchProductList(sellerid,parseInt(event.target.value, 10),0);
+    }
+    setPage(0);
+    console.log("newpage122", event.target.value);
+  };
 
   function closePrint() {
     document.body.removeChild(this.__container__);
@@ -585,9 +592,9 @@ export default function Slide17(props) {
     console.log("card id =====");
 
     console.log("Id=======");
-    // var sURL = `https://app.shiphype.com/PrintInternalPackagingSlip?shiphype_id=${cardid}&user_id=${user_id}&shippingmethod=${shippingmethod}&useremail=${useremail}&companyname=${companyname}`;
+     var sURL = `https://app.shiphype.com/PrintInternalPackagingSlip?shiphype_id=${cardid}&user_id=${user_id}&shippingmethod=${shippingmethod}&useremail=${useremail}&companyname=${companyname}`;
 
-    var sURL = `http://localhost:19007/PrintInternalPackagingSlip?shiphype_id=${cardid}&user_id=${user_id}&shippingmethod=${shippingmethod}&useremail=${useremail}&companyname=${companyname}&multipleidselect=${changedWarehouseid}`;
+    //var sURL = `http://localhost:19007/PrintInternalPackagingSlip?shiphype_id=${cardid}&user_id=${user_id}&shippingmethod=${shippingmethod}&useremail=${useremail}&companyname=${companyname}&multipleidselect=${changedWarehouseid}`;
 
     console.log(sURL);
     console.log("surl", sURL);
@@ -610,14 +617,13 @@ export default function Slide17(props) {
       Printpdf();
       setOpenDelete(false);
       setOpenDeleter(false);
-      // setOpenCancelOrder(true);
-      //setOpeninternalslip(true);
+     
       handleConfirmCancel();
     } else if (isSprintCreate === 4) {
       //Shipped value
       setOpenDelete(false);
       setOpenDeleter(false);
-      //setOpenMoveOnHoldOrder(true);
+     
       setCalculaterate(true);
     } else if (isSprintCreate === 5) {
       setOpenDelete(false);
@@ -650,9 +656,9 @@ export default function Slide17(props) {
       Printpdf();
       setOpenDelete(false);
       setOpenDeleter(false);
-      // setOpenCancelOrder(true);
+     
       setOpeninternalslip(false);
-      //handleConfirmCancel();
+     
     } else {
       setOpenConfirmationRelease(true);
       setOpenDelete(false);
@@ -753,6 +759,113 @@ export default function Slide17(props) {
       },
 
       {
+        title: "Order ID",
+        field: "sellerorderid",
+        type: "text",
+        render: (rowData) => (
+          <FormControlLabel
+            onClick={() => {
+              handleChangeCheckbox(rowData.internalorderId);
+            }}
+            className={classes.quantitycss}
+            control={
+              <Typography
+                style={{
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: "11px",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                    transition: "all 0.25s",
+                  }}
+                >
+                  {rowData.sellerorderid === null ? " " : rowData.sellerorderid}
+                </Text>
+              </Typography>
+            }
+          />
+        ),
+      },
+
+      {
+        title: "Create Date",
+        field: "orderdate",
+        type: "text",
+        render: (rowData) => (
+          <FormControlLabel
+            onClick={() => {
+              handleChangeCheckbox(rowData.internalorderId);
+            }}
+            className={classes.quantitycss}
+            control={
+              <Typography
+                style={{
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: "11px",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                    transition: "all 0.25s",
+                  }}
+                >
+                  {moment(rowData.orderdate).format("MM/DD/YYYY")}
+                </Text>
+              </Typography>
+            }
+          />
+        ),
+      },
+      
+      {
+        title: "Source",
+        field: "source",
+        type: "text",
+        render: (rowData) => (
+          <FormControlLabel
+            onClick={() => {
+              handleChangeCheckbox(rowData.internalorderId);
+            }}
+            className={classes.quantitycss}
+            control={
+              <Typography
+                style={{
+                  marginLeft: "20px",
+                  fontSize: "2px",
+                  cursor: "pointer",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: "11px",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                    transition: "all 0.25s",
+                  }}
+                >
+                  {rowData.source}
+                </Text>
+              </Typography>
+            }
+          />
+        ),
+      },
+      {
         title: "Platform Id",
         field: "externalorderId",
         type: "text",
@@ -783,41 +896,6 @@ export default function Slide17(props) {
                   {rowData.externalorderId === null
                     ? " "
                     : rowData.externalorderId}
-                </Text>
-              </Typography>
-            }
-          />
-        ),
-      },
-      {
-        title: "Create Date",
-        field: "orderdate",
-        type: "text",
-        render: (rowData) => (
-          <FormControlLabel
-            onClick={() => {
-              handleChangeCheckbox(rowData.internalorderId);
-            }}
-            className={classes.quantitycss}
-            control={
-              <Typography
-                style={{
-                  marginLeft: "20px",
-                  fontSize: "2px",
-                  cursor: "pointer",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "11px",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                    transition: "all 0.25s",
-                  }}
-                >
-                  {moment(rowData.orderdate).format("MM/DD/YYYY")}
                 </Text>
               </Typography>
             }
@@ -860,77 +938,7 @@ export default function Slide17(props) {
           />
         ),
       },
-      {
-        title: "Order ID",
-        field: "sellerorderid",
-        type: "text",
-        render: (rowData) => (
-          <FormControlLabel
-            onClick={() => {
-              handleChangeCheckbox(rowData.internalorderId);
-            }}
-            className={classes.quantitycss}
-            control={
-              <Typography
-                style={{
-                  marginLeft: "20px",
-                  fontSize: "2px",
-                  cursor: "pointer",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "11px",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                    transition: "all 0.25s",
-                  }}
-                >
-                  {rowData.sellerorderid === null ? " " : rowData.sellerorderid}
-                </Text>
-              </Typography>
-            }
-          />
-        ),
-      },
-
-      {
-        title: "Source",
-        field: "source",
-        type: "text",
-        render: (rowData) => (
-          <FormControlLabel
-            onClick={() => {
-              handleChangeCheckbox(rowData.internalorderId);
-            }}
-            className={classes.quantitycss}
-            control={
-              <Typography
-                style={{
-                  marginLeft: "20px",
-                  fontSize: "2px",
-                  cursor: "pointer",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "11px",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                    transition: "all 0.25s",
-                  }}
-                >
-                  {rowData.source}
-                </Text>
-              </Typography>
-            }
-          />
-        ),
-      },
+     
       {
         title: "Order Type",
         field: "ordertype",
@@ -1001,79 +1009,8 @@ export default function Slide17(props) {
       },
 
       {
-        title: "Seller Email",
-        field: "userEmail",
-        type: "text",
-        render: (rowData) => (
-          <FormControlLabel
-            onClick={() => {
-              handleChangeCheckbox(rowData.internalorderId);
-            }}
-            className={classes.quantitycss}
-            control={
-              <Typography
-                style={{
-                  marginLeft: "20px",
-                  fontSize: "2px",
-                  cursor: "pointer",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "11px",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                    transition: "all 0.25s",
-                  }}
-                >
-                  {rowData.userEmail}
-                </Text>
-              </Typography>
-            }
-          />
-        ),
-      },
-      {
-        title: "Seller Company",
-        field: "company_name",
-        type: "text",
-        render: (rowData) => (
-          <FormControlLabel
-            onClick={() => {
-              handleChangeCheckbox(rowData.internalorderId);
-            }}
-            className={classes.quantitycss}
-            control={
-              <Typography
-                style={{
-                  marginLeft: "20px",
-                  fontSize: "2px",
-                  cursor: "pointer",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: "11px",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                    transition: "all 0.25s",
-                  }}
-                >
-                  {rowData.company_name}
-                </Text>
-              </Typography>
-            }
-          />
-        ),
-      },
-
-      {
         title: "Customer Name",
-        field: "recipientname",
+        field: "firstname",
         type: "text",
         render: (rowData) => (
           <FormControlLabel
@@ -1100,7 +1037,7 @@ export default function Slide17(props) {
                   }}
                 >
                   {" "}
-                  {rowData.firstname} {rowData.lastname}{" "}
+                  {rowData.firstname === null ? ' ' :  rowData.firstname.firstname} { rowData.firstname === null ? '  ' : rowData.firstname.lastname}{" "}
                 </Text>
               </Typography>
             }
@@ -1109,7 +1046,7 @@ export default function Slide17(props) {
       },
       {
         title: "Order Country",
-        field: "ordercountry",
+        field: "firstname",
         render: (rowData) => (
           <FormControlLabel
             onClick={() => {
@@ -1134,7 +1071,7 @@ export default function Slide17(props) {
                     transition: "all 0.25s",
                   }}
                 >
-                  {rowData.ordercountry}
+                  {rowData.firstname === null ? ' ' : rowData.firstname.country}
                 </Text>
               </Typography>
             }
@@ -1616,6 +1553,8 @@ export default function Slide17(props) {
       },
     ],
   });
+
+  
   const column1FilterList = state.column1FilterList;
   const fetchCourierTypeList = (userid) => {
     //const userid=14;
@@ -1713,6 +1652,113 @@ export default function Slide17(props) {
                 ),
               },
               {
+                title: "Order ID",
+                field: "sellerorderid",
+                type: "text",
+                render: (rowData) => (
+                  <FormControlLabel
+                    onClick={() => {
+                      handleChangeCheckbox(rowData.internalorderId);
+                    }}
+                    className={classes.quantitycss}
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          {rowData.sellerorderid === null ? " " : rowData.sellerorderid}
+                        </Text>
+                      </Typography>
+                    }
+                  />
+                ),
+              },
+        
+              {
+                title: "Create Date",
+                field: "orderdate",
+                type: "text",
+                render: (rowData) => (
+                  <FormControlLabel
+                    onClick={() => {
+                      handleChangeCheckbox(rowData.internalorderId);
+                    }}
+                    className={classes.quantitycss}
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          {moment(rowData.orderdate).format("MM/DD/YYYY")}
+                        </Text>
+                      </Typography>
+                    }
+                  />
+                ),
+              },
+              
+              {
+                title: "Source",
+                field: "source",
+                type: "text",
+                render: (rowData) => (
+                  <FormControlLabel
+                    onClick={() => {
+                      handleChangeCheckbox(rowData.internalorderId);
+                    }}
+                    className={classes.quantitycss}
+                    control={
+                      <Typography
+                        style={{
+                          marginLeft: "20px",
+                          fontSize: "2px",
+                          cursor: "pointer",
+                          fontFamily:
+                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: "11px",
+                            fontFamily:
+                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                            transition: "all 0.25s",
+                          }}
+                        >
+                          {rowData.source}
+                        </Text>
+                      </Typography>
+                    }
+                  />
+                ),
+              },
+              {
                 title: "Platform Id",
                 field: "externalorderId",
                 type: "text",
@@ -1749,46 +1795,11 @@ export default function Slide17(props) {
                   />
                 ),
               },
-
-              {
-                title: "Create Date",
-                field: "orderdate",
-                type: "text",
-                render: (rowData) => (
-                  <FormControlLabel
-                    onClick={() => {
-                      handleChangeCheckbox(rowData.internalorderId);
-                    }}
-                    className={classes.quantitycss}
-                    control={
-                      <Typography
-                        style={{
-                          marginLeft: "20px",
-                          fontSize: "2px",
-                          cursor: "pointer",
-                          fontFamily:
-                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          {moment(rowData.orderdate).format("MM/DD/YYYY")}
-                        </Text>
-                      </Typography>
-                    }
-                  />
-                ),
-              },
               {
                 title: "Courier ID",
                 field: "courierid",
                 type: "text",
+        
                 render: (rowData) => (
                   <FormControlLabel
                     onClick={() => {
@@ -1814,78 +1825,6 @@ export default function Slide17(props) {
                           }}
                         >
                           {rowData.courierid === null ? " " : rowData.courierid}
-                        </Text>
-                      </Typography>
-                    }
-                  />
-                ),
-              },
-              {
-                title: "Order ID",
-                field: "sellerorderid",
-                type: "text",
-                render: (rowData) => (
-                  <FormControlLabel
-                    onClick={() => {
-                      handleChangeCheckbox(rowData.internalorderId);
-                    }}
-                    className={classes.quantitycss}
-                    control={
-                      <Typography
-                        style={{
-                          marginLeft: "20px",
-                          fontSize: "2px",
-                          cursor: "pointer",
-                          fontFamily:
-                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          {rowData.sellerorderid === null
-                            ? " "
-                            : rowData.sellerorderid}
-                        </Text>
-                      </Typography>
-                    }
-                  />
-                ),
-              },
-              {
-                title: "Source",
-                field: "source",
-                type: "text",
-                render: (rowData) => (
-                  <FormControlLabel
-                    onClick={() => {
-                      handleChangeCheckbox(rowData.internalorderId);
-                    }}
-                    className={classes.quantitycss}
-                    control={
-                      <Typography
-                        style={{
-                          marginLeft: "20px",
-                          fontSize: "2px",
-                          cursor: "pointer",
-                          fontFamily:
-                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          {rowData.source}
                         </Text>
                       </Typography>
                     }
@@ -1965,78 +1904,8 @@ export default function Slide17(props) {
                 ),
               },
               {
-                title: "Seller Email",
-                field: "userEmail",
-                type: "text",
-                render: (rowData) => (
-                  <FormControlLabel
-                    onClick={() => {
-                      handleChangeCheckbox(rowData.internalorderId);
-                    }}
-                    className={classes.quantitycss}
-                    control={
-                      <Typography
-                        style={{
-                          marginLeft: "20px",
-                          fontSize: "2px",
-                          cursor: "pointer",
-                          fontFamily:
-                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          {rowData.userEmail}
-                        </Text>
-                      </Typography>
-                    }
-                  />
-                ),
-              },
-              {
-                title: "Seller Company",
-                field: "company_name",
-                type: "text",
-                render: (rowData) => (
-                  <FormControlLabel
-                    onClick={() => {
-                      handleChangeCheckbox(rowData.internalorderId);
-                    }}
-                    className={classes.quantitycss}
-                    control={
-                      <Typography
-                        style={{
-                          marginLeft: "20px",
-                          fontSize: "2px",
-                          cursor: "pointer",
-                          fontFamily:
-                            '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: "11px",
-                            fontFamily:
-                              '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                            transition: "all 0.25s",
-                          }}
-                        >
-                          {rowData.company_name}
-                        </Text>
-                      </Typography>
-                    }
-                  />
-                ),
-              },
-              {
                 title: "Customer Name",
-                field: "recipientname",
+                field: "firstname",
                 type: "text",
                 render: (rowData) => (
                   <FormControlLabel
@@ -2063,7 +1932,7 @@ export default function Slide17(props) {
                           }}
                         >
                           {" "}
-                          {rowData.firstname} {rowData.lastname}{" "}
+                          {rowData.firstname === null ? ' ' :  rowData.firstname.firstname} { rowData.firstname === null ? '  ' : rowData.firstname.lastname}{" "}
                         </Text>
                       </Typography>
                     }
@@ -2072,7 +1941,7 @@ export default function Slide17(props) {
               },
               {
                 title: "Order Country",
-                field: "ordercountry",
+                field: "firstname",
                 render: (rowData) => (
                   <FormControlLabel
                     onClick={() => {
@@ -2097,7 +1966,7 @@ export default function Slide17(props) {
                             transition: "all 0.25s",
                           }}
                         >
-                          {rowData.ordercountry}
+                          {rowData.firstname === null ? ' ' : rowData.firstname.country}
                         </Text>
                       </Typography>
                     }
@@ -2629,7 +2498,7 @@ export default function Slide17(props) {
   let dangerous = "No";
 
   const handleClickOpendelete = (rowid, rowData) => {
-    setOpenDelete(true);
+    
     setCardid(rowid);
     setRowData(rowData);
     console.log("rowdata", rowData);
@@ -2686,11 +2555,13 @@ export default function Slide17(props) {
       setShippingPolicyName("Custom Shipping Label");
     }
     fetchUserIntegrationShopify(rowData.userId);
+    fetchShopifyFullfilment(rowData.userId);
     setRowStatus(rowData.orderstatus);
 
     if (rowData.orderstatus === 2) {
       //createOrderPayment(rowid);
     }
+    setOpenDelete(true);
     console.log("rowid", rowid);
   };
 
@@ -2731,7 +2602,7 @@ export default function Slide17(props) {
           setLoading(false);
           setOpenConfirmationRelease(false);
           handleChangeCheckbox5();
-          fetchProductList(sellerid);
+          fetchProductList(sellerid,rowsPerPage, page);
         } else {
           setOpen(true);
           setType("error");
@@ -2765,7 +2636,7 @@ export default function Slide17(props) {
           setLoading(false);
           setOpenCancelOrder(false);
           handleChangeCheckbox5();
-          fetchProductList(sellerid);
+          fetchProductList(sellerid,rowsPerPage, page);
         } else {
           setOpen(true);
           setType("error");
@@ -2798,7 +2669,7 @@ export default function Slide17(props) {
           setLoading(false);
           setOpenUnReverseInventory(false);
           handleChangeCheckbox5();
-          fetchProductList(sellerid);
+          fetchProductList(sellerid,rowsPerPage, page);
         } else {
           setOpen(true);
           setType("success");
@@ -2934,7 +2805,8 @@ export default function Slide17(props) {
         comapnyname,
         shipdate1,
         consumerkey,
-        consumersecret
+        consumersecret,
+        locationshopify
       )
       .then((response) => {
         console.log("status", response.status);
@@ -3032,7 +2904,8 @@ export default function Slide17(props) {
         serviceName,
         refertokenvalue,
         consumerkey,
-        consumersecret
+        consumersecret,
+        locationshopify
       )
       .then((response) => {
         console.log("status", response.status);
@@ -3045,7 +2918,7 @@ export default function Slide17(props) {
           setOpenManualTrackingOrder(false);
           setCalculaterate(false);
           handleChangeCheckbox5();
-          fetchProductList(sellerid);
+          fetchProductList(sellerid,rowsPerPage, page);
         } else {
           setOpen(true);
           setType("success");
@@ -3184,7 +3057,7 @@ export default function Slide17(props) {
       .then((response) => {
         console.log("status", response.status);
         handleChangeCheckbox5();
-        fetchProductList(sellerid);
+        fetchProductList(sellerid,rowsPerPage, page);
         // if(response.status === true) {
         //   setOpen(true);
         //   setType('success');
@@ -3224,7 +3097,7 @@ export default function Slide17(props) {
           setLoading(false);
           setOpenOnHoldOrder(false);
           handleChangeCheckbox5();
-          fetchProductList(sellerid);
+          fetchProductList(sellerid,rowsPerPage, page);
         } else {
           setOpen(true);
           setType("success");
@@ -3260,7 +3133,7 @@ export default function Slide17(props) {
           setOpenMoveOnHoldOrder(false);
           setCalculaterate(false);
           handleChangeCheckbox5();
-          fetchProductList(sellerid);
+          fetchProductList(sellerid,rowsPerPage, page);
         } else {
           setOpen(true);
           setType("success");
@@ -3296,7 +3169,7 @@ export default function Slide17(props) {
           setLoading(false);
           setOpenExceptionOrder(false);
           handleChangeCheckbox5();
-          fetchProductList(sellerid);
+          fetchProductList(sellerid,rowsPerPage, page);
         } else {
           setOpen(true);
           setType("success");
@@ -3330,7 +3203,7 @@ export default function Slide17(props) {
 
   React.useEffect(() => {
     setOpenChekced(false);
-
+    fetchTableLength();
     AsyncStorage.multiGet(["ProductSelectAllTabUS"]).then((data) => {
       if (data[0][1] != null) {
         ProductSelect = JSON.parse(data[0][1]);
@@ -3346,17 +3219,17 @@ export default function Slide17(props) {
 
     fetchCourierTypeList(user_id);
     if (sellerid === 0) {
-      fetchProductList(user_id);
+      fetchProductList(user_id,rowsPerPage, page);
     } else {
-      fetchProductList(sellerid);
+      fetchProductList(sellerid,rowsPerPage, page);
     }
     fetchUserInfo();
   }, []);
   const fetchRefersh = () => {
     if (sellerid === 0) {
-      fetchProductList(user_id);
+      fetchProductList(user_id,rowsPerPage, page);
     } else {
-      fetchProductList(sellerid);
+      fetchProductList(sellerid,rowsPerPage, page);
     }
   };
   const fetchUserIntegrationShopify = (useridshopify) => {
@@ -3402,6 +3275,28 @@ export default function Slide17(props) {
       });
   };
 
+  const fetchShopifyFullfilment = (useridshopify) => {
+  
+   
+    shiphypeservice
+      .fetchShopifyFUllfillment(useridshopify,4)
+      .then((response) => {
+        console.log("status", response.status);
+        if (response.status === true) {
+        
+
+          setLocationshopify(response.data.locationId);
+          
+         
+        } else {
+         
+          console.log("message", response.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   const fetchUserInfo = () => {
     //const userid=5;
     setLoading(true);
@@ -3427,7 +3322,7 @@ export default function Slide17(props) {
     //const userid=5;
     setLoading(true);
     shiphypeservice
-      .fetchOrderList(user_id, userOderSatus)
+      .fetchOrderListPagination(user_id, userOderSatus,rowsPerPage, page)
       .then((response) => {
         console.log("status", response.status);
         if (response.status === true) {
@@ -3451,13 +3346,33 @@ export default function Slide17(props) {
         console.error(error);
       });
   };
-  const fetchProductList = (seller) => {
+
+  const fetchTableLength = () => {
+    //const userid=5;
+
+    shiphypeservice
+      .fetchCustomerProOrderCount(user_id, 3)
+      .then((response) => {
+        console.log("status", response.status);
+        if (response.status === true) {
+          setTablelength(response.data);
+        } else {
+          console.log("message", response.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+
+  const fetchProductList = (seller,rowsPerPage, page) => {
     if (props.isfirst === true) {
       if (sellerid === 0) {
         setDataProduct([]);
       } else {
         shiphypeservice
-          .fetchOrderList(seller, userOderSatus)
+          .fetchOrderListPagination(seller, userOderSatus,rowsPerPage, page)
           .then((response) => {
             console.log("status", response.status);
             if (response.status === true) {
@@ -3500,7 +3415,7 @@ export default function Slide17(props) {
       } else {
         //setLoading(true);
         shiphypeservice
-          .fetchOrderList(seller, userOderSatus)
+          .fetchOrderListPagination(seller, userOderSatus,rowsPerPage, page)
           .then((response) => {
             console.log("status", response.status);
             if (response.status === true) {
@@ -3659,6 +3574,113 @@ export default function Slide17(props) {
           ),
         },
         {
+          title: "Order ID",
+          field: "sellerorderid",
+          type: "text",
+          render: (rowData) => (
+            <FormControlLabel
+              onClick={() => {
+                handleChangeCheckbox(rowData.internalorderId);
+              }}
+              className={classes.quantitycss}
+              control={
+                <Typography
+                  style={{
+                    marginLeft: "20px",
+                    fontSize: "2px",
+                    cursor: "pointer",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {rowData.sellerorderid === null ? " " : rowData.sellerorderid}
+                  </Text>
+                </Typography>
+              }
+            />
+          ),
+        },
+  
+        {
+          title: "Create Date",
+          field: "orderdate",
+          type: "text",
+          render: (rowData) => (
+            <FormControlLabel
+              onClick={() => {
+                handleChangeCheckbox(rowData.internalorderId);
+              }}
+              className={classes.quantitycss}
+              control={
+                <Typography
+                  style={{
+                    marginLeft: "20px",
+                    fontSize: "2px",
+                    cursor: "pointer",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {moment(rowData.orderdate).format("MM/DD/YYYY")}
+                  </Text>
+                </Typography>
+              }
+            />
+          ),
+        },
+        
+        {
+          title: "Source",
+          field: "source",
+          type: "text",
+          render: (rowData) => (
+            <FormControlLabel
+              onClick={() => {
+                handleChangeCheckbox(rowData.internalorderId);
+              }}
+              className={classes.quantitycss}
+              control={
+                <Typography
+                  style={{
+                    marginLeft: "20px",
+                    fontSize: "2px",
+                    cursor: "pointer",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {rowData.source}
+                  </Text>
+                </Typography>
+              }
+            />
+          ),
+        },
+        {
           title: "Platform Id",
           field: "externalorderId",
           type: "text",
@@ -3695,46 +3717,11 @@ export default function Slide17(props) {
             />
           ),
         },
-
-        {
-          title: "Create Date",
-          field: "orderdate",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {moment(rowData.orderdate).format("MM/DD/YYYY")}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
         {
           title: "Courier ID",
           field: "courierid",
           type: "text",
+  
           render: (rowData) => (
             <FormControlLabel
               onClick={() => {
@@ -3760,78 +3747,6 @@ export default function Slide17(props) {
                     }}
                   >
                     {rowData.courierid === null ? " " : rowData.courierid}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Order ID",
-          field: "sellerorderid",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.sellerorderid === null
-                      ? " "
-                      : rowData.sellerorderid}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Source",
-          field: "source",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.source}
                   </Text>
                 </Typography>
               }
@@ -3911,78 +3826,8 @@ export default function Slide17(props) {
           ),
         },
         {
-          title: "Seller Email",
-          field: "userEmail",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.userEmail}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Seller Company",
-          field: "company_name",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.company_name}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
           title: "Customer Name",
-          field: "recipientname",
+          field: "firstname",
           type: "text",
           render: (rowData) => (
             <FormControlLabel
@@ -4009,7 +3854,7 @@ export default function Slide17(props) {
                     }}
                   >
                     {" "}
-                    {rowData.firstname} {rowData.lastname}{" "}
+                    {rowData.firstname === null ? ' ' :  rowData.firstname.firstname} { rowData.firstname === null ? '  ' : rowData.firstname.lastname}{" "}
                   </Text>
                 </Typography>
               }
@@ -4018,7 +3863,7 @@ export default function Slide17(props) {
         },
         {
           title: "Order Country",
-          field: "ordercountry",
+          field: "firstname",
           render: (rowData) => (
             <FormControlLabel
               onClick={() => {
@@ -4043,7 +3888,7 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.ordercountry}
+                    {rowData.firstname === null ? ' ' : rowData.firstname.country}
                   </Text>
                 </Typography>
               }
@@ -4642,6 +4487,113 @@ export default function Slide17(props) {
           ),
         },
         {
+          title: "Order ID",
+          field: "sellerorderid",
+          type: "text",
+          render: (rowData) => (
+            <FormControlLabel
+              onClick={() => {
+                handleChangeCheckbox(rowData.internalorderId);
+              }}
+              className={classes.quantitycss}
+              control={
+                <Typography
+                  style={{
+                    marginLeft: "20px",
+                    fontSize: "2px",
+                    cursor: "pointer",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {rowData.sellerorderid === null ? " " : rowData.sellerorderid}
+                  </Text>
+                </Typography>
+              }
+            />
+          ),
+        },
+  
+        {
+          title: "Create Date",
+          field: "orderdate",
+          type: "text",
+          render: (rowData) => (
+            <FormControlLabel
+              onClick={() => {
+                handleChangeCheckbox(rowData.internalorderId);
+              }}
+              className={classes.quantitycss}
+              control={
+                <Typography
+                  style={{
+                    marginLeft: "20px",
+                    fontSize: "2px",
+                    cursor: "pointer",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {moment(rowData.orderdate).format("MM/DD/YYYY")}
+                  </Text>
+                </Typography>
+              }
+            />
+          ),
+        },
+        
+        {
+          title: "Source",
+          field: "source",
+          type: "text",
+          render: (rowData) => (
+            <FormControlLabel
+              onClick={() => {
+                handleChangeCheckbox(rowData.internalorderId);
+              }}
+              className={classes.quantitycss}
+              control={
+                <Typography
+                  style={{
+                    marginLeft: "20px",
+                    fontSize: "2px",
+                    cursor: "pointer",
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: "11px",
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
+                      transition: "all 0.25s",
+                    }}
+                  >
+                    {rowData.source}
+                  </Text>
+                </Typography>
+              }
+            />
+          ),
+        },
+        {
           title: "Platform Id",
           field: "externalorderId",
           type: "text",
@@ -4678,46 +4630,11 @@ export default function Slide17(props) {
             />
           ),
         },
-
-        {
-          title: "Create Date",
-          field: "orderdate",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {moment(rowData.orderdate).format("MM/DD/YYYY")}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
         {
           title: "Courier ID",
           field: "courierid",
           type: "text",
+  
           render: (rowData) => (
             <FormControlLabel
               onClick={() => {
@@ -4743,78 +4660,6 @@ export default function Slide17(props) {
                     }}
                   >
                     {rowData.courierid === null ? " " : rowData.courierid}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Order ID",
-          field: "sellerorderid",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.sellerorderid === null
-                      ? " "
-                      : rowData.sellerorderid}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Source",
-          field: "source",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.source}
                   </Text>
                 </Typography>
               }
@@ -4894,78 +4739,8 @@ export default function Slide17(props) {
           ),
         },
         {
-          title: "Seller Email",
-          field: "userEmail",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.userEmail}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
-          title: "Seller Company",
-          field: "company_name",
-          type: "text",
-          render: (rowData) => (
-            <FormControlLabel
-              onClick={() => {
-                handleChangeCheckbox(rowData.internalorderId);
-              }}
-              className={classes.quantitycss}
-              control={
-                <Typography
-                  style={{
-                    marginLeft: "20px",
-                    fontSize: "2px",
-                    cursor: "pointer",
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: "11px",
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
-                      transition: "all 0.25s",
-                    }}
-                  >
-                    {rowData.company_name}
-                  </Text>
-                </Typography>
-              }
-            />
-          ),
-        },
-        {
           title: "Customer Name",
-          field: "recipientname",
+          field: "firstname",
           type: "text",
           render: (rowData) => (
             <FormControlLabel
@@ -4992,7 +4767,7 @@ export default function Slide17(props) {
                     }}
                   >
                     {" "}
-                    {rowData.firstname} {rowData.lastname}{" "}
+                    {rowData.firstname === null ? ' ' :  rowData.firstname.firstname} { rowData.firstname === null ? '  ' : rowData.firstname.lastname}{" "}
                   </Text>
                 </Typography>
               }
@@ -5001,7 +4776,7 @@ export default function Slide17(props) {
         },
         {
           title: "Order Country",
-          field: "ordercountry",
+          field: "firstname",
           render: (rowData) => (
             <FormControlLabel
               onClick={() => {
@@ -5026,7 +4801,7 @@ export default function Slide17(props) {
                       transition: "all 0.25s",
                     }}
                   >
-                    {rowData.ordercountry}
+                    {rowData.firstname === null ? ' ' : rowData.firstname.country}
                   </Text>
                 </Typography>
               }
@@ -5146,7 +4921,6 @@ export default function Slide17(props) {
         {
           title: "Order Status",
           field: "orderstatus",
-
           render: (rowData) => (
             <Text>
               {(() => {
@@ -5701,6 +5475,24 @@ export default function Slide17(props) {
               components={{
                 Container: (props) => <Paper {...props} elevation={0} />,
                 Toolbar: (props) => <StyledMTableToolbar {...props} />,
+                Pagination: (props) => (
+                <TablePagination
+                  {...props}
+                  rowsPerPageOptions={[10, 20, 30, 40, 50, 100]}
+                  component="div"
+                  count={tablelength}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={(event, page) => {
+                    props.onChangePage(event, page);
+                    handleChangePage(event, page);
+                  }}
+                  onChangeRowsPerPage={(event) => {
+                    props.onChangeRowsPerPage(event);
+                    handleChangeRowsPerPage(event);
+                  }}
+                />
+              ), 
               }}
               localization={{
                 toolbar: {
@@ -5716,7 +5508,7 @@ export default function Slide17(props) {
                 doubleHorizontalScroll: true,
                 headerStyle: { position: "sticky", top: 0 },
                 pageSize: 20,
-                pageSizeOptions: [10, 20, 30, 40, 50, 100],
+               // pageSizeOptions: [10, 20, 30, 40, 50, 100],
                 showTitle: false,
                 addRowPosition: "first",
                 actionsColumnIndex: -1,
@@ -5776,14 +5568,7 @@ export default function Slide17(props) {
                 },
                 search: true,
                 exportButton: false,
-                //   selection: true,
-                //   showTextRowsSelected: false,
-                //   selectionProps: rowData => ({
-
-                //     // checked: rowData.customproductId === changedWarehouseid,
-                //      color: 'primary'
-
-                // })
+                
               }}
               actions={[
                 {
@@ -5836,23 +5621,7 @@ export default function Slide17(props) {
                   isFreeAction: true,
                   onClick: (event) => fetchRefersh(),
                 },
-                // {
-                //   icon: () => (
-                //     <RefreshIcon
-                //       style={{
-                //         backgroundColor: "#33cc00",
-                //         color: "#fff",
-                //         borderRadius: "3px",
-                //         margin: "3px",
-                //         width:30,
-                //       height:30
-                //       }}
-                //     />
-                //   ),
-                //   //tooltip: "Refresh",
-                //   isFreeAction: true,
-                //   onClick: (event) => fetchRefersh(),
-                // },
+                
               ]}
             />
           ) : (
@@ -5878,6 +5647,24 @@ export default function Slide17(props) {
               components={{
                 Container: (props) => <Paper {...props} elevation={0} />,
                 Toolbar: (props) => <StyledMTableToolbar {...props} />,
+                Pagination: (props) => (
+                <TablePagination
+                  {...props}
+                  rowsPerPageOptions={[10, 20, 30, 40, 50, 100]}
+                  component="div"
+                  count={tablelength}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={(event, page) => {
+                    props.onChangePage(event, page);
+                    handleChangePage(event, page);
+                  }}
+                  onChangeRowsPerPage={(event) => {
+                    props.onChangeRowsPerPage(event);
+                    handleChangeRowsPerPage(event);
+                  }}
+                />
+              ), 
               }}
               localization={{
                 toolbar: {
@@ -5910,7 +5697,7 @@ export default function Slide17(props) {
                 doubleHorizontalScroll: true,
                 headerStyle: { position: "sticky", top: 0 },
                 pageSize: 20,
-                pageSizeOptions: [10, 20, 30, 40, 50, 100],
+               // pageSizeOptions: [10, 20, 30, 40, 50, 100],
                 showTitle: false,
                 addRowPosition: "first",
                 actionsColumnIndex: -1,
@@ -5980,7 +5767,7 @@ export default function Slide17(props) {
         </View>
       </View>
 
-      {/* </ScrollView> */}
+     
     </View>
   );
 }

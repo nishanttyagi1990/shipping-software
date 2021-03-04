@@ -400,7 +400,7 @@ export default function ScrollableTabsButtonAuto(props) {
       },
       {
         title: "Company Name",
-        field: "companyname",
+        field: "company_name",
         type: "text",
         render: (rowData) => (
           <Text
@@ -411,7 +411,7 @@ export default function ScrollableTabsButtonAuto(props) {
               transition: "all 0.25s",
             }}
           >
-            {rowData.customer.companyname}
+            {rowData.company_name}
           </Text>
         ),
       },
@@ -485,7 +485,7 @@ export default function ScrollableTabsButtonAuto(props) {
       },
       {
         title: "Country",
-        field: "country",
+        field: "customer",
         type: "text",
         render: (rowData) => (
           <Text
@@ -496,7 +496,7 @@ export default function ScrollableTabsButtonAuto(props) {
               transition: "all 0.25s",
             }}
           >
-            {rowData.ordercountry}
+            {rowData.customer.country}
           </Text>
         ),
       },

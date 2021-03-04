@@ -225,7 +225,7 @@ export default function ShippingProfile(props) {
    const [status,setStatus]=React.useState(false);
    const userid=props.userid;
    const integrationId=props.integrationId;
-
+   const [fetchid,setFetchid]=React.useState('');
    const [state, setState] = React.useState({
     gilad: true,
     jason: false,
@@ -233,6 +233,10 @@ export default function ShippingProfile(props) {
     ppt:false,
     doc:false,
   });
+
+  React.useEffect(()=>{
+    FetchIntegration();
+  },[]);
   const removeIntegration =()=>{
     setLoading(true);
    
@@ -245,7 +249,12 @@ export default function ShippingProfile(props) {
                     setMsg(response.message);
                     setStatus(response.status);
                     setLoading(false);
-                    props.ConframetionCheck();
+                    if(integrationId === 4){
+                      removeIntegration2(fetchid);
+                    }else{
+                      props.ConframetionCheck();
+                    }
+                    
                            }else{
                             setOpen(true);
                             setType('error');
@@ -259,6 +268,42 @@ export default function ShippingProfile(props) {
                     console.error(error);
               });
             }
+
+            const removeIntegration2 =(fulfillmentserviceid)=>{
+              setLoading(true);
+             
+              shiphypeservice.removeFullfillment(fulfillmentserviceid)
+                    .then(response => {
+                     console.log("status",response.status);
+                          if(response.status === true) {
+                              
+                              props.ConframetionCheck();
+                                     }else{
+                                     
+                             props.ConframetionCheck();
+                                      console.log("message",response.message);
+                                     }   
+                        }).catch((error) =>{
+                              console.error(error);
+                        });
+                      }
+          
+            
+            const FetchIntegration =()=>{
+             
+             
+              shiphypeservice.fetchShopifyFUllfillment(userid,4)
+                    .then(response => {
+                     console.log("status",response.status);
+                          if(response.status === true) {
+                            setFetchid(response.data.fulfillmentServiceId);
+                                     }else{
+                                     
+                                     }   
+                        }).catch((error) =>{
+                              console.error(error);
+                        });
+                      }
             const handleClose = () => {
                 setOpen(false);
               };

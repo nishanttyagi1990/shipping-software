@@ -652,7 +652,7 @@ props.setEditCaseOnAdd(false);
 
 
 console.log("Ordercountry",props.customerCountry);
-          shiphypeservice.addOrder(source,orderType,recipientname,selectCustomerCountry,shippingcourier
+          shiphypeservice.addOrder(source,orderType,recipientname,"India",shippingcourier
             ,orderStatus,orderDate1,customertype,orderkind,customer_id,shippingpolicy_id,
             user_id,option_id,dangeroue,bubbleBoxIds,insuranceIds,ShippedProductId,orderInoivceIs,packagingSlipIs,labelId,
             labelName,packageLabelId,packageFile,inoiveLabelId,invoiceFile,shiptype,ware,ShippedQtyOrder,labelid)
@@ -1080,7 +1080,7 @@ customerIdOrder.push(props.customerId);
          
           </Grid>
         </Grid>
-  <Grid item xs={10}>
+  {/* <Grid item xs={10}>
        <Text 
            style={{
             fontSize: '14px',
@@ -1091,15 +1091,15 @@ customerIdOrder.push(props.customerId);
             transition : 'all 0.25s',
            }}>{'\n'}Other Options
            </Text>  
-           </Grid>
-       <Grid item xs={10}>
+           </Grid> */}
+       {/* <Grid item xs={10}>
   <FormGroup>
   <FormControl component="fieldset">
   <RadioGroup aria-label="carries" name="carries" value={otherOptionS} onChange={handleOtherOptionS}>
           <FormControlLabel  value="1" className={classes.checkBox23}
              control={<Radio color="primary" />}
             label={<Text style={{ fontSize: '12px',
-            // fontWeight: '700',
+           
              fontFamily: '-apple-system, BlinkMacSystemFont, "Inter UI", Roboto, sans-serif',
              color: '#001737',
            
@@ -1108,7 +1108,7 @@ customerIdOrder.push(props.customerId);
           </RadioGroup>
           </FormControl>
           </FormGroup>
-  </Grid>
+  </Grid> */}
 
         <Grid 
       container  item xs={10} md={10} lg={10}>
